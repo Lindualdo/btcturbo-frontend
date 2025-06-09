@@ -1,0 +1,109 @@
+<!-- 
+Arquivo: momentum.html
+Localização: btcturbo-frontend/momentum.html 
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Momentum - BTC Turbo</title>
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/components-improved.css">
+    <link rel="stylesheet" href="/src/styles/pages.css">
+</head>
+<body>
+    <div class="container">
+        <button class="back-button" onclick="window.location.href='/'">← Voltar ao Dashboard</button>
+        
+        <div class="breadcrumb">
+            <a href="/">Dashboard</a> > Análise de Momentum
+        </div>
+
+        <div class="header">
+            <h1>⚡ Análise de Momentum</h1>
+        </div>
+
+        <!-- Score Consolidado -->
+        <div class="score-summary">
+            <div class="score-main" id="score-consolidado">Carregando...</div>
+            <div class="score-details">
+                <div>Peso no Score Geral: <span id="peso-bloco">20%</span></div>
+                <div id="formula-calculo">Carregando fórmula...</div>
+            </div>
+        </div>
+
+        <!-- Indicadores -->
+        <div class="panel">
+            <div class="panel-title">⚡ Indicadores de Momentum</div>
+            <div class="cards-grid">
+                <!-- RSI Semanal -->
+                <div class="card">
+                    <div class="card-title">📈 RSI Semanal</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-rsi-semanal" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="rsi-semanal-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="rsi-semanal-valor">-</span></div>
+                            <div>Peso: <span id="rsi-semanal-peso">-</span></div>
+                            <div>Contribuição: <span id="rsi-semanal-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RSI Mensal -->
+                <div class="card">
+                    <div class="card-title">📊 RSI Mensal</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-rsi-mensal" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="rsi-mensal-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="rsi-mensal-valor">-</span></div>
+                            <div>Peso: <span id="rsi-mensal-peso">-</span></div>
+                            <div>Contribuição: <span id="rsi-mensal-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MACD Semanal -->
+                <div class="card">
+                    <div class="card-title">📉 MACD Semanal</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-macd-semanal" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="macd-semanal-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="macd-semanal-valor">-</span></div>
+                            <div>Peso: <span id="macd-semanal-peso">-</span></div>
+                            <div>Contribuição: <span id="macd-semanal-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stoch RSI -->
+                <div class="card">
+                    <div class="card-title">🎯 Stoch RSI</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-stoch-rsi" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="stoch-rsi-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="stoch-rsi-valor">-</span></div>
+                            <div>Peso: <span id="stoch-rsi-peso">-</span></div>
+                            <div>Contribuição: <span id="stoch-rsi-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/pages/momentum.js"></script>
+</body>
+</html>

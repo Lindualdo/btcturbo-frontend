@@ -1,0 +1,93 @@
+<!-- 
+Arquivo: tecnico.html
+Localização: btcturbo-frontend/tecnico.html 
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Técnico - BTC Turbo</title>
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/components-improved.css">
+    <link rel="stylesheet" href="/src/styles/pages.css">
+</head>
+<body>
+    <div class="container">
+        <button class="back-button" onclick="window.location.href='/'">← Voltar ao Dashboard</button>
+        
+        <div class="breadcrumb">
+            <a href="/">Dashboard</a> > Análise Técnica
+        </div>
+
+        <div class="header">
+            <h1>📊 Análise Técnica</h1>
+        </div>
+
+        <!-- Score Consolidado -->
+        <div class="score-summary">
+            <div class="score-main" id="score-consolidado">Carregando...</div>
+            <div class="score-details">
+                <div>Peso no Score Geral: <span id="peso-bloco">50%</span></div>
+                <div id="formula-calculo">Carregando fórmula...</div>
+            </div>
+        </div>
+
+        <!-- Indicadores -->
+        <div class="panel">
+            <div class="panel-title">📊 Indicadores Técnicos</div>
+            <div class="cards-grid">
+                <!-- EMAs Semanal -->
+                <div class="card">
+                    <div class="card-title">📈 EMAs Semanal</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-emas-semanal" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="emas-semanal-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="emas-semanal-valor">-</span></div>
+                            <div>Peso: <span id="emas-semanal-peso">-</span></div>
+                            <div>Contribuição: <span id="emas-semanal-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EMAs Diário -->
+                <div class="card">
+                    <div class="card-title">📊 EMAs Diário</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-emas-diario" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="emas-diario-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="emas-diario-valor">-</span></div>
+                            <div>Peso: <span id="emas-diario-peso">-</span></div>
+                            <div>Contribuição: <span id="emas-diario-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BBW -->
+                <div class="card">
+                    <div class="card-title">📏 BBW (Bollinger Width)</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-bbw" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="bbw-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="bbw-valor">-</span></div>
+                            <div>Peso: <span id="bbw-peso">-</span></div>
+                            <div>Contribuição: <span id="bbw-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/pages/tecnico.js"></script>
+</body>
+</html>

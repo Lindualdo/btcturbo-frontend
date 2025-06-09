@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Ciclos - BTC Turbo</title>
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/components-improved.css">
+    <link rel="stylesheet" href="/src/styles/pages.css">
+</head>
+<body>
+    <div class="container">
+        <button class="back-button" onclick="window.location.href='/'">← Voltar ao Dashboard</button>
+        
+        <div class="breadcrumb">
+            <a href="/">Dashboard</a> > Análise de Ciclos
+        </div>
+
+        <div class="header">
+            <h1>📊 Análise de Ciclos</h1>
+        </div>
+
+        <!-- Score Consolidado -->
+        <div class="score-summary">
+            <div class="score-main" id="score-consolidado">Carregando...</div>
+            <div class="score-details">
+                <div>Peso no Score Geral: <span id="peso-bloco">40%</span></div>
+                <div id="formula-calculo">Carregando fórmula...</div>
+            </div>
+        </div>
+
+        <!-- Indicadores -->
+        <div class="panel">
+            <div class="panel-title">📈 Indicadores de Ciclo</div>
+            <div class="cards-grid">
+                <!-- MVRV Z-Score -->
+                <div class="card">
+                    <div class="card-title">📊 MVRV Z-Score</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-mvrv" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="mvrv-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="mvrv-valor">-</span></div>
+                            <div>Peso: <span id="mvrv-peso">-</span></div>
+                            <div>Contribuição: <span id="mvrv-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUPL -->
+                <div class="card" id="nupl-card">
+                    <div class="card-title">🎯 NUPL</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-nupl" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="nupl-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="nupl-valor">-</span></div>
+                            <div>Peso: <span id="nupl-peso">-</span></div>
+                            <div>Contribuição: <span id="nupl-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Realized Ratio -->
+                <div class="card">
+                    <div class="card-title">⚖️ Realized Ratio</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-realized" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="realized-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="realized-valor">-</span></div>
+                            <div>Peso: <span id="realized-peso">-</span></div>
+                            <div>Contribuição: <span id="realized-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Puell Multiple -->
+                <div class="card">
+                    <div class="card-title">⛏️ Puell Multiple</div>
+                    <div class="gauge-container">
+                        <canvas id="gauge-puell" width="200" height="120"></canvas>
+                    </div>
+                    <div class="score-info">
+                        <div class="score-value" id="puell-score">Carregando...</div>
+                        <div class="indicator-details">
+                            <div>Valor: <span id="puell-valor">-</span></div>
+                            <div>Peso: <span id="puell-peso">-</span></div>
+                            <div>Contribuição: <span id="puell-contribuicao">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/pages/ciclos.js"></script>
+</body>
+</html>

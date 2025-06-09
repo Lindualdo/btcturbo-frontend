@@ -2,24 +2,34 @@
 
 Dashboard de análise  Bitcoin construído com **Vanilla JS + Vite + Chart.js**.
 
-## 📁 Estrutura incial do Projeto
+## 📁 Estrutura  do Projeto
 
 ```
 btcturbo-frontend/
-├── index.html              # Página principal
-├── package.json            # Dependências
-├── vite.config.js          # Configuração Vite
+├── index.html                          # Dashboard principal
+├── ciclos.html                         # Página Ciclos
+├── momentum.html                       # Página Momentum  
+├── tecnico.html                        # Página Técnico
+├── package.json
+├── vite.config.js
 └── src/
-    ├── main.js             # Ponto de entrada
-    ├── components/         
-    │   └── gauge-chart.js  # Componente dos gauges
+    ├── main.js                         # Lógica dashboard principal
+    ├── components/
+    │   ├── gauge-chart.js              # Gauge original
+    │   └── gauge-chart-improved.js     # Gauge melhorado
     ├── data/
-    │   └── mock-data.js    # Dados mockados
+    │   └── mock-data.js                # Dados mockados (fallback)
+    ├── pages/
+    │   ├── ciclos.js                   # Lógica página Ciclos
+    │   ├── momentum.js                 # Lógica página Momentum
+    │   └── tecnico.js                  # Lógica página Técnico
     ├── styles/
-    │   ├── main.css        # Estilos base
-    │   └── components.css  # Estilos componentes
+    │   ├── main.css                    # Estilos base
+    │   ├── components.css              # Estilos componentes
+    │   ├── components-improved.css     # Estilos melhorados
+    │   └── pages.css                   # Estilos páginas detalhes
     └── utils/
-        └── api-client.js   # Cliente para APIs
+        └── api-client.js               # Cliente APIs
 ```
 
 ## 🎯 Funcionalidades Implementadas
