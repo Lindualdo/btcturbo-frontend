@@ -198,40 +198,48 @@ class BTCTurboDashboard {
         const healthFactorElement = document.getElementById('health-factor');
         const distLiquidacaoElement = document.getElementById('dist-liquidacao');
         
-        if (healthFactorElement && riscoData.health_factor) {
-            healthFactorElement.textContent = `Health Factor: ${riscoData.health_factor}`;
+        // Health Factor do breakdown
+        const healthFactor = riscoData.composicao?.breakdown?.health_factor?.valor_display;
+        if (healthFactorElement && healthFactor) {
+            healthFactorElement.textContent = `Health Factor: ${healthFactor.toFixed(2)}`;
         }
         
-        if (distLiquidacaoElement && riscoData.distancia_liquidacao_pct) {
-            distLiquidacaoElement.textContent = `Dist. Liquidação: ${Math.round(riscoData.distancia_liquidacao_pct)}%`;
+        // Distância Liquidação do breakdown
+        const distLiquidacao = riscoData.composicao?.breakdown?.dist_liquidacao?.valor_display;
+        if (distLiquidacaoElement && distLiquidacao) {
+            distLiquidacaoElement.textContent = `Dist. Liquidação: ${distLiquidacao}`;
         }
     }
 
     updateFinancialInfo(alavancagemData) {
-        if (!alavancagemData) return;
+        if (!alavancagemData?.situacao_atual) return;
         
+        const situacao = alavancagemData.situacao_atual;
+        
+        // Mapeamento direto dos valores já formatados da API
         const updates = {
-            'posicao-total': this.formatCurrency(alavancagemData.posicao_total_usd),
-            'divida': this.formatCurrency(alavancagemData.divida_usd),
-            'capital-liquido': this.formatCurrency(alavancagemData.capital_liquido_usd),
-            'alavancagem': `${alavancagemData.alavancagem_atual}x`,
-            'alavancagem-permitida': `${alavancagemData.alavancagem_maxima}x`,
-            'valor-liberado': this.formatCurrency(alavancagemData.valor_liberado_usd),
-            'valor-reduzir': this.formatCurrency(alavancagemData.valor_reduzir_usd)
+            'posicao-total': situacao.posicao_total,
+            'divida': situacao.divida_total,
+            'capital-liquido': situacao.capital_liquido,
+            'alavancagem': situacao.alavancagem_atual,
+            'alavancagem-permitida': situacao.alavancagem_permitida,
+            'valor-liberado': situacao.valor_disponivel,
+            'valor-reduzir': situacao.valor_a_reduzir
         };
 
         Object.keys(updates).forEach(id => {
             const element = document.getElementById(id);
-            if (element) {
+            if (element && updates[id]) {
                 element.textContent = updates[id];
             }
         });
 
-        // Status
+        // Status baseado na situação atual
         const statusElement = document.getElementById('status');
         if (statusElement) {
-            statusElement.textContent = alavancagemData.status_operacional ? '🟢 OPERACIONAL' : '🔴 ATENÇÃO';
-            statusElement.className = alavancagemData.status_operacional ? 'info-value status-ok' : 'info-value status-alert';
+            const isOperational = situacao.status === 'pode_aumentar';
+            statusElement.textContent = isOperational ? '🟢 OPERACIONAL' : '🔴 ATENÇÃO';
+            statusElement.className = isOperational ? 'info-value status-ok' : 'info-value status-alert';
         }
     }
 
