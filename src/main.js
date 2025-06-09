@@ -1,4 +1,4 @@
-// BTC Turbo Dashboard - Versão Final com APIs Reais
+// BTC Turbo Dashboard - Versão Corrigida para API Real
 
 class SimpleGauge {
     constructor(canvas) {
@@ -14,7 +14,6 @@ class SimpleGauge {
         const centerY = this.height - 20;
         const radius = 70;
         
-        // Limpar canvas
         ctx.clearRect(0, 0, this.width, this.height);
         
         // Arco de fundo
@@ -24,14 +23,14 @@ class SimpleGauge {
         ctx.strokeStyle = '#404552';
         ctx.stroke();
         
-        // Arco colorido baseado no valor
-        const angle = Math.PI + (Math.PI * value / 100);
+        // Arco colorido
+        const angle = Math.PI + (Math.PI * Math.max(0, Math.min(100, value)) / 100);
         const gradient = ctx.createConicGradient(0, centerX, centerY);
-        gradient.addColorStop(0, '#ff4757');    // Vermelho
-        gradient.addColorStop(0.25, '#ffa726'); // Laranja
-        gradient.addColorStop(0.5, '#ffeb3b');  // Amarelo
-        gradient.addColorStop(0.75, '#8bc34a'); // Verde claro
-        gradient.addColorStop(1, '#4caf50');    // Verde
+        gradient.addColorStop(0, '#ff4757');
+        gradient.addColorStop(0.25, '#ffa726');
+        gradient.addColorStop(0.5, '#ffeb3b');
+        gradient.addColorStop(0.75, '#8bc34a');
+        gradient.addColorStop(1, '#4caf50');
 
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, Math.PI, angle);
@@ -40,7 +39,7 @@ class SimpleGauge {
         ctx.stroke();
         
         // Agulha
-        const needleAngle = Math.PI + (Math.PI * value / 100);
+        const needleAngle = Math.PI + (Math.PI * Math.max(0, Math.min(100, value)) / 100);
         const needleLength = radius - 10;
         
         ctx.save();
@@ -55,7 +54,6 @@ class SimpleGauge {
         ctx.fillStyle = '#666';
         ctx.fill();
         
-        // Centro da agulha
         ctx.restore();
         ctx.beginPath();
         ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
@@ -75,17 +73,11 @@ class BTCTurboDashboard {
         console.log('🚀 Inicializando BTC Turbo Dashboard...');
         
         try {
-            // Inicializar gauges
             this.initGauges();
-            
-            // Buscar dados das APIs
             await this.fetchAllData();
-            
-            console.log('✅ Dashboard inicializado com sucesso!');
-            
+            console.log('✅ Dashboard inicializado!');
         } catch (error) {
-            console.error('❌ Erro ao inicializar dashboard:', error);
-            this.showError('Erro ao carregar dados');
+            console.error('❌ Erro na inicialização:', error);
         }
     }
 
@@ -103,22 +95,18 @@ class BTCTurboDashboard {
         try {
             this.showLoading(true);
 
-            // Buscar dados das 3 APIs em paralelo
             const [mercadoData, riscoData, alavancagemData] = await Promise.all([
                 this.fetchMercado(),
                 this.fetchRisco(),
                 this.fetchAlavancagem()
             ]);
 
-            // Atualizar dashboard com dados reais
             this.updateDashboard(mercadoData, riscoData, alavancagemData);
-            
             this.showLoading(false);
             
         } catch (error) {
             console.error('❌ Erro ao buscar dados:', error);
             this.showLoading(false);
-            this.showError('Erro ao carregar dados das APIs');
         }
     }
 
@@ -141,84 +129,108 @@ class BTCTurboDashboard {
     }
 
     updateDashboard(mercadoData, riscoData, alavancagemData) {
-        // Extrair scores do mercado
-        const scores = {
-            mercado: Math.round(mercadoData.score_consolidado || 0),
-            ciclo: Math.round(mercadoData.composicao?.breakdown?.ciclos?.score_bruto || 0),
-            momentum: Math.round(mercadoData.composicao?.breakdown?.momentum?.score_bruto || 0),
-            tecnico: Math.round(mercadoData.composicao?.breakdown?.tecnico?.score_bruto || 0),
-            risco: Math.round(riscoData.score_consolidado || 0)
+        console.log('📊 Dados recebidos:', { mercadoData, riscoData, alavancagemData });
+
+        // Extrair scores e dados do breakdown
+        const breakdown = mercadoData.composicao?.breakdown || {};
+        
+        const scoreData = {
+            mercado: {
+                value: Math.round(mercadoData.score_consolidado || 0),
+                classification: mercadoData.classificacao || 'neutro',
+                subtitle: 'Análise Geral'
+            },
+            ciclo: {
+                value: Math.round(breakdown.ciclos?.score_bruto || 0),
+                classification: breakdown.ciclos?.classificacao || 'neutro',
+                peso: breakdown.ciclos?.peso || '40%'
+            },
+            momentum: {
+                value: Math.round(breakdown.momentum?.score_bruto || 0),
+                classification: breakdown.momentum?.classificacao || 'neutro',
+                peso: breakdown.momentum?.peso || '20%'
+            },
+            tecnico: {
+                value: Math.round(breakdown.tecnico?.score_bruto || 0),
+                classification: breakdown.tecnico?.classificacao || 'neutro',
+                peso: breakdown.tecnico?.peso || '40%'
+            },
+            risco: {
+                value: Math.round(riscoData.score_consolidado || 0),
+                classification: this.getScoreStatus(riscoData.score_consolidado || 0),
+                subtitle: 'Health Factor'
+            }
         };
 
         // Atualizar gauges
-        Object.keys(scores).forEach(key => {
+        Object.keys(scoreData).forEach(key => {
             if (this.gauges[key]) {
-                this.gauges[key].draw(scores[key]);
-                this.updateScoreText(key, scores[key]);
+                this.gauges[key].draw(scoreData[key].value);
+                this.updateScoreText(key, scoreData[key]);
             }
         });
 
-        // Atualizar dados específicos do risco
+        // Atualizar outros dados
         this.updateRiscoInfo(riscoData);
-
-        // Atualizar dados financeiros
         this.updateFinancialInfo(alavancagemData);
-
-        // Atualizar ação recomendada
         this.updateActionRecommendation(mercadoData);
-
-        console.log('📊 Dashboard atualizado:', { scores, mercadoData, riscoData, alavancagemData });
     }
 
-    updateScoreText(type, score) {
+    updateScoreText(type, scoreData) {
         const valueElement = document.getElementById(`score-${type}-value`);
         if (valueElement) {
-            const status = this.getScoreStatus(score);
-            valueElement.textContent = `Score: ${score} - ${status}`;
+            valueElement.textContent = `Score: ${scoreData.value} - ${scoreData.classification}`;
             valueElement.className = 'score-info';
+        }
+
+        // Atualizar subtitle (peso ou descrição)
+        const subtitleElement = valueElement?.parentElement?.querySelector('.score-status');
+        if (subtitleElement) {
+            if (scoreData.peso) {
+                subtitleElement.textContent = `Peso: ${scoreData.peso}`;
+            } else if (scoreData.subtitle) {
+                subtitleElement.textContent = scoreData.subtitle;
+            }
         }
     }
 
     updateRiscoInfo(riscoData) {
-        // Health Factor
         const healthFactorElement = document.getElementById('health-factor');
+        const distLiquidacaoElement = document.getElementById('dist-liquidacao');
+        
         if (healthFactorElement && riscoData.health_factor) {
             healthFactorElement.textContent = `Health Factor: ${riscoData.health_factor}`;
         }
-
-        // Distância Liquidação
-        const distLiquidacaoElement = document.getElementById('dist-liquidacao');
+        
         if (distLiquidacaoElement && riscoData.distancia_liquidacao_pct) {
             distLiquidacaoElement.textContent = `Dist. Liquidação: ${Math.round(riscoData.distancia_liquidacao_pct)}%`;
         }
     }
 
     updateFinancialInfo(alavancagemData) {
-        // Mapear dados financeiros
-        const financialMapping = {
-            'posicao-total': alavancagemData.posicao_total_usd,
-            'divida': alavancagemData.divida_usd,
-            'capital-liquido': alavancagemData.capital_liquido_usd,
+        if (!alavancagemData) return;
+        
+        const updates = {
+            'posicao-total': this.formatCurrency(alavancagemData.posicao_total_usd),
+            'divida': this.formatCurrency(alavancagemData.divida_usd),
+            'capital-liquido': this.formatCurrency(alavancagemData.capital_liquido_usd),
             'alavancagem': `${alavancagemData.alavancagem_atual}x`,
             'alavancagem-permitida': `${alavancagemData.alavancagem_maxima}x`,
-            'valor-liberado': alavancagemData.valor_liberado_usd,
-            'valor-reduzir': alavancagemData.valor_reduzir_usd
+            'valor-liberado': this.formatCurrency(alavancagemData.valor_liberado_usd),
+            'valor-reduzir': this.formatCurrency(alavancagemData.valor_reduzir_usd)
         };
 
-        // Atualizar cada elemento
-        Object.keys(financialMapping).forEach(id => {
+        Object.keys(updates).forEach(id => {
             const element = document.getElementById(id);
-            if (element && financialMapping[id] !== undefined) {
-                const value = financialMapping[id];
-                element.textContent = typeof value === 'number' ? this.formatCurrency(value) : value;
+            if (element) {
+                element.textContent = updates[id];
             }
         });
 
         // Status
         const statusElement = document.getElementById('status');
         if (statusElement) {
-            const status = alavancagemData.status_operacional ? '🟢 OPERACIONAL' : '🔴 ATENÇÃO';
-            statusElement.textContent = status;
+            statusElement.textContent = alavancagemData.status_operacional ? '🟢 OPERACIONAL' : '🔴 ATENÇÃO';
             statusElement.className = alavancagemData.status_operacional ? 'info-value status-ok' : 'info-value status-alert';
         }
     }
@@ -256,29 +268,18 @@ class BTCTurboDashboard {
     showLoading(show) {
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
-            if (show) {
-                card.style.opacity = '0.5';
-                card.style.pointerEvents = 'none';
-            } else {
-                card.style.opacity = '1';
-                card.style.pointerEvents = 'auto';
-            }
+            card.style.opacity = show ? '0.5' : '1';
+            card.style.pointerEvents = show ? 'none' : 'auto';
         });
-    }
-
-    showError(message) {
-        console.error('Dashboard Error:', message);
-        // Implementar toast de erro futuramente
     }
 
     async refreshData() {
         console.log('🔄 Atualizando dados...');
         await this.fetchAllData();
-        console.log('✅ Dados atualizados!');
     }
 }
 
-// Inicializar dashboard quando DOM estiver pronto
+// Inicializar
 document.addEventListener('DOMContentLoaded', () => {
     window.btcDashboard = new BTCTurboDashboard();
     
