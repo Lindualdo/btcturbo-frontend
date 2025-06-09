@@ -74,7 +74,7 @@ class MomentumDashboard extends DashboardBase {
     updateIndicator(key, indicador) {
         if (!indicador) return;
 
-        const scoreNormalizado = this.formatScore(indicador.score);
+        const scoreNormalizado = this.formatScore(indicador.score * 10);
         this.gauges[key].draw(scoreNormalizado);
         
         // SOPR indisponível
