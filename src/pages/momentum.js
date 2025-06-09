@@ -3,12 +3,11 @@ Arquivo: src/pages/momentum.js
 Localização: btcturbo-frontend/src/pages/momentum.js
 */
 
-import { ImprovedGaugeChart } from '../components/gauge-chart-improved.js';
+import { SimpleGauge, DashboardBase } from '../components/shared.js';
 
-class MomentumDashboard {
+class MomentumDashboard extends DashboardBase {
     constructor() {
-        this.baseURL = 'https://btcturbo-v5-production.up.railway.app/api/v1';
-        this.gauges = {};
+        super();
         this.init();
     }
 
@@ -20,33 +19,33 @@ class MomentumDashboard {
 
     initGauges() {
         this.gauges = {
-            'rsi-semanal': new ImprovedGaugeChart(document.getElementById('gauge-rsi-semanal'), { size: 200 }),
-            'rsi-mensal': new ImprovedGaugeChart(document.getElementById('gauge-rsi-mensal'), { size: 200 }),
-            'macd-semanal': new ImprovedGaugeChart(document.getElementById('gauge-macd-semanal'), { size: 200 }),
-            'stoch-rsi': new ImprovedGaugeChart(document.getElementById('gauge-stoch-rsi'), { size: 200 })
+            'rsi-semanal': new SimpleGauge(document.getElementById('gauge-rsi-semanal')),
+            'rsi-mensal': new SimpleGauge(document.getElementById('gauge-rsi-mensal')),
+            'macd-semanal': new SimpleGauge(document.getElementById('gauge-macd-semanal')),
+            'stoch-rsi': new SimpleGauge(document.getElementById('gauge-stoch-rsi'))
         };
     }
 
     async loadData() {
         try {
-            const response = await fetch(`${this.baseURL}/calcular-score/momentum`);
-            const data = await response.json();
+            this.showLoading(true);
+            const data = await this.api.getMomentum();
             console.log('📊 Dados Momentum:', data);
             this.updateDashboard(data);
+            this.showLoading(false);
         } catch (error) {
-            console.error('❌ Erro ao carregar dados de momentum:', error);
+            this.showError('Erro ao carregar dados. Tentando novamente...');
+            setTimeout(() => this.loadData(), 3000);
         }
     }
 
     updateDashboard(data) {
         // Score consolidado
-        document.getElementById('score-consolidado').textContent = 
-            `Score: ${Math.round(data.score_consolidado * 10)} - ${data.classificacao_consolidada}`;
-        
-        document.getElementById('peso-bloco').textContent = data.peso_bloco;
-        document.getElementById('formula-calculo').textContent = data.calculo.formula;
+        const scoreText = `Score: ${this.formatScore(data.score_consolidado)} - ${data.classificacao_consolidada.toUpperCase()}`;
+        this.updateElement('score-consolidado', scoreText);
+        this.updateElement('peso-bloco', data.peso_bloco);
 
-        // Mapear indicadores para chaves dos gauges
+        // Mapear indicadores
         const indicadorMap = {
             'rsi-semanal': this.findIndicador(data.indicadores, ['RSI_Semanal', 'RSI_SEMANAL']),
             'rsi-mensal': this.findIndicador(data.indicadores, ['RSI_Mensal', 'RSI_MENSAL']),
@@ -75,23 +74,32 @@ class MomentumDashboard {
     updateIndicator(key, indicador) {
         if (!indicador) return;
 
-        // Gauge
-        this.gauges[key].animateTo(indicador.score * 10);
+        const scoreNormalizado = this.formatScore(indicador.score);
+        this.gauges[key].draw(scoreNormalizado);
         
-        // Textos
-        document.getElementById(`${key}-score`).textContent = 
-            `Score: ${Math.round(indicador.score * 10)} - ${indicador.classificacao}`;
+        const scoreText = `Score: ${scoreNormalizado} - ${indicador.classificacao.toUpperCase()}`;
+        this.updateElement(`${key}-score`, scoreText);
         
-        document.getElementById(`${key}-valor`).textContent = 
-            indicador.valor ? indicador.valor.toFixed(2) : 'N/A';
+        const valor = indicador.valor ? indicador.valor.toFixed(2) : 'N/A';
+        this.updateElement(`${key}-valor`, valor);
+        this.updateElement(`${key}-peso`, indicador.peso || '-');
         
-        document.getElementById(`${key}-peso`).textContent = indicador.peso || '-';
-        document.getElementById(`${key}-contribuicao`).textContent = 
-            indicador.score_consolidado ? indicador.score_consolidado.toFixed(2) : '-';
+        const contribuicao = indicador.score_consolidado ? indicador.score_consolidado.toFixed(2) : '-';
+        this.updateElement(`${key}-contribuicao`, contribuicao);
+    }
+
+    async refreshData() {
+        console.log('🔄 Atualizando dados...');
+        await this.loadData();
     }
 }
 
 // Inicializar
 document.addEventListener('DOMContentLoaded', () => {
-    new MomentumDashboard();
+    window.momentumDashboard = new MomentumDashboard();
+    
+    // Auto-refresh a cada 2 minutos
+    setInterval(() => window.momentumDashboard?.refreshData(), 2 * 60 * 1000);
 });
+
+console.log('🎯 Dashboard Momentum carregado!');

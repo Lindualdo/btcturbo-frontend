@@ -3,12 +3,11 @@ Arquivo: src/pages/tecnico.js
 Localização: btcturbo-frontend/src/pages/tecnico.js
 */
 
-import { ImprovedGaugeChart } from '../components/gauge-chart-improved.js';
+import { SimpleGauge, DashboardBase } from '../components/shared.js';
 
-class TecnicoDashboard {
+class TecnicoDashboard extends DashboardBase {
     constructor() {
-        this.baseURL = 'https://btcturbo-v5-production.up.railway.app/api/v1';
-        this.gauges = {};
+        super();
         this.init();
     }
 
@@ -20,32 +19,32 @@ class TecnicoDashboard {
 
     initGauges() {
         this.gauges = {
-            'emas-semanal': new ImprovedGaugeChart(document.getElementById('gauge-emas-semanal'), { size: 200 }),
-            'emas-diario': new ImprovedGaugeChart(document.getElementById('gauge-emas-diario'), { size: 200 }),
-            'bbw': new ImprovedGaugeChart(document.getElementById('gauge-bbw'), { size: 200 })
+            'emas-semanal': new SimpleGauge(document.getElementById('gauge-emas-semanal')),
+            'emas-diario': new SimpleGauge(document.getElementById('gauge-emas-diario')),
+            'bbw': new SimpleGauge(document.getElementById('gauge-bbw'))
         };
     }
 
     async loadData() {
         try {
-            const response = await fetch(`${this.baseURL}/calcular-score/tecnico`);
-            const data = await response.json();
+            this.showLoading(true);
+            const data = await this.api.getTecnico();
             console.log('📊 Dados Técnico:', data);
             this.updateDashboard(data);
+            this.showLoading(false);
         } catch (error) {
-            console.error('❌ Erro ao carregar dados técnicos:', error);
+            this.showError('Erro ao carregar dados. Tentando novamente...');
+            setTimeout(() => this.loadData(), 3000);
         }
     }
 
     updateDashboard(data) {
         // Score consolidado
-        document.getElementById('score-consolidado').textContent = 
-            `Score: ${Math.round(data.score_consolidado * 10)} - ${data.classificacao_consolidada}`;
-        
-        document.getElementById('peso-bloco').textContent = data.peso_bloco;
-        document.getElementById('formula-calculo').textContent = data.calculo.formula;
+        const scoreText = `Score: ${this.formatScore(data.score_consolidado)} - ${data.classificacao_consolidada.toUpperCase()}`;
+        this.updateElement('score-consolidado', scoreText);
+        this.updateElement('peso-bloco', data.peso_bloco);
 
-        // Mapear indicadores para chaves dos gauges
+        // Mapear indicadores
         const indicadorMap = {
             'emas-semanal': this.findIndicador(data.indicadores, ['EMAs_Semanal', 'EMAS_SEMANAL', 'EMA_Semanal']),
             'emas-diario': this.findIndicador(data.indicadores, ['EMAs_Diario', 'EMAS_DIARIO', 'EMA_Diario']),
@@ -56,7 +55,7 @@ class TecnicoDashboard {
         Object.keys(indicadorMap).forEach(key => {
             const indicador = indicadorMap[key];
             if (indicador) {
-                this.updateIndicador(key, indicador);
+                this.updateIndicator(key, indicador);
             }
         });
     }
@@ -70,26 +69,35 @@ class TecnicoDashboard {
         return null;
     }
 
-    updateIndicador(key, indicador) {
+    updateIndicator(key, indicador) {
         if (!indicador) return;
 
-        // Gauge
-        this.gauges[key].animateTo(indicador.score * 10);
+        const scoreNormalizado = this.formatScore(indicador.score);
+        this.gauges[key].draw(scoreNormalizado);
         
-        // Textos
-        document.getElementById(`${key}-score`).textContent = 
-            `Score: ${Math.round(indicador.score * 10)} - ${indicador.classificacao}`;
+        const scoreText = `Score: ${scoreNormalizado} - ${indicador.classificacao.toUpperCase()}`;
+        this.updateElement(`${key}-score`, scoreText);
         
-        document.getElementById(`${key}-valor`).textContent = 
-            indicador.valor ? indicador.valor.toFixed(2) : 'N/A';
+        const valor = indicador.valor ? indicador.valor.toFixed(2) : 'N/A';
+        this.updateElement(`${key}-valor`, valor);
+        this.updateElement(`${key}-peso`, indicador.peso || '-');
         
-        document.getElementById(`${key}-peso`).textContent = indicador.peso || '-';
-        document.getElementById(`${key}-contribuicao`).textContent = 
-            indicador.score_consolidado ? indicador.score_consolidado.toFixed(2) : '-';
+        const contribuicao = indicador.score_consolidado ? indicador.score_consolidado.toFixed(2) : '-';
+        this.updateElement(`${key}-contribuicao`, contribuicao);
+    }
+
+    async refreshData() {
+        console.log('🔄 Atualizando dados...');
+        await this.loadData();
     }
 }
 
 // Inicializar
 document.addEventListener('DOMContentLoaded', () => {
-    new TecnicoDashboard();
+    window.tecnicoDashboard = new TecnicoDashboard();
+    
+    // Auto-refresh a cada 2 minutos
+    setInterval(() => window.tecnicoDashboard?.refreshData(), 2 * 60 * 1000);
 });
+
+console.log('🎯 Dashboard Técnico carregado!');
