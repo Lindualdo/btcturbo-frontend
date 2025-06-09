@@ -41,21 +41,20 @@ class CiclosDashboard extends DashboardBase {
 
     updateDashboard(data) {
         // Score consolidado
-        const scoreText = `Score: ${this.formatScore(data.score_consolidado)} - ${data.classificacao_consolidada.toUpperCase()}`;
+        const scoreText = `Score: ${this.formatScore(data.score_consolidado_100)} - ${data.classificacao_consolidada.toUpperCase()}`;
         this.updateElement('score-consolidado', scoreText);
         this.updateElement('peso-bloco', data.peso_bloco);
 
         // Indicadores
         const { indicadores } = data;
-        const { componentes } = data.calculo;
         
-        this.updateIndicator('mvrv', indicadores.MVRV_Z, componentes.mvrv_contribuicao);
-        this.updateIndicator('nupl', indicadores.NUPL, componentes.nupl_contribuicao);
-        this.updateIndicator('realized', indicadores.Realized_Ratio, componentes.realized_contribuicao);
-        this.updateIndicator('puell', indicadores.Puell_Multiple, componentes.puell_contribuicao);
+        this.updateIndicator('mvrv', indicadores.MVRV_Z);
+        this.updateIndicator('nupl', indicadores.NUPL);
+        this.updateIndicator('realized', indicadores.Realized_Ratio);
+        this.updateIndicator('puell', indicadores.Puell_Multiple);
     }
 
-    updateIndicator(key, indicador, contribuicao) {
+    updateIndicator(key, indicador) {
         if (!indicador) return;
 
         const scoreNormalizado = this.formatScore(indicador.score);
@@ -72,7 +71,6 @@ class CiclosDashboard extends DashboardBase {
         const valor = indicador.valor !== null ? indicador.valor.toFixed(4) : 'N/A';
         this.updateElement(`${key}-valor`, valor);
         this.updateElement(`${key}-peso`, indicador.peso);
-        this.updateElement(`${key}-contribuicao`, contribuicao.toFixed(2));
     }
 
     async refreshData() {

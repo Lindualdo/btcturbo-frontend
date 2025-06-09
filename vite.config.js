@@ -14,7 +14,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         ciclos: resolve(__dirname, 'ciclos.html'),
         momentum: resolve(__dirname, 'momentum.html'),
-        tecnico: resolve(__dirname, 'tecnco.html')
+        tecnico: resolve(__dirname, 'tecnico.html')
       }
     }
   },
