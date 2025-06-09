@@ -254,7 +254,6 @@ Localização: btcturbo-frontend/ciclos.html
             <div class="score-details">
                 <div>Peso no Score Geral: <span id="peso-bloco">40%</span></div>
             </div>
-            <div id="alertas-container"></div>
         </div>
 
         <!-- Indicadores -->
@@ -272,6 +271,7 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="mvrv-valor">-</span></div>
                             <div>Peso: <span id="mvrv-peso">-</span></div>
+                            <div>Contribuição: <span id="mvrv-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -287,6 +287,7 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="nupl-valor">-</span></div>
                             <div>Peso: <span id="nupl-peso">-</span></div>
+                            <div>Contribuição: <span id="nupl-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -302,6 +303,7 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="realized-valor">-</span></div>
                             <div>Peso: <span id="realized-peso">-</span></div>
+                            <div>Contribuição: <span id="realized-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -317,6 +319,7 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="puell-valor">-</span></div>
                             <div>Peso: <span id="puell-peso">-</span></div>
+                            <div>Contribuição: <span id="puell-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -326,6 +329,145 @@ Localização: btcturbo-frontend/ciclos.html
 
     </div>
 
-    <script type="module" src="/src/pages/ciclos.js"></script>
+    <script type="module">
+        // Gauge simples idêntico à home
+        class SimpleGauge {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.width = canvas.width;
+                this.height = canvas.height;
+            }
+
+            draw(value) {
+                const ctx = this.ctx;
+                const centerX = this.width / 2;
+                const centerY = this.height - 20;
+                const radius = 70;
+                
+                ctx.clearRect(0, 0, this.width, this.height);
+                
+                // Arco de fundo
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+                ctx.lineWidth = 15;
+                ctx.strokeStyle = '#404552';
+                ctx.stroke();
+                
+                // Arco colorido
+                const angle = Math.PI + (Math.PI * Math.max(0, Math.min(100, value)) / 100);
+                const gradient = ctx.createConicGradient(0, centerX, centerY);
+                gradient.addColorStop(0, '#ff4757');
+                gradient.addColorStop(0.25, '#ffa726');
+                gradient.addColorStop(0.5, '#ffeb3b');
+                gradient.addColorStop(0.75, '#8bc34a');
+                gradient.addColorStop(1, '#4caf50');
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, Math.PI, angle);
+                ctx.lineWidth = 15;
+                ctx.strokeStyle = gradient;
+                ctx.stroke();
+                
+                // Agulha
+                const needleAngle = Math.PI + (Math.PI * Math.max(0, Math.min(100, value)) / 100);
+                const needleLength = radius - 10;
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(needleAngle);
+                
+                ctx.beginPath();
+                ctx.moveTo(0, -3);
+                ctx.lineTo(needleLength, 0);
+                ctx.lineTo(0, 3);
+                ctx.closePath();
+                ctx.fillStyle = '#666';
+                ctx.fill();
+                
+                ctx.restore();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+                ctx.fillStyle = '#555';
+                ctx.fill();
+            }
+        }
+
+        // Dashboard de Ciclos
+        class CiclosDashboard {
+            constructor() {
+                this.baseURL = 'https://btcturbo-v5-production.up.railway.app/api/v1';
+                this.gauges = {};
+                this.init();
+            }
+
+            async init() {
+                console.log('🔄 Iniciando dashboard de Ciclos...');
+                this.initGauges();
+                await this.loadData();
+            }
+
+            initGauges() {
+                this.gauges = {
+                    mvrv: new SimpleGauge(document.getElementById('gauge-mvrv')),
+                    nupl: new SimpleGauge(document.getElementById('gauge-nupl')),
+                    realized: new SimpleGauge(document.getElementById('gauge-realized')),
+                    puell: new SimpleGauge(document.getElementById('gauge-puell'))
+                };
+            }
+
+            async loadData() {
+                try {
+                    const response = await fetch(`${this.baseURL}/calcular-score/ciclos`);
+                    const data = await response.json();
+                    console.log('📊 Dados Ciclos:', data);
+                    this.updateDashboard(data);
+                } catch (error) {
+                    console.error('❌ Erro:', error);
+                }
+            }
+
+            updateDashboard(data) {
+                // Score consolidado
+                const scoreText = `Score: ${Math.round(data.score_consolidado * 10)} - ${data.classificacao_consolidada.toUpperCase()}`;
+                document.getElementById('score-consolidado').textContent = scoreText;
+                document.getElementById('peso-bloco').textContent = data.peso_bloco;
+
+                // Indicadores
+                const indicadores = data.indicadores;
+                const componentes = data.calculo.componentes;
+                
+                this.updateIndicator('mvrv', indicadores.MVRV_Z, componentes.mvrv_contribuicao);
+                this.updateIndicator('nupl', indicadores.NUPL, componentes.nupl_contribuicao);
+                this.updateIndicator('realized', indicadores.Realized_Ratio, componentes.realized_contribuicao);
+                this.updateIndicator('puell', indicadores.Puell_Multiple, componentes.puell_contribuicao);
+            }
+
+            updateIndicator(key, indicador, contribuicao) {
+                if (!indicador) return;
+
+                const scoreNormalizado = indicador.score * 10;
+                this.gauges[key].draw(scoreNormalizado);
+                
+                // Verificar NUPL indisponível
+                if (key === 'nupl' && !indicador.disponivel) {
+                    document.getElementById('nupl-card').classList.add('unavailable');
+                }
+                
+                const scoreText = `Score: ${Math.round(scoreNormalizado)} - ${indicador.classificacao.toUpperCase()}`;
+                document.getElementById(`${key}-score`).textContent = scoreText;
+                
+                const valor = indicador.valor !== null ? indicador.valor.toFixed(4) : 'N/A';
+                document.getElementById(`${key}-valor`).textContent = valor;
+                document.getElementById(`${key}-peso`).textContent = indicador.peso;
+                document.getElementById(`${key}-contribuicao`).textContent = contribuicao.toFixed(2);
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            new CiclosDashboard();
+        });
+    </script>
 </body>
 </html>
