@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 BTC Turbo - Análise Técnica</title>
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/components.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">📊 BTC Turbo - Análise Técnica</h1>
+            <nav class="navigation">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Riscos</a>
+                <a href="#" class="nav-link">Momentum</a>
+                <a href="#" class="nav-link">Ciclos</a>
+                <a href="#" class="nav-link active">Técnica</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="dashboard-grid">
+                <!-- Score Final -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🎯</span>
+                        <h3 class="card-title">Score Final</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="gauge-container">
+                            <canvas id="gauge-final" width="200" height="100"></canvas>
+                        </div>
+                        <div class="score-info">
+                            <div class="score-value">Score: <span id="score-final-value">76</span> - <span id="score-final-status">Correção Saudável</span></div>
+                            <div class="score-description">70% Semanal + 30% Diário</div>
+                        </div>
+                        <button class="btn-details">📊 Ver Detalhes</button>
+                    </div>
+                </div>
+
+                <!-- Semanal -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">📅</span>
+                        <h3 class="card-title">Semanal (1W)</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="gauge-container">
+                            <canvas id="gauge-semanal" width="200" height="100"></canvas>
+                        </div>
+                        <div class="score-info">
+                            <div class="score-value">Score: <span id="score-semanal-value">75</span> - <span id="score-semanal-status">Correção Saudável</span></div>
+                            <div class="score-description">Peso: 70% do total</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diário -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">📊</span>
+                        <h3 class="card-title">Diário (1D)</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="gauge-container">
+                            <canvas id="gauge-diario" width="200" height="100"></canvas>
+                        </div>
+                        <div class="score-info">
+                            <div class="score-value">Score: <span id="score-diario-value">79</span> - <span id="score-diario-status">Correção Saudável</span></div>
+                            <div class="score-description">Peso: 30% do total</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

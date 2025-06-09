@@ -1,0 +1,18 @@
+{
+  "name": "btcturbo-frontend",
+  "version": "1.0.0",
+  "description": "BTC Turbo - Dashboard de Análise Bitcoin",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "type": "module"
+}
