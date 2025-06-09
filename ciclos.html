@@ -1,9 +1,13 @@
+<!-- 
+Arquivo: ciclos.html
+Localização: btcturbo-frontend/ciclos.html 
+-->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 Ciclos - BTC Turbo</title>
+    <title>🔄 Ciclos - BTC Turbo</title>
     <link rel="stylesheet" href="/src/styles/main.css">
     <link rel="stylesheet" href="/src/styles/components-improved.css">
     <link rel="stylesheet" href="/src/styles/pages.css">
@@ -17,7 +21,7 @@
         </div>
 
         <div class="header">
-            <h1>📊 Análise de Ciclos</h1>
+            <h1>🔄 Análise de Ciclos</h1>
         </div>
 
         <!-- Score Consolidado -->
@@ -26,6 +30,7 @@
             <div class="score-details">
                 <div>Peso no Score Geral: <span id="peso-bloco">40%</span></div>
                 <div id="formula-calculo">Carregando fórmula...</div>
+                <div class="alertas" id="alertas-container"></div>
             </div>
         </div>
 
@@ -96,6 +101,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Rebalanceamento Info -->
+        <div class="panel">
+            <div class="panel-title">⚖️ Histórico de Rebalanceamento</div>
+            <div class="rebalance-info" id="rebalance-info">
+                <div class="rebalance-changes" id="rebalance-changes">Carregando...</div>
+                <div class="rebalance-justificativa" id="rebalance-justificativa">Carregando...</div>
             </div>
         </div>
     </div>
