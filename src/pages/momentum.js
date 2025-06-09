@@ -20,9 +20,9 @@ class MomentumDashboard extends DashboardBase {
     initGauges() {
         this.gauges = {
             'rsi-semanal': new SimpleGauge(document.getElementById('gauge-rsi-semanal')),
-            'rsi-mensal': new SimpleGauge(document.getElementById('gauge-rsi-mensal')),
-            'macd-semanal': new SimpleGauge(document.getElementById('gauge-macd-semanal')),
-            'stoch-rsi': new SimpleGauge(document.getElementById('gauge-stoch-rsi'))
+            'funding-rates': new SimpleGauge(document.getElementById('gauge-funding-rates')),
+            'sopr': new SimpleGauge(document.getElementById('gauge-sopr')),
+            'long-short': new SimpleGauge(document.getElementById('gauge-long-short'))
         };
     }
 
@@ -47,10 +47,10 @@ class MomentumDashboard extends DashboardBase {
 
         // Mapear indicadores
         const indicadorMap = {
-            'rsi-semanal': this.findIndicador(data.indicadores, ['RSI_Semanal', 'RSI_SEMANAL']),
-            'rsi-mensal': this.findIndicador(data.indicadores, ['RSI_Mensal', 'RSI_MENSAL']),
-            'macd-semanal': this.findIndicador(data.indicadores, ['MACD_Semanal', 'MACD_SEMANAL']),
-            'stoch-rsi': this.findIndicador(data.indicadores, ['Stoch_RSI', 'STOCH_RSI'])
+            'rsi-semanal': this.findIndicador(data.indicadores, ['RSI_Semanal']),
+            'funding-rates': this.findIndicador(data.indicadores, ['Funding_Rates']),
+            'sopr': this.findIndicador(data.indicadores, ['SOPR']),
+            'long-short': this.findIndicador(data.indicadores, ['Long_Short_Ratio'])
         };
 
         // Atualizar cada indicador
@@ -77,10 +77,15 @@ class MomentumDashboard extends DashboardBase {
         const scoreNormalizado = this.formatScore(indicador.score);
         this.gauges[key].draw(scoreNormalizado);
         
+        // SOPR indisponível
+        if (key === 'sopr' && !indicador.disponivel) {
+            document.getElementById('sopr-card').classList.add('unavailable');
+        }
+        
         const scoreText = `Score: ${scoreNormalizado} - ${indicador.classificacao.toUpperCase()}`;
         this.updateElement(`${key}-score`, scoreText);
         
-        const valor = indicador.valor ? indicador.valor.toFixed(2) : 'N/A';
+        const valor = indicador.valor ? (key === 'funding-rates' ? indicador.valor : indicador.valor.toFixed(4)) : 'N/A';
         this.updateElement(`${key}-valor`, valor);
         this.updateElement(`${key}-peso`, indicador.peso || '-');
     }
