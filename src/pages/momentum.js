@@ -41,7 +41,7 @@ class MomentumDashboard extends DashboardBase {
 
     updateDashboard(data) {
         // Score consolidado
-        const scoreText = `Score: ${this.formatScore(data.score_consolidado)} - ${data.classificacao_consolidada.toUpperCase()}`;
+        const scoreText = `Score: ${this.formatScore(data.score_consolidado_100)} - ${data.classificacao_consolidada.toUpperCase()}`;
         this.updateElement('score-consolidado', scoreText);
         this.updateElement('peso-bloco', data.peso_bloco);
 
@@ -83,9 +83,6 @@ class MomentumDashboard extends DashboardBase {
         const valor = indicador.valor ? indicador.valor.toFixed(2) : 'N/A';
         this.updateElement(`${key}-valor`, valor);
         this.updateElement(`${key}-peso`, indicador.peso || '-');
-        
-        const contribuicao = indicador.score_consolidado ? indicador.score_consolidado.toFixed(2) : '-';
-        this.updateElement(`${key}-contribuicao`, contribuicao);
     }
 
     async refreshData() {
