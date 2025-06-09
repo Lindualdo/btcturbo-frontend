@@ -1,7 +1,7 @@
-// API Client para consumir as APIs do BTCTurbo Backend
+// API Client para BTCTurbo Backend - Versão Atualizada
 
 class BTCTurboAPI {
-  constructor(baseURL = 'http://localhost:8000') {
+  constructor(baseURL = 'https://btcturbo-v5-production.up.railway.app') {
     this.baseURL = baseURL;
     this.defaultHeaders = {
       'Content-Type': 'application/json',
@@ -37,28 +37,7 @@ class BTCTurboAPI {
     }
   }
 
-  // === ENDPOINTS DOS BLOCOS ===
-
-  async obterIndicadores(bloco) {
-    return this.request(`/api/v1/obter-indicadores/${bloco}`);
-  }
-
-  async calcularScore(bloco) {
-    return this.request(`/api/v1/calcular-score/${bloco}`);
-  }
-
-  async coletarIndicadores(bloco, forcarColeta = false) {
-    return this.request(`/api/v1/coletar-indicadores/${bloco}`, {
-      method: 'POST',
-      body: JSON.stringify({ forcar_coleta: forcarColeta })
-    });
-  }
-
-  // === ENDPOINTS DE ANÁLISE ===
-
-  async analiseBTC() {
-    return this.request('/api/v1/analise-btc');
-  }
+  // === ENDPOINTS PRINCIPAIS ===
 
   async analiseMercado() {
     return this.request('/api/v1/analise-mercado');
@@ -72,57 +51,45 @@ class BTCTurboAPI {
     return this.request('/api/v1/analise-alavancagem');
   }
 
+  // === ENDPOINTS LEGADOS (manter compatibilidade) ===
+
+  async analiseBTC() {
+    return this.request('/api/v1/analise-btc');
+  }
+
   async analiseTatico() {
     return this.request('/api/v1/analise-tatico');
   }
-
-  // === ENDPOINTS DE ALERTAS ===
 
   async verificarAlertas() {
     return this.request('/api/v1/alertas/verificar');
   }
 
-  async alertasCriticos() {
-    return this.request('/api/v1/alertas-debug/criticos');
+  // === ENDPOINTS DOS BLOCOS (legado) ===
+
+  async obterIndicadores(bloco) {
+    return this.request(`/api/v1/obter-indicadores/${bloco}`);
+  }
+
+  async calcularScore(bloco) {
+    return this.request(`/api/v1/calcular-score/${bloco}`);
   }
 
   // === MÉTODOS ESPECÍFICOS PARA DASHBOARD ===
 
-  async getDashboardTecnico() {
-    try {
-      // Buscar dados técnicos consolidados
-      const [indicadores, scores] = await Promise.all([
-        this.obterIndicadores('tecnico'),
-        this.calcularScore('tecnico')
-      ]);
-
-      return {
-        indicadores,
-        scores,
-        timestamp: new Date().toISOString()
-      };
-
-    } catch (error) {
-      console.error('❌ Erro ao buscar dashboard técnico:', error);
-      throw error;
-    }
-  }
-
   async getDashboardCompleto() {
     try {
-      // Buscar todos os dados para dashboard principal
-      const [analise, mercado, risco, tatico] = await Promise.all([
-        this.analiseBTC(),
-        this.analiseMercado(), 
+      // Buscar dados das 3 APIs principais
+      const [mercado, risco, alavancagem] = await Promise.all([
+        this.analiseMercado(),
         this.analiseRisco(),
-        this.analiseTatico()
+        this.analiseAlavancagem()
       ]);
 
       return {
-        analise_geral: analise,
         mercado,
         risco,
-        tatico,
+        alavancagem,
         timestamp: new Date().toISOString()
       };
 
@@ -157,17 +124,3 @@ export const apiClient = new BTCTurboAPI();
 
 // Para usar em outros módulos:
 export default apiClient;
-
-// Exemplo de uso:
-/*
-import apiClient from './utils/api-client.js';
-
-// Buscar dados técnicos
-const tecnico = await apiClient.getDashboardTecnico();
-
-// Buscar análise completa
-const analise = await apiClient.analiseBTC();
-
-// Configurar URL diferente
-apiClient.setBaseURL('https://btcturbo-api.herokuapp.com');
-*/
