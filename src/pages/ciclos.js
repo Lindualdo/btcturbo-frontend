@@ -3,7 +3,72 @@ Arquivo: src/pages/ciclos.js
 Localização: btcturbo-frontend/src/pages/ciclos.js
 */
 
-import { ImprovedGaugeChart } from '../components/gauge-chart-improved.js';
+/* 
+Arquivo: src/pages/ciclos.js
+Localização: btcturbo-frontend/src/pages/ciclos.js
+*/
+
+class SimpleGauge {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = canvas.width;
+        this.height = canvas.height;
+    }
+
+    draw(value, title = '') {
+        const ctx = this.ctx;
+        const centerX = this.width / 2;
+        const centerY = this.height - 20;
+        const radius = 70;
+        
+        ctx.clearRect(0, 0, this.width, this.height);
+        
+        // Arco de fundo
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+        ctx.lineWidth = 15;
+        ctx.strokeStyle = '#404552';
+        ctx.stroke();
+        
+        // Arco colorido
+        const angle = Math.PI + (Math.PI * Math.max(0, Math.min(100, value)) / 100);
+        const gradient = ctx.createConicGradient(0, centerX, centerY);
+        gradient.addColorStop(0, '#ff4757');
+        gradient.addColorStop(0.25, '#ffa726');
+        gradient.addColorStop(0.5, '#ffeb3b');
+        gradient.addColorStop(0.75, '#8bc34a');
+        gradient.addColorStop(1, '#4caf50');
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, Math.PI, angle);
+        ctx.lineWidth = 15;
+        ctx.strokeStyle = gradient;
+        ctx.stroke();
+        
+        // Agulha
+        const needleAngle = Math.PI + (Math.PI * Math.max(0, Math.min(100, value)) / 100);
+        const needleLength = radius - 10;
+        
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(needleAngle);
+        
+        ctx.beginPath();
+        ctx.moveTo(0, -3);
+        ctx.lineTo(needleLength, 0);
+        ctx.lineTo(0, 3);
+        ctx.closePath();
+        ctx.fillStyle = '#666';
+        ctx.fill();
+        
+        ctx.restore();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#555';
+        ctx.fill();
+    }
+}
 
 class CiclosDashboard {
     constructor() {
@@ -20,10 +85,10 @@ class CiclosDashboard {
 
     initGauges() {
         this.gauges = {
-            mvrv: new ImprovedGaugeChart(document.getElementById('gauge-mvrv'), { size: 200 }),
-            nupl: new ImprovedGaugeChart(document.getElementById('gauge-nupl'), { size: 200 }),
-            realized: new ImprovedGaugeChart(document.getElementById('gauge-realized'), { size: 200 }),
-            puell: new ImprovedGaugeChart(document.getElementById('gauge-puell'), { size: 200 })
+            mvrv: new SimpleGauge(document.getElementById('gauge-mvrv')),
+            nupl: new SimpleGauge(document.getElementById('gauge-nupl')),
+            realized: new SimpleGauge(document.getElementById('gauge-realized')),
+            puell: new SimpleGauge(document.getElementById('gauge-puell'))
         };
     }
 
@@ -53,13 +118,6 @@ class CiclosDashboard {
         
         // Informações gerais
         document.getElementById('peso-bloco').textContent = data.peso_bloco;
-        document.getElementById('formula-calculo').textContent = data.calculo.formula;
-
-        // Alertas (se existirem)
-        if (data.alertas && data.alertas.length > 0) {
-            const alertasContainer = document.getElementById('alertas-container');
-            alertasContainer.innerHTML = data.alertas.map(alerta => `<div class="alerta">${alerta}</div>`).join('');
-        }
 
         // Indicadores individuais
         const indicadores = data.indicadores;
@@ -68,22 +126,14 @@ class CiclosDashboard {
         // MVRV Z-Score
         this.updateIndicator('mvrv', indicadores.MVRV_Z, componentes.mvrv_contribuicao);
         
-        // NUPL
+        // NUPL - CORRIGIR: existe no JSON
         this.updateIndicator('nupl', indicadores.NUPL, componentes.nupl_contribuicao);
-        if (!indicadores.NUPL.disponivel) {
-            document.getElementById('nupl-card').classList.add('unavailable');
-        }
         
         // Realized Ratio
         this.updateIndicator('realized', indicadores.Realized_Ratio, componentes.realized_contribuicao);
         
         // Puell Multiple
         this.updateIndicator('puell', indicadores.Puell_Multiple, componentes.puell_contribuicao);
-
-        // Informações de rebalanceamento
-        if (data.rebalanceamento) {
-            this.updateRebalanceInfo(data.rebalanceamento);
-        }
 
         console.log('✅ Dashboard atualizado com sucesso!');
     }
@@ -93,7 +143,16 @@ class CiclosDashboard {
 
         // Atualizar gauge
         const scoreNormalizado = indicador.score * 10; // Score vem de 0-10, converter para 0-100
-        this.gauges[key].animateTo(scoreNormalizado);
+        this.gauges[key].draw(scoreNormalizado);
+        
+        // Verificar se é NUPL e não está disponível
+        if (key === 'nupl' && !indicador.disponivel) {
+            // Marcar como indisponível
+            const card = document.getElementById('nupl-card');
+            if (card) {
+                card.classList.add('unavailable');
+            }
+        }
         
         // Atualizar textos
         const scoreText = `Score: ${Math.round(scoreNormalizado)} - ${indicador.classificacao.toUpperCase()}`;
@@ -117,28 +176,6 @@ class CiclosDashboard {
         });
     }
 
-    updateRebalanceInfo(rebalanceamento) {
-        const changesContainer = document.getElementById('rebalance-changes');
-        const justificativaContainer = document.getElementById('rebalance-justificativa');
-        
-        if (changesContainer && rebalanceamento.mudancas) {
-            const changesHTML = rebalanceamento.mudancas
-                .map(mudanca => `<div class="change-item">• ${mudanca}</div>`)
-                .join('');
-            changesContainer.innerHTML = `
-                <h4>Mudanças na versão ${rebalanceamento.versao_atual}:</h4>
-                ${changesHTML}
-            `;
-        }
-        
-        if (justificativaContainer && rebalanceamento.justificativa) {
-            justificativaContainer.innerHTML = `
-                <h4>Justificativa:</h4>
-                <div class="justificativa-text">${rebalanceamento.justificativa}</div>
-            `;
-        }
-    }
-
     showError(message) {
         const scoreElement = document.getElementById('score-consolidado');
         if (scoreElement) {
@@ -156,6 +193,21 @@ class CiclosDashboard {
         console.log('🔄 Atualizando dados...');
         await this.loadData();
     }
+}
+
+// Inicializar dashboard
+document.addEventListener('DOMContentLoaded', () => {
+    window.ciclosDashboard = new CiclosDashboard();
+    
+    // Auto-refresh a cada 2 minutos
+    setInterval(() => {
+        if (window.ciclosDashboard) {
+            window.ciclosDashboard.refreshData();
+        }
+    }, 2 * 60 * 1000);
+});
+
+console.log('🎯 Dashboard Ciclos carregado!');
 }
 
 // Inicializar dashboard
