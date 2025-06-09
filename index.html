@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📊 BTC Turbo - Análise Técnica</title>
     <link rel="stylesheet" href="/src/styles/main.css">
-    <link rel="stylesheet" href="/src/styles/components.css">
+    <link rel="stylesheet" href="/src/styles/components-improved.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description" content="Dashboard de análise técnica Bitcoin com indicadores em tempo real">
+    <meta name="theme-color" content="#ff8c42">
 </head>
 <body>
     <header class="header">
@@ -32,10 +36,10 @@
                     </div>
                     <div class="card-content">
                         <div class="gauge-container">
-                            <canvas id="gauge-final" width="200" height="100"></canvas>
+                            <canvas id="gauge-final"></canvas>
                         </div>
                         <div class="score-info">
-                            <div class="score-value">Score: <span id="score-final-value">76</span> - <span id="score-final-status">Correção Saudável</span></div>
+                            <div class="score-value">Score: <span id="score-final-value">0</span> - <span id="score-final-status">Carregando...</span></div>
                             <div class="score-description">70% Semanal + 30% Diário</div>
                         </div>
                         <button class="btn-details">📊 Ver Detalhes</button>
@@ -50,10 +54,10 @@
                     </div>
                     <div class="card-content">
                         <div class="gauge-container">
-                            <canvas id="gauge-semanal" width="200" height="100"></canvas>
+                            <canvas id="gauge-semanal"></canvas>
                         </div>
                         <div class="score-info">
-                            <div class="score-value">Score: <span id="score-semanal-value">75</span> - <span id="score-semanal-status">Correção Saudável</span></div>
+                            <div class="score-value">Score: <span id="score-semanal-value">0</span> - <span id="score-semanal-status">Carregando...</span></div>
                             <div class="score-description">Peso: 70% do total</div>
                         </div>
                     </div>
@@ -67,10 +71,10 @@
                     </div>
                     <div class="card-content">
                         <div class="gauge-container">
-                            <canvas id="gauge-diario" width="200" height="100"></canvas>
+                            <canvas id="gauge-diario"></canvas>
                         </div>
                         <div class="score-info">
-                            <div class="score-value">Score: <span id="score-diario-value">79</span> - <span id="score-diario-status">Correção Saudável</span></div>
+                            <div class="score-value">Score: <span id="score-diario-value">0</span> - <span id="score-diario-status">Carregando...</span></div>
                             <div class="score-description">Peso: 30% do total</div>
                         </div>
                     </div>
@@ -79,6 +83,16 @@
         </div>
     </main>
 
-    <script type="module" src="/src/main.js"></script>
+    <!-- Preload Critical Scripts -->
+    <script type="module" src="/src/main-improved.js"></script>
+    
+    <!-- Performance Monitoring -->
+    <script>
+        // Log performance metrics
+        window.addEventListener('load', () => {
+            const perfData = performance.getEntriesByType('navigation')[0];
+            console.log('🚀 Page Load Time:', Math.round(perfData.loadEventEnd - perfData.fetchStart), 'ms');
+        });
+    </script>
 </body>
 </html>
