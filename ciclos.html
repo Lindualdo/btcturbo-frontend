@@ -271,7 +271,6 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="mvrv-valor">-</span></div>
                             <div>Peso: <span id="mvrv-peso">-</span></div>
-                            <div>Contribuição: <span id="mvrv-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -287,7 +286,6 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="nupl-valor">-</span></div>
                             <div>Peso: <span id="nupl-peso">-</span></div>
-                            <div>Contribuição: <span id="nupl-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -303,7 +301,6 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="realized-valor">-</span></div>
                             <div>Peso: <span id="realized-peso">-</span></div>
-                            <div>Contribuição: <span id="realized-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -319,7 +316,6 @@ Localização: btcturbo-frontend/ciclos.html
                         <div class="indicator-details">
                             <div>Valor: <span id="puell-valor">-</span></div>
                             <div>Peso: <span id="puell-peso">-</span></div>
-                            <div>Contribuição: <span id="puell-contribuicao">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -460,7 +456,6 @@ Localização: btcturbo-frontend/ciclos.html
                 const valor = indicador.valor !== null ? indicador.valor.toFixed(4) : 'N/A';
                 document.getElementById(`${key}-valor`).textContent = valor;
                 document.getElementById(`${key}-peso`).textContent = indicador.peso;
-                document.getElementById(`${key}-contribuicao`).textContent = contribuicao.toFixed(2);
             }
         }
 
