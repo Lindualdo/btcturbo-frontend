@@ -1,21 +1,22 @@
 /* Estilos específicos para páginas de detalhes */
 
 .back-button {
-    background: linear-gradient(135deg, var(--accent-orange), #ff6b35);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: var(--radius-sm);
-    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    color: #8b9dc3;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     margin-bottom: 20px;
     font-size: 0.9rem;
 }
 
 .back-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .breadcrumb {
@@ -25,7 +26,7 @@
 }
 
 .breadcrumb a {
-    color: var(--accent-orange);
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -45,7 +46,7 @@
 .score-main {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--accent-orange);
+    color: #ffffff;
     margin-bottom: 10px;
 }
 
@@ -102,5 +103,19 @@
 .score-value {
     font-size: 1rem;
     font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Títulos de painéis uniformes */
+.panel-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: #ffffff;
     margin-bottom: 10px;
 }
