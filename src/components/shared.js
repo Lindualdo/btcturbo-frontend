@@ -113,7 +113,7 @@ export class DashboardBase {
     }
 
     formatScore(score) {
-        return Math.round(score * 10);
+        return Math.round(score);
     }
 
     updateElement(id, content) {
