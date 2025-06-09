@@ -174,6 +174,7 @@ class BTCTurboDashboard {
         this.updateRiscoInfo(riscoData);
         this.updateFinancialInfo(alavancagemData);
         this.updateActionRecommendation(mercadoData);
+        this.updateMarketPhase(alavancagemData);
     }
 
     updateScoreText(type, scoreData) {
@@ -240,6 +241,14 @@ class BTCTurboDashboard {
             const isOperational = situacao.status === 'pode_aumentar';
             statusElement.textContent = isOperational ? '🟢 OPERACIONAL' : '🔴 ATENÇÃO';
             statusElement.className = isOperational ? 'info-value status-ok' : 'info-value status-alert';
+        }
+    }
+
+    updateMarketPhase(alavancagemData) {
+        const headerTitle = document.querySelector('.header h1');
+        if (headerTitle && alavancagemData?.parametros?.fase_mercado) {
+            const faseMercado = alavancagemData.parametros.fase_mercado;
+            headerTitle.textContent = `📊 BTC Turbo - ${faseMercado}`;
         }
     }
 
