@@ -1,7 +1,7 @@
 <!-- 
-Arquivo: index.html
+Arquivo: index.html (V2)
 Localização: btcturbo-frontend/index.html
-BTC Turbo - Home V2 com Header Superior e Scores Flat
+Nova versão da home usando API dashboard-home
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -12,7 +12,7 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
     <link rel="stylesheet" href="/src/styles/shared.css">
     <style>
         /* =========================
-           BLOCO 1: HEADER SUPERIOR 
+           HEADER SUPERIOR 
            ========================= */
         .top-header {
             background: linear-gradient(135deg, #2a2f3e 0%, #1a1d29 100%);
@@ -83,7 +83,7 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
         }
 
         /* =========================
-           BLOCO 2: SCORES FLAT
+           SCORES GRID
            ========================= */
         .scores-grid {
             display: grid;
@@ -103,7 +103,7 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
         .score-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
             margin-bottom: 20px;
         }
 
@@ -111,39 +111,61 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
             font-size: 1.2rem;
             font-weight: 600;
             color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .score-main-value {
-            font-size: 2.2rem;
+        .score-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-number {
+            font-size: 3rem;
             font-weight: 700;
             color: #ffffff;
-            text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
-        .score-bar-container {
-            background: #2d3748;
-            height: 20px;
-            border-radius: 0;
+        .score-bar {
+            background: #404552;
+            height: 12px;
+            border-radius: 6px;
             overflow: hidden;
-            margin-bottom: 10px;
-            position: relative;
+            margin-bottom: 15px;
         }
 
         .score-bar-fill {
             height: 100%;
-            border-radius: 0;
+            background: linear-gradient(90deg, #718096, #a0aec0);
+            border-radius: 6px;
             transition: width 0.8s ease;
-            background: #718096;
         }
 
         .score-classification {
-            text-align: center;
             font-size: 1rem;
             font-weight: 600;
             color: #8b9dc3;
-            margin-bottom: 15px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .score-info {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .score-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .score-status {
+            font-size: 0.9rem;
+            color: #8b9dc3;
         }
 
         .score-metrics {
@@ -152,25 +174,6 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
             margin-bottom: 15px;
             font-size: 0.9rem;
             color: #8b9dc3;
-        }
-
-        .score-detail-btn {
-            background: transparent;
-            border: 1px solid #ff8c42;
-            color: #ff8c42;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-            font-weight: 600;
-        }
-
-        .score-detail-btn:hover {
-            background: #ff8c42;
-            color: white;
-            transform: translateY(-1px);
         }
 
         /* =========================
@@ -193,17 +196,26 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 gap: 20px;
             }
 
-            .score-main-value {
-                font-size: 1.8rem;
-            }
-
             .header-title {
                 font-size: 1.2rem;
             }
         }
 
+        /* =========================
+           LOADING E ESTADOS
+           ========================= */
+        .loading {
+            color: #8b9dc3;
+            font-style: italic;
+        }
+
+        .error {
+            color: #ff4757;
+            font-weight: 600;
+        }
+
         /* Animações */
-        .score-card {
+        .score-card, .top-header {
             animation: fadeInUp 0.6s ease;
         }
 
@@ -221,7 +233,7 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
 </head>
 <body>
     <div class="container">
-        <!-- BLOCO 1: HEADER SUPERIOR -->
+        <!-- HEADER SUPERIOR -->
         <div class="top-header">
             <div class="header-left">
                 <div>
@@ -235,319 +247,91 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
             <div class="header-right">
                 <div class="header-metric">
                     <div class="header-metric-label">Preço BTC</div>
-                    <div class="header-metric-value" id="btc-price">$0</div>
+                    <div class="header-metric-value loading" id="btc-price">Carregando...</div>
                 </div>
                 
                 <div class="header-metric">
                     <div class="header-metric-label">Posição BTC</div>
-                    <div class="header-metric-value" id="position-btc">0 BTC</div>
+                    <div class="header-metric-value loading" id="position-btc">Carregando...</div>
                 </div>
                 
                 <div class="header-metric">
                     <div class="header-metric-label">Posição USD</div>
-                    <div class="header-metric-value" id="position-usd">$0</div>
+                    <div class="header-metric-value loading" id="position-usd">Carregando...</div>
                 </div>
                 
                 <div class="header-metric">
                     <div class="header-metric-label">Alavancagem</div>
-                    <div class="header-metric-value" id="leverage-current">0x</div>
+                    <div class="header-metric-value loading" id="leverage-current">Carregando...</div>
                 </div>
                 
-                <div class="status-indicator" id="status-operational">
-                    ⚡ <span>Operacional</span>
+                <div class="status-indicator loading" id="status-operational">
+                    🔄 <span>Conectando...</span>
                 </div>
             </div>
         </div>
 
-        <!-- BLOCO 2: SCORES PRINCIPAIS -->
+        <!-- SCORES PRINCIPAIS -->
         <div class="scores-grid">
             <!-- Score de Mercado -->
             <div class="score-card">
                 <div class="score-header">
-                    <span class="score-title">📊 SCORE DE MERCADO</span>
+                    <span class="score-title">📊 Score de Mercado</span>
                 </div>
                 
-                <div class="score-main-value" id="score-mercado-value">0</div>
-                
-                <div class="score-bar-container">
-                    <div class="score-bar-fill" id="score-mercado-bar" style="width: 0%"></div>
+                <div class="score-display">
+                    <div class="score-number loading" id="score-mercado-number">58</div>
+                    <div class="score-bar">
+                        <div class="score-bar-fill" id="score-mercado-bar" style="width: 58%"></div>
+                    </div>
+                    <div class="score-classification loading" id="score-mercado-class">NEUTRO</div>
                 </div>
-                
-                <div class="score-classification" id="score-mercado-class">CARREGANDO</div>
                 
                 <div class="score-metrics">
-                    <span>MVRV: <span id="mvrv-value">0</span></span>
-                    <span>NUPL: <span id="nupl-value">0</span></span>
+                    <span>MVRV: <span id="mvrv-value" class="loading">-</span></span>
+                    <span>NUPL: <span id="nupl-value" class="loading">-</span></span>
                 </div>
                 
-                <button class="score-detail-btn" onclick="window.location.href='/ciclos.html'">
-                    Ver Detalhes →
-                </button>
+                <a href="/ciclos.html" class="btn-detail-minimal">Ver Detalhes →</a>
             </div>
 
             <!-- Score de Risco -->
             <div class="score-card">
                 <div class="score-header">
-                    <span class="score-title">🛡️ SCORE DE RISCO</span>
+                    <span class="score-title">🛡️ Score de Risco</span>
                 </div>
                 
-                <div class="score-main-value" id="score-risco-value">0</div>
-                
-                <div class="score-bar-container">
-                    <div class="score-bar-fill" id="score-risco-bar" style="width: 0%"></div>
+                <div class="score-display">
+                    <div class="score-number loading" id="score-risco-number">75</div>
+                    <div class="score-bar">
+                        <div class="score-bar-fill" id="score-risco-bar" style="width: 75%"></div>
+                    </div>
+                    <div class="score-classification loading" id="score-risco-class">BOM</div>
                 </div>
-                
-                <div class="score-classification" id="score-risco-class">CARREGANDO</div>
                 
                 <div class="score-metrics">
-                    <span>HF: <span id="hf-value">0</span></span>
-                    <span>Dist Liq: <span id="liq-value">0%</span></span>
+                    <span>HF: <span id="hf-value" class="loading">-</span></span>
+                    <span>Liq: <span id="liq-value" class="loading">-</span></span>
                 </div>
                 
-                <button class="score-detail-btn" onclick="alert('Score de Risco - Em breve!')">
+                <button class="btn-detail-minimal" onclick="alert('Score de Risco - Detalhes em breve!')">
                     Ver Detalhes →
                 </button>
             </div>
         </div>
 
-        <!-- PLACEHOLDER: Próximos blocos virão aqui -->
-        <div style="text-align: center; padding: 40px; color: #8b9dc3; border: 2px dashed #3a3f4e; border-radius: 12px;">
+        <!-- PLACEHOLDER BLOCOS FUTUROS -->
+        <div style="text-align: center; padding: 40px; color: #8b9dc3; border: 2px dashed #3a3f4e; border-radius: 12px; margin-top: 20px;">
             <h3>🚧 Próximos Blocos</h3>
-            <p>Bloco 3: Decisão Estratégica</p>
-            <p>Bloco 4: Alertas e Oportunidades</p>
-            <p>Bloco 5: Gestão de Alavancagem</p>
-            <p>Bloco 6: Indicadores Rápidos</p>
+            <p style="margin: 10px 0;">✅ Bloco 1: Header Superior (implementado)</p>
+            <p style="margin: 10px 0;">✅ Bloco 2: Scores Principais (implementado)</p>
+            <p style="margin: 10px 0;">⏳ Bloco 3: Decisão Estratégica</p>
+            <p style="margin: 10px 0;">⏳ Bloco 4: Alertas e Oportunidades</p>
+            <p style="margin: 10px 0;">⏳ Bloco 5: Gestão de Alavancagem</p>
+            <p style="margin: 10px 0;">⏳ Bloco 6: Indicadores Rápidos</p>
         </div>
     </div>
 
-    <script type="module">
-        import { DashboardBase } from './src/components/shared.js';
-
-        class HomeDashboardV2 extends DashboardBase {
-            constructor() {
-                super();
-                
-                // Debug da URL base
-                console.log('🔧 API Base URL:', this.api.baseURL);
-                
-                // Adicionar novo endpoint com debug
-                this.api.getDashboardHome = async () => {
-                    console.log('📡 Chamando: /dashboard-home');
-                    try {
-                        const response = await fetch(`${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`);
-                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                        const result = await response.json();
-                        console.log('✅ Resposta recebida:', result);
-                        return result;
-                    } catch (error) {
-                        console.error('❌ Erro detalhado:', {
-                            message: error.message,
-                            status: error.status,
-                            url: `${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`
-                        });
-                        throw error;
-                    }
-                };
-                
-                this.init();
-            }
-
-            async init() {
-                console.log('🚀 Inicializando BTC Turbo Dashboard V2...');
-                await this.loadAllData();
-                this.startRealTimeUpdates();
-            }
-
-            async loadAllData() {
-                try {
-                    this.showLoading(true);
-                    console.log('🔄 Carregando dados da API...');
-
-                    // Testar primeiro se a API base funciona
-                    console.log('📡 Testando endpoint dashboard-home...');
-                    
-                    try {
-                        const dashboardData = await this.api.getDashboardHome();
-                        console.log('✅ Dados Dashboard recebidos:', dashboardData);
-                        
-                        // Usar estrutura real da API
-                        if (dashboardData.status === 'success' && dashboardData.data) {
-                            const { header, mercado, risco } = dashboardData.data;
-                            
-                            console.log('🔍 Header:', header);
-                            console.log('🔍 Mercado:', mercado);
-                            console.log('🔍 Risco:', risco);
-                            
-                            // Atualizar header
-                            if (header) {
-                                this.updateHeader(header);
-                            } else {
-                                console.warn('⚠️ Header não encontrado');
-                            }
-                            
-                            // Atualizar score de mercado
-                            if (mercado) {
-                                this.updateMercadoScore(mercado);
-                            } else {
-                                console.warn('⚠️ Dados de mercado não encontrados');
-                            }
-                            
-                            // Atualizar score de risco
-                            if (risco) {
-                                this.updateRiscoScore(risco);
-                            } else {
-                                console.warn('⚠️ Dados de risco não encontrados');
-                            }
-                            
-                        } else {
-                            console.warn('⚠️ Estrutura de dados inesperada:', dashboardData);
-                        }
-                        
-                    } catch (dashboardError) {
-                        console.error('❌ Erro no endpoint dashboard-home:', dashboardError);
-                        this.showError('Erro de conexão com API');
-                    }
-
-                    this.showLoading(false);
-                    
-                } catch (error) {
-                    console.error('❌ Erro geral:', error);
-                    this.showError('Erro ao conectar com API');
-                    this.showLoading(false);
-                }
-            }
-
-            updateHeader(headerData) {
-                if (!headerData) return;
-                
-                // Atualizar campos do header com dados da API
-                document.getElementById('btc-price').textContent = headerData.btc_price_formatado || 'N/A';
-                document.getElementById('position-btc').textContent = headerData.position_btc_formatado || 'N/A';
-                document.getElementById('position-usd').textContent = headerData.position_dolar_formatado || 'N/A';
-                document.getElementById('leverage-current').textContent = headerData.alavancagem_formatado || 'N/A';
-                
-                // Status dinâmico baseado na alavancagem
-                const statusEl = document.getElementById('status-operational');
-                const leverage = parseFloat(headerData.alavancagem_atual) || 0;
-                
-                if (leverage > 0) {
-                    statusEl.innerHTML = '⚡ <span>Operacional</span>';
-                    statusEl.style.background = '#4caf50';
-                } else {
-                    statusEl.innerHTML = '⏸️ <span>Inativo</span>';
-                    statusEl.style.background = '#6b7280';
-                }
-            }
-
-            updateMercadoScore(data) {
-                if (!data) return;
-                
-                console.log('📊 Dados Mercado recebidos:', data);
-                
-                const score = this.formatScore(data.score || 0);
-                const classification = data.classificacao || 'neutro';
-                
-                // Score principal
-                document.getElementById('score-mercado-value').textContent = score;
-                document.getElementById('score-mercado-bar').style.width = `${score}%`;
-                document.getElementById('score-mercado-class').textContent = classification.toUpperCase();
-
-                // Debug das métricas
-                console.log('🔍 MVRV formatado:', data.mvrv_formatado);
-                console.log('🔍 NUPL formatado:', data.nupl_formatado);
-                console.log('🔍 MVRV bruto:', data.mvrv);
-                console.log('🔍 NUPL bruto:', data.nupl);
-                
-                // Métricas formatadas da API (com fallback para zero)
-                const mvrvValue = data.mvrv_formatado || (data.mvrv ? data.mvrv.toFixed(2) : '0');
-                const nuplValue = data.nupl_formatado || (data.nupl ? data.nupl.toFixed(3) : '0');
-                
-                document.getElementById('mvrv-value').textContent = mvrvValue;
-                document.getElementById('nupl-value').textContent = nuplValue;
-                
-                console.log('✅ Score Mercado atualizado');
-            }
-
-            updateRiscoScore(data) {
-                if (!data) return;
-                
-                console.log('🛡️ Dados Risco recebidos:', data);
-                
-                const score = this.formatScore(data.score || 0);
-                const classification = data.classificacao || 'neutro';
-
-                // Score principal
-                document.getElementById('score-risco-value').textContent = score;
-                document.getElementById('score-risco-bar').style.width = `${score}%`;
-                document.getElementById('score-risco-class').textContent = classification.toUpperCase();
-                
-                // Debug das métricas
-                console.log('🔍 HF formatado:', data.health_factor_formatado);
-                console.log('🔍 Dist Liquidação formatado:', data.dist_liquidacao_formatado);
-                console.log('🔍 HF bruto:', data.health_factor);
-                console.log('🔍 Dist Liquidação bruto:', data.dist_liquidacao);
-                
-                // Métricas formatadas da API (com fallback para zero)
-                const hfValue = data.health_factor_formatado || (data.health_factor ? data.health_factor.toFixed(2) : '0');
-                const liqValue = data.dist_liquidacao_formatado || (data.dist_liquidacao ? `${data.dist_liquidacao.toFixed(1)}%` : '0%');
-                
-                document.getElementById('hf-value').textContent = hfValue;
-                document.getElementById('liq-value').textContent = liqValue;
-                
-                console.log('✅ Score Risco atualizado');
-            }
-
-            startRealTimeUpdates() {
-                // Update completo a cada 30 segundos
-                setInterval(() => {
-                    this.loadAllData();
-                }, 30 * 1000);
-            }
-
-            showLoading(show) {
-                const scoreCards = document.querySelectorAll('.score-card');
-                const headerMetrics = document.querySelectorAll('.header-metric-value');
-                
-                [...scoreCards, ...headerMetrics].forEach(element => {
-                    element.style.opacity = show ? '0.6' : '1';
-                });
-            }
-
-            showError(message) {
-                console.error('Dashboard Error:', message);
-                
-                // Mostrar erro visual no dashboard
-                document.getElementById('score-mercado-value').textContent = 'Erro';
-                document.getElementById('score-risco-value').textContent = 'Erro';
-                document.getElementById('score-mercado-class').textContent = 'ERRO DE CONEXÃO';
-                document.getElementById('score-risco-class').textContent = 'ERRO DE CONEXÃO';
-                
-                // Header com erro
-                document.getElementById('btc-price').textContent = 'Erro';
-                document.getElementById('position-btc').textContent = 'Erro';
-                document.getElementById('position-usd').textContent = 'Erro';
-                document.getElementById('leverage-current').textContent = 'Erro';
-                
-                // Status de erro
-                const statusEl = document.getElementById('status-operational');
-                statusEl.innerHTML = '❌ <span>Erro de Conexão</span>';
-                statusEl.style.background = '#ef4444';
-                
-                // Mostrar botão de retry
-                setTimeout(() => {
-                    if (confirm('Erro de conexão com a API. Tentar novamente?')) {
-                        window.location.reload();
-                    }
-                }, 2000);
-            }
-        }
-
-        // Inicializar quando DOM estiver pronto
-        document.addEventListener('DOMContentLoaded', () => {
-            window.btcDashboardV2 = new HomeDashboardV2();
-        });
-
-        console.log('🎯 BTC Turbo Dashboard V2 carregado!');
-    </script>
+    <script type="module" src="/src/mainV2.js"></script>
 </body>
 </html>
