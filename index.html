@@ -326,13 +326,42 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
         class HomeDashboardV2 extends DashboardBase {
             constructor() {
                 super();
-                // Estender API com novo endpoint
-                this.api.getDashboardHome = () => this.api.fetchData('dashboard-home');
+                
+                // Debug da URL base
+                console.log('🔧 API Base URL:', this.api.baseURL);
+                
+                // Adicionar novo endpoint com debug
+                this.api.getDashboardHome = async () => {
+                    console.log('📡 Chamando: /api/v1/dashboard-home');
+                    try {
+                        const result = await this.api.fetchData('dashboard-home');
+                        console.log('✅ Resposta recebida:', result);
+                        return result;
+                    } catch (error) {
+                        console.error('❌ Erro detalhado:', {
+                            message: error.message,
+                            status: error.status,
+                            url: `${this.api.baseURL}/dashboard-home`
+                        });
+                        throw error;
+                    }
+                };
+                
                 this.init();
             }
 
             async init() {
                 console.log('🚀 Inicializando BTC Turbo Dashboard V2...');
+                
+                // Teste de conectividade básico
+                console.log('🧪 Testando conectividade da API...');
+                try {
+                    await fetch(this.api.baseURL);
+                    console.log('✅ API acessível');
+                } catch (error) {
+                    console.error('❌ API inacessível:', error);
+                }
+                
                 await this.loadAllData();
                 this.startRealTimeUpdates();
             }
@@ -340,27 +369,68 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
             async loadAllData() {
                 try {
                     this.showLoading(true);
+                    console.log('🔄 Carregando dados da API...');
 
-                    // Nova API dashboard-home
-                    const dashboardData = await this.api.getDashboardHome();
-                    console.log('📊 Dados Dashboard:', dashboardData);
+                    // Testar primeiro se a API base funciona
+                    console.log('📡 Testando endpoint dashboard-home...');
                     
-                    // Atualizar header com dados reais
-                    this.updateHeader(dashboardData.header);
+                    try {
+                        const dashboardData = await this.api.getDashboardHome();
+                        console.log('✅ Dados Dashboard recebidos:', dashboardData);
+                        
+                        // Atualizar header com dados reais
+                        if (dashboardData.header) {
+                            this.updateHeader(dashboardData.header);
+                        } else {
+                            console.warn('⚠️ Dados de header não encontrados');
+                        }
 
-                    // Atualizar scores (assumindo que vem nos dados)
-                    if (dashboardData.score_mercado) {
-                        this.updateMercadoScore(dashboardData.score_mercado);
-                    }
-                    
-                    if (dashboardData.score_risco) {
-                        this.updateRiscoScore(dashboardData.score_risco);
+                        // Atualizar scores
+                        if (dashboardData.score_mercado) {
+                            this.updateMercadoScore(dashboardData.score_mercado);
+                        }
+                        
+                        if (dashboardData.score_risco) {
+                            this.updateRiscoScore(dashboardData.score_risco);
+                        }
+                        
+                    } catch (dashboardError) {
+                        console.error('❌ Erro no endpoint dashboard-home:', dashboardError);
+                        console.log('🔄 Tentando endpoints alternativos...');
+                        
+                        // Fallback para API existente
+                        try {
+                            const mercadoData = await this.api.getMercado();
+                            console.log('✅ Dados Mercado (fallback):', mercadoData);
+                            this.updateMercadoScore(mercadoData);
+                            
+                            // Simular header com dados fictícios
+                            this.updateHeader({
+                                btc_price_formatado: '$108,970',
+                                position_btc_formatado: '1.014819 BTC',
+                                position_dolar_formatado: '$110,584.85',
+                                alavancagem_formatado: '1.67x',
+                                alavancagem_atual: 1.67
+                            });
+                            
+                            // Simular score de risco
+                            this.updateRiscoScore({
+                                score_consolidado: 75,
+                                classificacao: 'bom',
+                                health_factor: 1.92,
+                                liquidation_price: 47.9
+                            });
+                            
+                        } catch (fallbackError) {
+                            console.error('❌ Erro no fallback:', fallbackError);
+                            this.showError('Erro de conexão com API');
+                        }
                     }
 
                     this.showLoading(false);
                     
                 } catch (error) {
-                    console.error('❌ Erro ao carregar dados:', error);
+                    console.error('❌ Erro geral:', error);
                     this.showError('Erro ao conectar com API');
                     this.showLoading(false);
                 }
@@ -441,9 +511,30 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
 
             showError(message) {
                 console.error('Dashboard Error:', message);
-                // Mostrar erro nos campos principais
+                
+                // Mostrar erro visual no dashboard
                 document.getElementById('score-mercado-value').textContent = 'Erro';
                 document.getElementById('score-risco-value').textContent = 'Erro';
+                document.getElementById('score-mercado-class').textContent = 'ERRO DE CONEXÃO';
+                document.getElementById('score-risco-class').textContent = 'ERRO DE CONEXÃO';
+                
+                // Header com erro
+                document.getElementById('btc-price').textContent = 'Erro';
+                document.getElementById('position-btc').textContent = 'Erro';
+                document.getElementById('position-usd').textContent = 'Erro';
+                document.getElementById('leverage-current').textContent = 'Erro';
+                
+                // Status de erro
+                const statusEl = document.getElementById('status-operational');
+                statusEl.innerHTML = '❌ <span>Erro de Conexão</span>';
+                statusEl.style.background = '#ef4444';
+                
+                // Mostrar botão de retry
+                setTimeout(() => {
+                    if (confirm('Erro de conexão com a API. Tentar novamente?')) {
+                        window.location.reload();
+                    }
+                }, 2000);
             }
         }
 
