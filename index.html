@@ -301,7 +301,7 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 
                 <div class="score-metrics">
                     <span>HF: <span id="hf-value">...</span></span>
-                    <span>Liq: <span id="liq-value">...</span></span>
+                    <span>Dist Liq: <span id="liq-value">...</span></span>
                 </div>
                 
                 <button class="score-detail-btn" onclick="alert('Score de Risco - Em breve!')">
@@ -354,16 +354,6 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
 
             async init() {
                 console.log('🚀 Inicializando BTC Turbo Dashboard V2...');
-                
-                // Teste de conectividade básico
-                console.log('🧪 Testando conectividade da API...');
-                try {
-                    await fetch(this.api.baseURL);
-                    console.log('✅ API acessível');
-                } catch (error) {
-                    console.error('❌ API inacessível:', error);
-                }
-                
                 await this.loadAllData();
                 this.startRealTimeUpdates();
             }
@@ -380,53 +370,42 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                         const dashboardData = await this.api.getDashboardHome();
                         console.log('✅ Dados Dashboard recebidos:', dashboardData);
                         
-                        // Atualizar header com dados reais
-                        if (dashboardData.header) {
-                            this.updateHeader(dashboardData.header);
+                        // Usar estrutura real da API
+                        if (dashboardData.status === 'success' && dashboardData.data) {
+                            const { header, mercado, risco } = dashboardData.data;
+                            
+                            console.log('🔍 Header:', header);
+                            console.log('🔍 Mercado:', mercado);
+                            console.log('🔍 Risco:', risco);
+                            
+                            // Atualizar header
+                            if (header) {
+                                this.updateHeader(header);
+                            } else {
+                                console.warn('⚠️ Header não encontrado');
+                            }
+                            
+                            // Atualizar score de mercado
+                            if (mercado) {
+                                this.updateMercadoScore(mercado);
+                            } else {
+                                console.warn('⚠️ Dados de mercado não encontrados');
+                            }
+                            
+                            // Atualizar score de risco
+                            if (risco) {
+                                this.updateRiscoScore(risco);
+                            } else {
+                                console.warn('⚠️ Dados de risco não encontrados');
+                            }
+                            
                         } else {
-                            console.warn('⚠️ Dados de header não encontrados');
-                        }
-
-                        // Atualizar scores
-                        if (dashboardData.score_mercado) {
-                            this.updateMercadoScore(dashboardData.score_mercado);
-                        }
-                        
-                        if (dashboardData.score_risco) {
-                            this.updateRiscoScore(dashboardData.score_risco);
+                            console.warn('⚠️ Estrutura de dados inesperada:', dashboardData);
                         }
                         
                     } catch (dashboardError) {
                         console.error('❌ Erro no endpoint dashboard-home:', dashboardError);
-                        console.log('🔄 Tentando endpoints alternativos...');
-                        
-                        // Fallback para API existente
-                        try {
-                            const mercadoData = await this.api.getMercado();
-                            console.log('✅ Dados Mercado (fallback):', mercadoData);
-                            this.updateMercadoScore(mercadoData);
-                            
-                            // Simular header com dados fictícios
-                            this.updateHeader({
-                                btc_price_formatado: '$108,970',
-                                position_btc_formatado: '1.014819 BTC',
-                                position_dolar_formatado: '$110,584.85',
-                                alavancagem_formatado: '1.67x',
-                                alavancagem_atual: 1.67
-                            });
-                            
-                            // Simular score de risco
-                            this.updateRiscoScore({
-                                score_consolidado: 75,
-                                classificacao: 'bom',
-                                health_factor: 1.92,
-                                liquidation_price: 47.9
-                            });
-                            
-                        } catch (fallbackError) {
-                            console.error('❌ Erro no fallback:', fallbackError);
-                            this.showError('Erro de conexão com API');
-                        }
+                        this.showError('Erro de conexão com API');
                     }
 
                     this.showLoading(false);
@@ -463,7 +442,9 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
             updateMercadoScore(data) {
                 if (!data) return;
                 
-                const score = this.formatScore(data.score_consolidado || 0);
+                console.log('📊 Dados Mercado recebidos:', data);
+                
+                const score = this.formatScore(data.score || 0);
                 const classification = data.classificacao || 'neutro';
                 
                 // Score principal
@@ -471,28 +452,49 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 document.getElementById('score-mercado-bar').style.width = `${score}%`;
                 document.getElementById('score-mercado-class').textContent = classification.toUpperCase();
 
-                // Métricas específicas (adaptar conforme estrutura da API)
-                const indicadores = data.indicadores || {};
-                document.getElementById('mvrv-value').textContent = 
-                    indicadores.mvrv?.toFixed(2) || 'N/A';
-                document.getElementById('nupl-value').textContent = 
-                    indicadores.nupl?.toFixed(2) || 'N/A';
+                // Debug das métricas
+                console.log('🔍 MVRV formatado:', data.mvrv_formatado);
+                console.log('🔍 NUPL formatado:', data.nupl_formatado);
+                console.log('🔍 MVRV bruto:', data.mvrv);
+                console.log('🔍 NUPL bruto:', data.nupl);
+                
+                // Métricas formatadas da API (com fallback)
+                const mvrvValue = data.mvrv_formatado || (data.mvrv ? data.mvrv.toFixed(2) : 'N/A');
+                const nuplValue = data.nupl_formatado || (data.nupl ? data.nupl.toFixed(3) : 'N/A');
+                
+                document.getElementById('mvrv-value').textContent = mvrvValue;
+                document.getElementById('nupl-value').textContent = nuplValue;
+                
+                console.log('✅ Score Mercado atualizado');
             }
 
             updateRiscoScore(data) {
                 if (!data) return;
                 
-                const score = data.score_consolidado || 0;
+                console.log('🛡️ Dados Risco recebidos:', data);
+                
+                const score = this.formatScore(data.score || 0);
                 const classification = data.classificacao || 'neutro';
 
+                // Score principal
                 document.getElementById('score-risco-value').textContent = score;
                 document.getElementById('score-risco-bar').style.width = `${score}%`;
                 document.getElementById('score-risco-class').textContent = classification.toUpperCase();
                 
-                // Métricas de risco (adaptar conforme API)
-                document.getElementById('hf-value').textContent = data.health_factor?.toFixed(2) || 'N/A';
-                document.getElementById('liq-value').textContent = 
-                    data.liquidation_price ? `${data.liquidation_price.toFixed(1)}%` : 'N/A';
+                // Debug das métricas
+                console.log('🔍 HF formatado:', data.health_factor_formatado);
+                console.log('🔍 Dist Liquidação formatado:', data.dist_liquidacao_formatado);
+                console.log('🔍 HF bruto:', data.health_factor);
+                console.log('🔍 Dist Liquidação bruto:', data.dist_liquidacao);
+                
+                // Métricas formatadas da API (com fallback)
+                const hfValue = data.health_factor_formatado || (data.health_factor ? data.health_factor.toFixed(2) : 'N/A');
+                const liqValue = data.dist_liquidacao_formatado || (data.dist_liquidacao ? `${data.dist_liquidacao.toFixed(1)}%` : 'N/A');
+                
+                document.getElementById('hf-value').textContent = hfValue;
+                document.getElementById('liq-value').textContent = liqValue;
+                
+                console.log('✅ Score Risco atualizado');
             }
 
             startRealTimeUpdates() {
