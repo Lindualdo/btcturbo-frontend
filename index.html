@@ -235,22 +235,22 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
             <div class="header-right">
                 <div class="header-metric">
                     <div class="header-metric-label">Preço BTC</div>
-                    <div class="header-metric-value" id="btc-price">Carregando...</div>
+                    <div class="header-metric-value" id="btc-price">$0</div>
                 </div>
                 
                 <div class="header-metric">
                     <div class="header-metric-label">Posição BTC</div>
-                    <div class="header-metric-value" id="position-btc">Carregando...</div>
+                    <div class="header-metric-value" id="position-btc">0 BTC</div>
                 </div>
                 
                 <div class="header-metric">
                     <div class="header-metric-label">Posição USD</div>
-                    <div class="header-metric-value" id="position-usd">Carregando...</div>
+                    <div class="header-metric-value" id="position-usd">$0</div>
                 </div>
                 
                 <div class="header-metric">
                     <div class="header-metric-label">Alavancagem</div>
-                    <div class="header-metric-value" id="leverage-current">Carregando...</div>
+                    <div class="header-metric-value" id="leverage-current">0x</div>
                 </div>
                 
                 <div class="status-indicator" id="status-operational">
@@ -267,17 +267,17 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                     <span class="score-title">📊 SCORE DE MERCADO</span>
                 </div>
                 
-                <div class="score-main-value" id="score-mercado-value">Carregando...</div>
+                <div class="score-main-value" id="score-mercado-value">0</div>
                 
                 <div class="score-bar-container">
                     <div class="score-bar-fill" id="score-mercado-bar" style="width: 0%"></div>
                 </div>
                 
-                <div class="score-classification" id="score-mercado-class">...</div>
+                <div class="score-classification" id="score-mercado-class">CARREGANDO</div>
                 
                 <div class="score-metrics">
-                    <span>MVRV: <span id="mvrv-value">...</span></span>
-                    <span>NUPL: <span id="nupl-value">...</span></span>
+                    <span>MVRV: <span id="mvrv-value">0</span></span>
+                    <span>NUPL: <span id="nupl-value">0</span></span>
                 </div>
                 
                 <button class="score-detail-btn" onclick="window.location.href='/ciclos.html'">
@@ -291,17 +291,17 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                     <span class="score-title">🛡️ SCORE DE RISCO</span>
                 </div>
                 
-                <div class="score-main-value" id="score-risco-value">Carregando...</div>
+                <div class="score-main-value" id="score-risco-value">0</div>
                 
                 <div class="score-bar-container">
                     <div class="score-bar-fill" id="score-risco-bar" style="width: 0%"></div>
                 </div>
                 
-                <div class="score-classification" id="score-risco-class">...</div>
+                <div class="score-classification" id="score-risco-class">CARREGANDO</div>
                 
                 <div class="score-metrics">
-                    <span>HF: <span id="hf-value">...</span></span>
-                    <span>Dist Liq: <span id="liq-value">...</span></span>
+                    <span>HF: <span id="hf-value">0</span></span>
+                    <span>Dist Liq: <span id="liq-value">0%</span></span>
                 </div>
                 
                 <button class="score-detail-btn" onclick="alert('Score de Risco - Em breve!')">
@@ -458,9 +458,9 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 console.log('🔍 MVRV bruto:', data.mvrv);
                 console.log('🔍 NUPL bruto:', data.nupl);
                 
-                // Métricas formatadas da API (com fallback)
-                const mvrvValue = data.mvrv_formatado || (data.mvrv ? data.mvrv.toFixed(2) : 'N/A');
-                const nuplValue = data.nupl_formatado || (data.nupl ? data.nupl.toFixed(3) : 'N/A');
+                // Métricas formatadas da API (com fallback para zero)
+                const mvrvValue = data.mvrv_formatado || (data.mvrv ? data.mvrv.toFixed(2) : '0');
+                const nuplValue = data.nupl_formatado || (data.nupl ? data.nupl.toFixed(3) : '0');
                 
                 document.getElementById('mvrv-value').textContent = mvrvValue;
                 document.getElementById('nupl-value').textContent = nuplValue;
@@ -487,9 +487,9 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 console.log('🔍 HF bruto:', data.health_factor);
                 console.log('🔍 Dist Liquidação bruto:', data.dist_liquidacao);
                 
-                // Métricas formatadas da API (com fallback)
-                const hfValue = data.health_factor_formatado || (data.health_factor ? data.health_factor.toFixed(2) : 'N/A');
-                const liqValue = data.dist_liquidacao_formatado || (data.dist_liquidacao ? `${data.dist_liquidacao.toFixed(1)}%` : 'N/A');
+                // Métricas formatadas da API (com fallback para zero)
+                const hfValue = data.health_factor_formatado || (data.health_factor ? data.health_factor.toFixed(2) : '0');
+                const liqValue = data.dist_liquidacao_formatado || (data.dist_liquidacao ? `${data.dist_liquidacao.toFixed(1)}%` : '0%');
                 
                 document.getElementById('hf-value').textContent = hfValue;
                 document.getElementById('liq-value').textContent = liqValue;
