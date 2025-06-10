@@ -1,76 +1,431 @@
 <!-- 
 Arquivo: index.html
 Localização: btcturbo-frontend/index.html
+BTC Turbo - Home V2 com Header Superior e Scores Flat
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 BTC Turbo - Dashboard</title>
+    <title>💰 BTC Turbo - Hold Alavancado</title>
     <link rel="stylesheet" href="/src/styles/shared.css">
+    <style>
+        /* =========================
+           BLOCO 1: HEADER SUPERIOR 
+           ========================= */
+        .top-header {
+            background: linear-gradient(135deg, #2a2f3e 0%, #1a1d29 100%);
+            border: 1px solid #3a3f4e;
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: #ff8c42;
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-metric {
+            text-align: center;
+        }
+
+        .header-metric-label {
+            font-size: 0.8rem;
+            color: #8b9dc3;
+            margin-bottom: 2px;
+        }
+
+        .header-metric-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .status-indicator {
+            background: #4caf50;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* =========================
+           BLOCO 2: SCORES FLAT
+           ========================= */
+        .scores-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .score-card {
+            background: #2a2f3e;
+            border: 1px solid #3a3f4e;
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+        }
+
+        .score-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .score-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .score-main-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .score-bar-container {
+            background: #2d3748;
+            height: 20px;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 0;
+            transition: width 0.8s ease;
+            background: #718096;
+        }
+
+        .score-classification {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #8b9dc3;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .score-metrics {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #8b9dc3;
+        }
+
+        .score-detail-btn {
+            background: transparent;
+            border: 1px solid #ff8c42;
+            color: #ff8c42;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .score-detail-btn:hover {
+            background: #ff8c42;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           RESPONSIVE 
+           ========================= */
+        @media (max-width: 768px) {
+            .top-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .header-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .scores-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .score-main-value {
+                font-size: 1.8rem;
+            }
+
+            .header-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Animações */
+        .score-card {
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📊 BTC Turbo - Bull Moderado</h1>
-            <div class="status">⚡ Status: ATIVO</div>
-        </div>
-
-        <!-- Mercado -->
-        <div class="panel">
-            <div class="panel-title">📈 Mercado</div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-title">🌍 Mercado</div>
-                    <div class="gauge-container">
-                        <canvas id="gauge-mercado" width="200" height="120"></canvas>
+        <!-- BLOCO 1: HEADER SUPERIOR -->
+        <div class="top-header">
+            <div class="header-left">
+                <div>
+                    <div class="header-title">
+                        💰 BTC Turbo
                     </div>
-                    <div class="score-info">
-                        <div id="score-mercado-value" class="loading">Carregando...</div>
-                        <div class="score-status">Análise Geral</div>
-                    </div>
+                    <div class="header-subtitle">HOLD ALAVANCADO</div>
                 </div>
-
-                <div class="card">
-                    <div class="card-title">🔄 Ciclo</div>
-                    <div class="gauge-container">
-                        <canvas id="gauge-ciclo" width="200" height="120"></canvas>
-                    </div>
-                    <div class="score-info">
-                        <div id="score-ciclo-value" class="loading">Carregando...</div>
-                        <div class="score-status">Peso: 30%</div>
-                        <a href="/ciclos.html" class="btn-detail-minimal">Ver Detalhes</a>
-                    </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="header-metric">
+                    <div class="header-metric-label">Preço BTC</div>
+                    <div class="header-metric-value" id="btc-price">$64,725</div>
                 </div>
-
-                <div class="card">
-                    <div class="card-title">⚡ Momentum</div>
-                    <div class="gauge-container">
-                        <canvas id="gauge-momentum" width="200" height="120"></canvas>
-                    </div>
-                    <div class="score-info">
-                        <div id="score-momentum-value" class="loading">Carregando...</div>
-                        <div class="score-status">Peso: 20%</div>
-                        <a href="/momentum.html" class="btn-detail-minimal">Ver Detalhes</a>
-                    </div>
+                
+                <div class="header-metric">
+                    <div class="header-metric-label">Capital</div>
+                    <div class="header-metric-value" id="capital-total">$128,500</div>
                 </div>
-
-                <div class="card">
-                    <div class="card-title">📊 Técnico</div>
-                    <div class="gauge-container">
-                        <canvas id="gauge-tecnico" width="200" height="120"></canvas>
-                    </div>
-                    <div class="score-info">
-                        <div id="score-tecnico-value" class="loading">Carregando...</div>
-                        <div class="score-status">Peso: 50%</div>
-                        <a href="/tecnco.html" class="btn-detail-minimal">Ver Detalhes</a>
-                    </div>
+                
+                <div class="header-metric">
+                    <div class="header-metric-label">Alavancagem</div>
+                    <div class="header-metric-value" id="leverage-current">1.68x</div>
+                </div>
+                
+                <div class="status-indicator" id="status-operational">
+                    ⚡ <span>Operacional</span>
                 </div>
             </div>
         </div>
+
+        <!-- BLOCO 2: SCORES PRINCIPAIS -->
+        <div class="scores-grid">
+            <!-- Score de Mercado -->
+            <div class="score-card">
+                <div class="score-header">
+                    <span class="score-title">📊 SCORE DE MERCADO</span>
+                </div>
+                
+                <div class="score-main-value" id="score-mercado-value">57.8</div>
+                
+                <div class="score-bar-container">
+                    <div class="score-bar-fill" id="score-mercado-bar" style="width: 57.8%"></div>
+                </div>
+                
+                <div class="score-classification" id="score-mercado-class">NEUTRO</div>
+                
+                <div class="score-metrics">
+                    <span>MVRV: <span id="mvrv-value">2.24</span></span>
+                    <span>NUPL: <span id="nupl-value">0.56</span></span>
+                </div>
+                
+                <button class="score-detail-btn" onclick="window.location.href='/ciclos.html'">
+                    Ver Detalhes →
+                </button>
+            </div>
+
+            <!-- Score de Risco -->
+            <div class="score-card">
+                <div class="score-header">
+                    <span class="score-title">🛡️ SCORE DE RISCO</span>
+                </div>
+                
+                <div class="score-main-value" id="score-risco-value">75</div>
+                
+                <div class="score-bar-container">
+                    <div class="score-bar-fill" id="score-risco-bar" style="width: 75%"></div>
+                </div>
+                
+                <div class="score-classification" id="score-risco-class">BOM</div>
+                
+                <div class="score-metrics">
+                    <span>HF: <span id="hf-value">1.92</span></span>
+                    <span>Liq: <span id="liq-value">47.9%</span></span>
+                </div>
+                
+                <button class="score-detail-btn" onclick="alert('Score de Risco - Em breve!')">
+                    Ver Detalhes →
+                </button>
+            </div>
+        </div>
+
+        <!-- PLACEHOLDER: Próximos blocos virão aqui -->
+        <div style="text-align: center; padding: 40px; color: #8b9dc3; border: 2px dashed #3a3f4e; border-radius: 12px;">
+            <h3>🚧 Próximos Blocos</h3>
+            <p>Bloco 3: Decisão Estratégica</p>
+            <p>Bloco 4: Alertas e Oportunidades</p>
+            <p>Bloco 5: Gestão de Alavancagem</p>
+            <p>Bloco 6: Indicadores Rápidos</p>
+        </div>
     </div>
 
-    <script type="module" src="/src/main.js"></script>
+    <script type="module">
+        import { DashboardBase } from './src/components/shared.js';
+
+        class HomeDashboardV2 extends DashboardBase {
+            constructor() {
+                super();
+                this.init();
+            }
+
+            async init() {
+                console.log('🚀 Inicializando BTC Turbo Dashboard V2...');
+                await this.loadAllData();
+                this.startRealTimeUpdates();
+            }
+
+            async loadAllData() {
+                try {
+                    this.showLoading(true);
+
+                    // Carregar dados de mercado
+                    const mercadoData = await this.api.getMercado();
+                    this.updateMercadoScore(mercadoData);
+
+                    // Simular dados de risco (substituir pela API real)
+                    this.updateRiscoScore({
+                        score_consolidado: 75,
+                        classificacao: 'bom',
+                        health_factor: 1.92,
+                        liquidation_price: 47.9
+                    });
+
+                    // Atualizar header
+                    this.updateHeader();
+
+                    this.showLoading(false);
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao carregar dados:', error);
+                    this.showLoading(false);
+                }
+            }
+
+            updateMercadoScore(data) {
+                const score = this.formatScore(data.score_consolidado || 57.8);
+                const classification = data.classificacao || 'neutro';
+                
+                // Score principal
+                document.getElementById('score-mercado-value').textContent = score;
+                document.getElementById('score-mercado-bar').style.width = `${score}%`;
+                document.getElementById('score-mercado-class').textContent = classification.toUpperCase();
+
+                // Métricas do breakdown
+                const breakdown = data.composicao?.breakdown || {};
+                const ciclosData = breakdown.ciclos?.indicadores || {};
+                
+                document.getElementById('mvrv-value').textContent = 
+                    ciclosData.MVRV_Z?.valor?.toFixed(2) || '2.24';
+                document.getElementById('nupl-value').textContent = 
+                    ciclosData.NUPL?.valor?.toFixed(2) || '0.56';
+            }
+
+            updateRiscoScore(data) {
+                const score = data.score_consolidado;
+                const classification = data.classificacao;
+
+                document.getElementById('score-risco-value').textContent = score;
+                document.getElementById('score-risco-bar').style.width = `${score}%`;
+                document.getElementById('score-risco-class').textContent = classification.toUpperCase();
+                document.getElementById('hf-value').textContent = data.health_factor;
+                document.getElementById('liq-value').textContent = `${data.liquidation_price}%`;
+            }
+
+            updateHeader() {
+                // Simular dados do header (substituir por API real)
+                document.getElementById('btc-price').textContent = '$64,725';
+                document.getElementById('capital-total').textContent = '$128,500';
+                document.getElementById('leverage-current').textContent = '1.68x';
+                
+                // Status dinâmico baseado nos scores
+                const statusEl = document.getElementById('status-operational');
+                statusEl.innerHTML = '⚡ <span>Operacional</span>';
+                statusEl.style.background = '#4caf50';
+            }
+
+            startRealTimeUpdates() {
+                // Update a cada 30 segundos
+                setInterval(() => {
+                    this.updateHeader();
+                }, 30000);
+
+                // Update completo a cada 5 minutos
+                setInterval(() => {
+                    this.loadAllData();
+                }, 5 * 60 * 1000);
+            }
+
+            showLoading(show) {
+                const scoreCards = document.querySelectorAll('.score-card');
+                scoreCards.forEach(card => {
+                    card.style.opacity = show ? '0.6' : '1';
+                    card.style.pointerEvents = show ? 'none' : 'auto';
+                });
+            }
+        }
+
+        // Inicializar quando DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', () => {
+            window.btcDashboardV2 = new HomeDashboardV2();
+        });
+
+        console.log('🎯 BTC Turbo Dashboard V2 carregado!');
+    </script>
 </body>
 </html>
