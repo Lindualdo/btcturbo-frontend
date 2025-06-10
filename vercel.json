@@ -16,6 +16,10 @@
     {
       "source": "/tecnico",
       "destination": "/tecnico.html"
+    },
+     {
+      "source": "/mercado",
+      "destination": "/mercado.html"
     }
   ]
 }
