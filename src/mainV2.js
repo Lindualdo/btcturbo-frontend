@@ -97,7 +97,7 @@ class HomeDashboardV2 extends DashboardBase {
         
         // Atualizar valores formatados da API
         this.updateElement('btc-price', headerData.btc_price_formatado || 'N/A');
-        this.updateElement('position-btc', headerData.position_btc_formatado || 'N/A');
+        this.updateElement('position-btc', headerData.position_btc || 'N/A');
         this.updateElement('position-usd', headerData.position_dolar_formatado || 'N/A');
         this.updateElement('leverage-current', headerData.alavancagem_formatado || 'N/A');
         
