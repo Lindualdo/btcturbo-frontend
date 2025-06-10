@@ -1,7 +1,7 @@
 <!-- 
-Arquivo: index.html (V2)
+Arquivo: index.html
 Localização: btcturbo-frontend/index.html
-Nova versão da home usando API dashboard-home
+Dashboard BTC Turbo com Gestão de Alavancagem
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -311,7 +311,44 @@ Nova versão da home usando API dashboard-home
                     <span>HF: <span id="hf-value" class="loading">-</span></span>
                     <span>Liq: <span id="liq-value" class="loading">-</span></span>
                 </div>
+                
+                <button class="btn-detail-minimal" onclick="alert('Score de Risco - Detalhes em breve!')">
+                    Ver Detalhes →
+                </button>
             </div>
+        </div>
+
+        <!-- GESTÃO DE ALAVANCAGEM -->
+        <div class="panel">
+            <div class="panel-title">📈 Gestão de Alavancagem</div>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px; gap: 15px;">
+                    <span style="color: #8b9dc3; min-width: 80px;">Atual:</span>
+                    <div style="flex: 1; height: 8px; background: #404552; border-radius: 4px; overflow: hidden; max-width: 300px;">
+                        <div id="leverage-current-bar" style="height: 100%; background: #8b9dc3; transition: width 0.8s ease; width: 84%;"></div>
+                    </div>
+                    <span style="color: #ffffff; font-weight: 600;" id="leverage-current-value">1.68x</span>
+                </div>
+                
+                <div style="display: flex; align-items: center; margin-bottom: 20px; gap: 15px;">
+                    <span style="color: #8b9dc3; min-width: 80px;">Permitida:</span>
+                    <div style="flex: 1; height: 8px; background: #404552; border-radius: 4px; overflow: hidden; max-width: 300px;">
+                        <div id="leverage-allowed-bar" style="height: 100%; background: #8b9dc3; width: 100%;"></div>
+                    </div>
+                    <span style="color: #ffffff; font-weight: 600;" id="leverage-allowed-value">1.50x</span>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
+                <span>Capital Livre: <span id="capital-liquido" style="color: #ffffff; font-weight: 600;">$20,452</span></span>
+                <span>Margem: <span id="margem-percent" style="color: #ffffff; font-weight: 600;">32%</span></span>
+                <span>Stop Loss: <span id="stop-loss" style="color: #ffffff; font-weight: 600;">-10%</span></span>
+            </div>
+            
+            <a href="#" class="btn-detail-minimal" onclick="alert('Simulador em desenvolvimento!'); return false;" style="width: 100%; text-align: center; display: block;">
+                Simular Posição →
+            </a>
         </div>
 
         <!-- PLACEHOLDER BLOCOS FUTUROS -->
@@ -319,9 +356,9 @@ Nova versão da home usando API dashboard-home
             <h3>🚧 Próximos Blocos</h3>
             <p style="margin: 10px 0;">✅ Bloco 1: Header Superior (implementado)</p>
             <p style="margin: 10px 0;">✅ Bloco 2: Scores Principais (implementado)</p>
-            <p style="margin: 10px 0;">⏳ Bloco 3: Decisão Estratégica</p>
-            <p style="margin: 10px 0;">⏳ Bloco 4: Alertas e Oportunidades</p>
-            <p style="margin: 10px 0;">⏳ Bloco 5: Gestão de Alavancagem</p>
+            <p style="margin: 10px 0;">✅ Bloco 3: Gestão de Alavancagem (implementado)</p>
+            <p style="margin: 10px 0;">⏳ Bloco 4: Decisão Estratégica</p>
+            <p style="margin: 10px 0;">⏳ Bloco 5: Alertas e Oportunidades</p>
             <p style="margin: 10px 0;">⏳ Bloco 6: Indicadores Rápidos</p>
         </div>
     </div>

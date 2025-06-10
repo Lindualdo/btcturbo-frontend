@@ -1,7 +1,7 @@
 /* 
 Arquivo: src/mainV2.js
 Localização: btcturbo-frontend/src/mainV2.js
-Nova versão da home usando API dashboard-home
+Nova versão da home usando API dashboard-home com Gestão de Alavancagem
 */
 
 import { SimpleGauge, DashboardBase } from './components/shared.js';
@@ -15,7 +15,6 @@ class HomeDashboardV2 extends DashboardBase {
             console.log('📡 Chamando: dashboard-home');
             try {
                 const response = await fetch(`${this.api.baseURL}/dashboard-home`);
-                //const response = await fetch(`${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const result = await response.json();
                 console.log('✅ Dashboard Home recebido:', result);
@@ -24,7 +23,7 @@ class HomeDashboardV2 extends DashboardBase {
                 console.error('❌ Erro dashboard-home:', {
                     message: error.message,
                     status: error.status,
-                    url: `${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`
+                    url: `${this.api.baseURL}/dashboard-home`
                 });
                 throw error;
             }
@@ -54,18 +53,20 @@ class HomeDashboardV2 extends DashboardBase {
             const dashboardData = await this.api.getDashboardHome();
             
             if (dashboardData.status === 'success' && dashboardData.data) {
-                const { header, mercado, risco } = dashboardData.data;
+                const { header, mercado, risco, alavancagem } = dashboardData.data;
                 
                 console.log('📊 Processando dados:', {
                     header: !!header,
                     mercado: !!mercado, 
-                    risco: !!risco
+                    risco: !!risco,
+                    alavancagem: !!alavancagem
                 });
                 
                 // Atualizar cada seção
                 this.updateHeader(header);
                 this.updateMercadoScore(mercado);
                 this.updateRiscoScore(risco);
+                this.updateAlavancagem(alavancagem);
                 
                 console.log('✅ Dashboard atualizado com sucesso!');
             } else {
@@ -179,6 +180,36 @@ class HomeDashboardV2 extends DashboardBase {
         console.log('✅ Score Risco atualizado');
     }
 
+    updateAlavancagem(data) {
+        if (!data) {
+            console.warn('⚠️ Dados de alavancagem não disponíveis');
+            return;
+        }
+        
+        console.log('📈 Atualizando alavancagem:', data);
+        
+        // Calcular percentuais para as barras (baseado em max 3x)
+        const maxLeverage = 3.0;
+        const currentPercent = (data.alavancagem_atual / maxLeverage) * 100;
+        const allowedPercent = (data.alavancagem_permitida / maxLeverage) * 100;
+        
+        // Atualizar barras
+        const currentBar = document.getElementById('leverage-current-bar');
+        const allowedBar = document.getElementById('leverage-allowed-bar');
+        
+        if (currentBar) currentBar.style.width = `${Math.min(currentPercent, 100)}%`;
+        if (allowedBar) allowedBar.style.width = `${Math.min(allowedPercent, 100)}%`;
+        
+        // Atualizar valores
+        this.updateElement('leverage-current-value', data.alavancagem_atual_formatado);
+        this.updateElement('leverage-allowed-value', data.alavancagem_permitida_formatado);
+        this.updateElement('capital-liquido', data.capital_liquido_formatado);
+        this.updateElement('margem-percent', data.margem_percentual_formatado);
+        this.updateElement('stop-loss', data.stop_loss_formatado);
+        
+        console.log('✅ Alavancagem atualizada');
+    }
+
     startRealTimeUpdates() {
         // Auto-refresh a cada 30 segundos
         setInterval(() => {
@@ -259,7 +290,7 @@ class HomeDashboardV2 extends DashboardBase {
     getApiStatus() {
         return {
             baseURL: this.api.baseURL,
-            dashboardEndpoint: `${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`,
+            dashboardEndpoint: `${this.api.baseURL}/dashboard-home`,
             gaugesInitialized: Object.keys(this.gauges).length,
             lastUpdate: new Date().toISOString()
         };
