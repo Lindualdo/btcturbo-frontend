@@ -14,7 +14,8 @@ class HomeDashboardV2 extends DashboardBase {
         this.api.getDashboardHome = async () => {
             console.log('📡 Chamando: dashboard-home');
             try {
-                const response = await fetch(`${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`);
+                const response = await fetch(`${this.api.baseURL}/dashboard-home`);
+                //const response = await fetch(`${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const result = await response.json();
                 console.log('✅ Dashboard Home recebido:', result);
