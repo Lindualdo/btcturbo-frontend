@@ -332,16 +332,18 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 
                 // Adicionar novo endpoint com debug
                 this.api.getDashboardHome = async () => {
-                    console.log('📡 Chamando: /api/v1/dashboard-home');
+                    console.log('📡 Chamando: /dashboard-home');
                     try {
-                        const result = await this.api.fetchData('dashboard-home');
+                        const response = await fetch(`${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        const result = await response.json();
                         console.log('✅ Resposta recebida:', result);
                         return result;
                     } catch (error) {
                         console.error('❌ Erro detalhado:', {
                             message: error.message,
                             status: error.status,
-                            url: `${this.api.baseURL}/dashboard-home`
+                            url: `${this.api.baseURL.replace('/api/v1', '')}/dashboard-home`
                         });
                         throw error;
                     }
