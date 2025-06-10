@@ -235,17 +235,22 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
             <div class="header-right">
                 <div class="header-metric">
                     <div class="header-metric-label">Preço BTC</div>
-                    <div class="header-metric-value" id="btc-price">$64,725</div>
+                    <div class="header-metric-value" id="btc-price">Carregando...</div>
                 </div>
                 
                 <div class="header-metric">
-                    <div class="header-metric-label">Capital</div>
-                    <div class="header-metric-value" id="capital-total">$128,500</div>
+                    <div class="header-metric-label">Posição BTC</div>
+                    <div class="header-metric-value" id="position-btc">Carregando...</div>
+                </div>
+                
+                <div class="header-metric">
+                    <div class="header-metric-label">Posição USD</div>
+                    <div class="header-metric-value" id="position-usd">Carregando...</div>
                 </div>
                 
                 <div class="header-metric">
                     <div class="header-metric-label">Alavancagem</div>
-                    <div class="header-metric-value" id="leverage-current">1.68x</div>
+                    <div class="header-metric-value" id="leverage-current">Carregando...</div>
                 </div>
                 
                 <div class="status-indicator" id="status-operational">
@@ -262,20 +267,20 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                     <span class="score-title">📊 SCORE DE MERCADO</span>
                 </div>
                 
-                <div class="score-main-value" id="score-mercado-value">57.8</div>
+                <div class="score-main-value" id="score-mercado-value">Carregando...</div>
                 
                 <div class="score-bar-container">
-                    <div class="score-bar-fill" id="score-mercado-bar" style="width: 57.8%"></div>
+                    <div class="score-bar-fill" id="score-mercado-bar" style="width: 0%"></div>
                 </div>
                 
-                <div class="score-classification" id="score-mercado-class">NEUTRO</div>
+                <div class="score-classification" id="score-mercado-class">...</div>
                 
                 <div class="score-metrics">
-                    <span>MVRV: <span id="mvrv-value">2.24</span></span>
-                    <span>NUPL: <span id="nupl-value">0.56</span></span>
+                    <span>MVRV: <span id="mvrv-value">...</span></span>
+                    <span>NUPL: <span id="nupl-value">...</span></span>
                 </div>
                 
-                <button class="score-detail-btn" onclick="window.location.href='/mercado.html'">
+                <button class="score-detail-btn" onclick="window.location.href='/ciclos.html'">
                     Ver Detalhes →
                 </button>
             </div>
@@ -286,17 +291,17 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                     <span class="score-title">🛡️ SCORE DE RISCO</span>
                 </div>
                 
-                <div class="score-main-value" id="score-risco-value">75</div>
+                <div class="score-main-value" id="score-risco-value">Carregando...</div>
                 
                 <div class="score-bar-container">
-                    <div class="score-bar-fill" id="score-risco-bar" style="width: 75%"></div>
+                    <div class="score-bar-fill" id="score-risco-bar" style="width: 0%"></div>
                 </div>
                 
-                <div class="score-classification" id="score-risco-class">BOM</div>
+                <div class="score-classification" id="score-risco-class">...</div>
                 
                 <div class="score-metrics">
-                    <span>HF: <span id="hf-value">1.92</span></span>
-                    <span>Liq: <span id="liq-value">47.9%</span></span>
+                    <span>HF: <span id="hf-value">...</span></span>
+                    <span>Liq: <span id="liq-value">...</span></span>
                 </div>
                 
                 <button class="score-detail-btn" onclick="alert('Score de Risco - Em breve!')">
@@ -321,6 +326,8 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
         class HomeDashboardV2 extends DashboardBase {
             constructor() {
                 super();
+                // Estender API com novo endpoint
+                this.api.getDashboardHome = () => this.api.fetchData('dashboard-home');
                 this.init();
             }
 
@@ -334,31 +341,57 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 try {
                     this.showLoading(true);
 
-                    // Carregar dados de mercado
-                    const mercadoData = await this.api.getMercado();
-                    this.updateMercadoScore(mercadoData);
+                    // Nova API dashboard-home
+                    const dashboardData = await this.api.getDashboardHome();
+                    console.log('📊 Dados Dashboard:', dashboardData);
+                    
+                    // Atualizar header com dados reais
+                    this.updateHeader(dashboardData.header);
 
-                    // Simular dados de risco (substituir pela API real)
-                    this.updateRiscoScore({
-                        score_consolidado: 75,
-                        classificacao: 'bom',
-                        health_factor: 1.92,
-                        liquidation_price: 47.9
-                    });
-
-                    // Atualizar header
-                    this.updateHeader();
+                    // Atualizar scores (assumindo que vem nos dados)
+                    if (dashboardData.score_mercado) {
+                        this.updateMercadoScore(dashboardData.score_mercado);
+                    }
+                    
+                    if (dashboardData.score_risco) {
+                        this.updateRiscoScore(dashboardData.score_risco);
+                    }
 
                     this.showLoading(false);
                     
                 } catch (error) {
                     console.error('❌ Erro ao carregar dados:', error);
+                    this.showError('Erro ao conectar com API');
                     this.showLoading(false);
                 }
             }
 
+            updateHeader(headerData) {
+                if (!headerData) return;
+                
+                // Atualizar campos do header com dados da API
+                document.getElementById('btc-price').textContent = headerData.btc_price_formatado || 'N/A';
+                document.getElementById('position-btc').textContent = headerData.position_btc_formatado || 'N/A';
+                document.getElementById('position-usd').textContent = headerData.position_dolar_formatado || 'N/A';
+                document.getElementById('leverage-current').textContent = headerData.alavancagem_formatado || 'N/A';
+                
+                // Status dinâmico baseado na alavancagem
+                const statusEl = document.getElementById('status-operational');
+                const leverage = parseFloat(headerData.alavancagem_atual) || 0;
+                
+                if (leverage > 0) {
+                    statusEl.innerHTML = '⚡ <span>Operacional</span>';
+                    statusEl.style.background = '#4caf50';
+                } else {
+                    statusEl.innerHTML = '⏸️ <span>Inativo</span>';
+                    statusEl.style.background = '#6b7280';
+                }
+            }
+
             updateMercadoScore(data) {
-                const score = this.formatScore(data.score_consolidado || 57.8);
+                if (!data) return;
+                
+                const score = this.formatScore(data.score_consolidado || 0);
                 const classification = data.classificacao || 'neutro';
                 
                 // Score principal
@@ -366,57 +399,51 @@ BTC Turbo - Home V2 com Header Superior e Scores Flat
                 document.getElementById('score-mercado-bar').style.width = `${score}%`;
                 document.getElementById('score-mercado-class').textContent = classification.toUpperCase();
 
-                // Métricas do breakdown
-                const breakdown = data.composicao?.breakdown || {};
-                const ciclosData = breakdown.ciclos?.indicadores || {};
-                
+                // Métricas específicas (adaptar conforme estrutura da API)
+                const indicadores = data.indicadores || {};
                 document.getElementById('mvrv-value').textContent = 
-                    ciclosData.MVRV_Z?.valor?.toFixed(2) || '2.24';
+                    indicadores.mvrv?.toFixed(2) || 'N/A';
                 document.getElementById('nupl-value').textContent = 
-                    ciclosData.NUPL?.valor?.toFixed(2) || '0.56';
+                    indicadores.nupl?.toFixed(2) || 'N/A';
             }
 
             updateRiscoScore(data) {
-                const score = data.score_consolidado;
-                const classification = data.classificacao;
+                if (!data) return;
+                
+                const score = data.score_consolidado || 0;
+                const classification = data.classificacao || 'neutro';
 
                 document.getElementById('score-risco-value').textContent = score;
                 document.getElementById('score-risco-bar').style.width = `${score}%`;
                 document.getElementById('score-risco-class').textContent = classification.toUpperCase();
-                document.getElementById('hf-value').textContent = data.health_factor;
-                document.getElementById('liq-value').textContent = `${data.liquidation_price}%`;
-            }
-
-            updateHeader() {
-                // Simular dados do header (substituir por API real)
-                document.getElementById('btc-price').textContent = '$64,725';
-                document.getElementById('capital-total').textContent = '$128,500';
-                document.getElementById('leverage-current').textContent = '1.68x';
                 
-                // Status dinâmico baseado nos scores
-                const statusEl = document.getElementById('status-operational');
-                statusEl.innerHTML = '⚡ <span>Operacional</span>';
-                statusEl.style.background = '#4caf50';
+                // Métricas de risco (adaptar conforme API)
+                document.getElementById('hf-value').textContent = data.health_factor?.toFixed(2) || 'N/A';
+                document.getElementById('liq-value').textContent = 
+                    data.liquidation_price ? `${data.liquidation_price.toFixed(1)}%` : 'N/A';
             }
 
             startRealTimeUpdates() {
-                // Update a cada 30 segundos
-                setInterval(() => {
-                    this.updateHeader();
-                }, 30000);
-
-                // Update completo a cada 5 minutos
+                // Update completo a cada 30 segundos
                 setInterval(() => {
                     this.loadAllData();
-                }, 5 * 60 * 1000);
+                }, 30 * 1000);
             }
 
             showLoading(show) {
                 const scoreCards = document.querySelectorAll('.score-card');
-                scoreCards.forEach(card => {
-                    card.style.opacity = show ? '0.6' : '1';
-                    card.style.pointerEvents = show ? 'none' : 'auto';
+                const headerMetrics = document.querySelectorAll('.header-metric-value');
+                
+                [...scoreCards, ...headerMetrics].forEach(element => {
+                    element.style.opacity = show ? '0.6' : '1';
                 });
+            }
+
+            showError(message) {
+                console.error('Dashboard Error:', message);
+                // Mostrar erro nos campos principais
+                document.getElementById('score-mercado-value').textContent = 'Erro';
+                document.getElementById('score-risco-value').textContent = 'Erro';
             }
         }
 
