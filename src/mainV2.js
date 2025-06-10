@@ -203,7 +203,7 @@ class HomeDashboardV2 extends DashboardBase {
         // Atualizar valores
         this.updateElement('leverage-current-value', data.alavancagem_atual_formatado);
         this.updateElement('leverage-allowed-value', data.alavancagem_permitida_formatado);
-        this.updateElement('capital-liquido', data.capital_liquido_formatado);
+        this.updateElement('capital-liquido', data.valor_disponivel_formatado);
         this.updateElement('margem-percent', data.margem_percentual_formatado);
         this.updateElement('stop-loss', data.stop_loss_formatado);
         
