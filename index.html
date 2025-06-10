@@ -101,6 +101,8 @@ Nova versão da home usando API dashboard-home
         }
 
         .score-header {
+            background: #2a2f3e;
+            border: 1px solid #3a3f4e;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -131,7 +133,7 @@ Nova versão da home usando API dashboard-home
         .score-bar {
             background: #404552;
             height: 12px;
-            border-radius: 6px;
+            border-radius: 0px;
             overflow: hidden;
             margin-bottom: 15px;
         }
@@ -139,7 +141,7 @@ Nova versão da home usando API dashboard-home
         .score-bar-fill {
             height: 100%;
             background: linear-gradient(90deg, #718096, #a0aec0);
-            border-radius: 6px;
+            border-radius: 0px;
             transition: width 0.8s ease;
         }
 
@@ -263,10 +265,6 @@ Nova versão da home usando API dashboard-home
                 <div class="header-metric">
                     <div class="header-metric-label">Alavancagem</div>
                     <div class="header-metric-value loading" id="leverage-current">Carregando...</div>
-                </div>
-                
-                <div class="status-indicator loading" id="status-operational">
-                    🔄 <span>Conectando...</span>
                 </div>
             </div>
         </div>
