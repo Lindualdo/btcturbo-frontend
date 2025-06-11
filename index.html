@@ -1,7 +1,7 @@
 <!-- 
 Arquivo: index.html
 Localização: btcturbo-frontend/index.html
-Dashboard BTC Turbo com Gestão de Alavancagem
+Dashboard BTC Turbo com Gestão de Alavancagem + Decisão Estratégica
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -361,13 +361,55 @@ Dashboard BTC Turbo com Gestão de Alavancagem
             </a>
         </div>
 
+        <!-- DECISÃO ESTRATÉGICA -->
+        <div class="panel">
+            <div><span style="color: #8b9dc3; min-width: 50px;">O que devo fazer agora?</span></div>
+            <div class="score-header">
+                <span class="score-title">🎯 Decisão Estratégica</span>
+            </div>
+
+            <!-- Ação Principal -->
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div style="background: linear-gradient(135deg, #ff8c42, #ff6b35); padding: 15px 30px; border-radius: 12px; margin-bottom: 15px;">
+                    <div style="font-size: 1.5rem; font-weight: 700; color: white; text-transform: uppercase;" id="acao-principal">
+                        HOLD
+                    </div>
+                </div>
+                <div style="color: #8b9dc3; font-size: 0.9rem;">
+                    Matriz: <span id="matriz-usada" style="color: #ffffff; font-weight: 600;">Carregando...</span>
+                </div>
+            </div>
+
+            <!-- Métricas da Decisão -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                <div style="text-align: center; padding: 15px; background: #323746; border-radius: 8px;">
+                    <div style="color: #8b9dc3; font-size: 0.8rem; margin-bottom: 5px;">Cenário</div>
+                    <div style="color: #ffffff; font-weight: 600; font-size: 0.9rem;" id="cenario-valor">Carregando...</div>
+                </div>
+                
+                <div style="text-align: center; padding: 15px; background: #323746; border-radius: 8px;">
+                    <div style="color: #8b9dc3; font-size: 0.8rem; margin-bottom: 5px;">RSI Diário</div>
+                    <div style="color: #ffffff; font-weight: 600; font-size: 0.9rem;" id="rsi-diario-valor">Carregando...</div>
+                </div>
+                
+                <div style="text-align: center; padding: 15px; background: #323746; border-radius: 8px;">
+                    <div style="color: #8b9dc3; font-size: 0.8rem; margin-bottom: 5px;">Dist. EMA 144</div>
+                    <div style="color: #ffffff; font-weight: 600; font-size: 0.9rem;" id="ema-distance-valor">Carregando...</div>
+                </div>
+            </div>
+            
+            <button class="btn-detail-minimal" onclick="alert('Análise estratégica completa em breve!')" style="width: 100%; text-align: center; display: block;">
+                Ver Análise Completa →
+            </button>
+        </div>
+
         <!-- PLACEHOLDER BLOCOS FUTUROS -->
         <div style="text-align: center; padding: 40px; color: #8b9dc3; border: 2px dashed #3a3f4e; border-radius: 12px; margin-top: 20px;">
             <h3>🚧 Próximos Blocos</h3>
             <p style="margin: 10px 0;">✅ Bloco 1: Header Superior (implementado)</p>
             <p style="margin: 10px 0;">✅ Bloco 2: Scores Principais (implementado)</p>
             <p style="margin: 10px 0;">✅ Bloco 3: Gestão de Alavancagem (implementado)</p>
-            <p style="margin: 10px 0;">⏳ Bloco 4: Decisão Estratégica</p>
+            <p style="margin: 10px 0;">✅ Bloco 4: Decisão Estratégica (implementado)</p>
             <p style="margin: 10px 0;">⏳ Bloco 5: Alertas e Oportunidades</p>
             <p style="margin: 10px 0;">⏳ Bloco 6: Indicadores Rápidos</p>
         </div>

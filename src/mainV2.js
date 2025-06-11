@@ -1,7 +1,7 @@
 /* 
 Arquivo: src/mainV2.js
 Localização: btcturbo-frontend/src/mainV2.js
-Nova versão da home usando API dashboard-home com Gestão de Alavancagem
+Nova versão da home usando API dashboard-home com Gestão de Alavancagem + Decisão Estratégica
 */
 
 import { SimpleGauge, DashboardBase } from './components/shared.js';
@@ -53,13 +53,14 @@ class HomeDashboardV2 extends DashboardBase {
             const dashboardData = await this.api.getDashboardHome();
             
             if (dashboardData.status === 'success' && dashboardData.data) {
-                const { header, mercado, risco, alavancagem } = dashboardData.data;
+                const { header, mercado, risco, alavancagem, estrategia } = dashboardData.data;
                 
                 console.log('📊 Processando dados:', {
                     header: !!header,
                     mercado: !!mercado, 
                     risco: !!risco,
-                    alavancagem: !!alavancagem
+                    alavancagem: !!alavancagem,
+                    estrategia: !!estrategia
                 });
                 
                 // Atualizar cada seção
@@ -67,6 +68,7 @@ class HomeDashboardV2 extends DashboardBase {
                 this.updateMercadoScore(mercado);
                 this.updateRiscoScore(risco);
                 this.updateAlavancagem(alavancagem);
+                this.updateEstrategia(estrategia);
                 
                 console.log('✅ Dashboard atualizado com sucesso!');
             } else {
@@ -212,6 +214,35 @@ class HomeDashboardV2 extends DashboardBase {
         console.log('✅ Alavancagem atualizada');
     }
 
+    updateEstrategia(data) {
+        if (!data) {
+            console.warn('⚠️ Dados de estratégia não disponíveis');
+            return;
+        }
+        
+        console.log('🎯 Atualizando estratégia:', data);
+        
+        // Atualizar ação principal
+        this.updateElement('acao-principal', data.acao || 'HOLD');
+        
+        // Atualizar matriz usada
+        this.updateElement('matriz-usada', data.dados_decisao?.matriz_usada || 'N/A');
+        
+        // Atualizar cenário
+        const cenario = data.cenario || 'N/A';
+        this.updateElement('cenario-valor', cenario.replace('matriz_', '').replace('_', ' ').toUpperCase());
+        
+        // Atualizar RSI Diário
+        const rsiDiario = data.dados_decisao?.rsi_diario;
+        this.updateElement('rsi-diario-valor', rsiDiario ? rsiDiario.toFixed(1) : 'N/A');
+        
+        // Atualizar Distância EMA 144
+        const emaDistance = data.dados_decisao?.ema_distance;
+        this.updateElement('ema-distance-valor', emaDistance ? `${emaDistance.toFixed(1)}%` : 'N/A');
+        
+        console.log('✅ Estratégia atualizada');
+    }
+
     startRealTimeUpdates() {
         // Auto-refresh a cada 30 segundos
         setInterval(() => {
@@ -266,6 +297,13 @@ class HomeDashboardV2 extends DashboardBase {
         this.updateElement('position-btc', 'Erro');
         this.updateElement('position-usd', 'Erro');
         this.updateElement('leverage-current', 'Erro');
+        
+        // Estratégia com erro
+        this.updateElement('acao-principal', 'ERRO');
+        this.updateElement('matriz-usada', 'Erro');
+        this.updateElement('cenario-valor', 'Erro');
+        this.updateElement('rsi-diario-valor', 'Erro');
+        this.updateElement('ema-distance-valor', 'Erro');
         
         // Status de erro
         const statusEl = document.getElementById('status-operational');
