@@ -225,6 +225,9 @@ class HomeDashboardV2 extends DashboardBase {
         // Atualizar ação principal
         this.updateElement('acao-principal', data.acao || 'HOLD');
         
+        // Atualizar justificativa
+        this.updateElement('justificativa-valor', data.justificativa || 'Análise em andamento...');
+        
         // Atualizar matriz usada
         this.updateElement('matriz-usada', data.dados_decisao?.matriz_usada || 'N/A');
         
