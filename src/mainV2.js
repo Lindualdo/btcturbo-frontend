@@ -249,8 +249,8 @@ class HomeDashboardV2 extends DashboardBase {
     startRealTimeUpdates() {
         // Auto-refresh a cada 30 segundos
         setInterval(() => {
-            console.log('🔄 Auto-refresh dos dados...');
-            this.loadAllData();
+            //console.log('🔄 Auto-refresh dos dados...');
+            //this.loadAllData();
         }, 30 * 1000);
         
         console.log('⏰ Auto-refresh configurado para 30s');
