@@ -121,17 +121,17 @@ class HomeDashboard {
     }
 
     showLoading() {
+        // Mostrar loading apenas nos elementos de texto, não nas barras
         Object.values(this.components).forEach(component => {
-            component.showLoading?.();
+            if (component.showLoading) {
+                component.showLoading();
+            }
         });
-
-        // Adicionar classe de loading geral
-        document.body.classList.add('dashboard-loading');
     }
 
     hideLoading() {
-        // Remover classe de loading geral
-        document.body.classList.remove('dashboard-loading');
+        // Sem efeitos visuais de loading
+        console.log('✅ Dados carregados');
     }
 
     handleLoadError() {

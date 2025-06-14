@@ -61,16 +61,14 @@ export class Mercado {
     }
 
     showLoading() {
-        Object.values(this.elements).forEach(element => {
+        // Loading apenas nos textos, não nas barras
+        ['scoreNumber', 'scoreClass', 'mvrvValue', 'nuplValue', 'cicloValue'].forEach(key => {
+            const element = this.elements[key];
             if (element) {
                 element.textContent = 'Carregando...';
                 element.classList.add('loading');
             }
         });
-
-        if (this.elements.scoreBar) {
-            this.elements.scoreBar.style.width = '0%';
-        }
     }
 
     showError() {
