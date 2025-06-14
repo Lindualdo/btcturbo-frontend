@@ -26,7 +26,7 @@ export class AlavancagemData {
         return {
             currentLeverage: formatters.leverage(data.atual),
             allowedLeverage: formatters.leverage(data.permitida),
-           // labelText: `${data.atual.toFixed(2)}x / ${data.permitida.toFixed(2)}x`,
+            labelText: `${data.atual.toFixed(2)} / ${data.permitida.toFixed(2)}`,
             currentPercent: Math.min(currentPercent, 100),
             allowedPercent: Math.min(allowedPercent, 100),
             usagePercent: Math.min(usagePercent, 100),
