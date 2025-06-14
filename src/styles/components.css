@@ -90,24 +90,13 @@ Estilos específicos dos componentes modulares
     border-radius: 16px;
     padding: 25px;
     position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.score-question {
-    font-size: 0.9rem;
-    color: #8b9dc3;
-    text-align: center;
-    margin-bottom: 5px;
-    order: 2;
 }
 
 .score-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-    order: 1;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .score-title {
@@ -117,11 +106,6 @@ Estilos específicos dos componentes modulares
     display: flex;
     align-items: center;
     gap: 8px;
-    text-align: center;
-}
-
-.score-display {
-    order: 3;
 }
 
 .score-display {
