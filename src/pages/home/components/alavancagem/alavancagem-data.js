@@ -19,12 +19,17 @@ export class AlavancagemData {
         
         // Calcular margem percentual: atual/permitida
         const margemPercent = data.permitida > 0 ? (data.atual / data.permitida * 100) : 0;
+        
+        // Percentual de uso da alavancagem permitida
+        const usagePercent = data.permitida > 0 ? (data.atual / data.permitida * 100) : 0;
 
         return {
             currentLeverage: formatters.leverage(data.atual),
             allowedLeverage: formatters.leverage(data.permitida),
+            labelText: `${data.atual.toFixed(2)}x / ${data.permitida.toFixed(2)}x`,
             currentPercent: Math.min(currentPercent, 100),
             allowedPercent: Math.min(allowedPercent, 100),
+            usagePercent: Math.min(usagePercent, 100),
             capitalLiquido: formatters.currency(data.valor_disponivel),
             margemPercent: `${margemPercent.toFixed(1)}%`,
             margemMoney: formatters.currency(data.divida_total),

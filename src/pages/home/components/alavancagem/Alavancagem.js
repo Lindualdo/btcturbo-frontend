@@ -26,7 +26,7 @@ export class Alavancagem {
 
         console.log('📈 Renderizando alavancagem:', data);
 
-        this.updateElement('currentValue', data.currentLeverage);
+        this.updateElement('currentValue', data.labelText);
         this.updateElement('allowedValue', data.allowedLeverage);
         this.updateElement('capitalLiquido', data.capitalLiquido);
         this.updateElement('margemPercent', data.margemPercent);
@@ -34,7 +34,7 @@ export class Alavancagem {
         this.updateElement('valorReduzir', data.valorReduzir);
         this.updateElement('alavancagemStatus', data.status);
 
-        this.updateLeverageBars(data.currentPercent, data.allowedPercent);
+        this.updateLeverageBars(data.currentPercent, data.allowedPercent, data.usagePercent);
         this.clearLoading();
     }
 
@@ -46,26 +46,27 @@ export class Alavancagem {
         }
     }
 
-    updateLeverageBars(currentPercent, allowedPercent) {
+    updateLeverageBars(currentPercent, allowedPercent, usagePercent) {
         const currentBar = this.elements.currentBar;
         const allowedBar = this.elements.allowedBar;
 
         if (currentBar) {
-            currentBar.style.width = `${Math.min(currentPercent, 100)}%`;
+            // Barra única mostra uso atual vs permitido
+            currentBar.style.width = `${Math.min(usagePercent, 100)}%`;
             
-            // Cor baseada no nível de risco
-            if (currentPercent > 80) {
-                currentBar.style.background = '#ff4757';
-            } else if (currentPercent > 60) {
-                currentBar.style.background = '#ffa726';
+            // Cores baseadas no uso da alavancagem permitida
+            if (usagePercent > 100) {
+                currentBar.style.background = '#ff4757'; // Vermelho - ultrapassou
+            } else if (usagePercent > 80) {
+                currentBar.style.background = '#ffa726'; // Laranja - próximo do limite
             } else {
-                currentBar.style.background = '#4caf50';
+                currentBar.style.background = '#4caf50'; // Verde - seguro
             }
         }
 
-        if (allowedBar) {
-            allowedBar.style.width = `${Math.min(allowedPercent, 100)}%`;
-            allowedBar.style.background = '#8b9dc3';
+        // Esconder segunda barra
+        if (allowedBar && allowedBar.parentElement) {
+            allowedBar.parentElement.style.display = 'none';
         }
     }
 
@@ -83,9 +84,8 @@ export class Alavancagem {
             }
         });
 
-        // Reset das barras
+        // Reset da barra
         if (this.elements.currentBar) this.elements.currentBar.style.width = '0%';
-        if (this.elements.allowedBar) this.elements.allowedBar.style.width = '0%';
     }
 
     showError() {
@@ -103,9 +103,8 @@ export class Alavancagem {
             }
         });
 
-        // Reset das barras
+        // Reset da barra
         if (this.elements.currentBar) this.elements.currentBar.style.width = '0%';
-        if (this.elements.allowedBar) this.elements.allowedBar.style.width = '0%';
     }
 
     clearLoading() {
