@@ -302,3 +302,12 @@ Estilos específicos dos componentes modulares
         transform: translateY(0);
     }
 }
+
+/* =========================
+   GRID INFERIOR - ALAVANCAGEM E ESTRATÉGIAS
+   ========================= */
+.bottom-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
