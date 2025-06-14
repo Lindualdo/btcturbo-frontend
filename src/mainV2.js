@@ -101,12 +101,13 @@ class HomeDashboardV2 extends DashboardBase {
         
         // Atualizar valores formatados da API
 
+        const position_btc = headerData.position_usd / headerData.btc_price || 0;
         const btcFormatado = Number(position_btc).toFixed(4);
-        const position_usd = `$${headerData.position_usd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+        const position_usd_formatado = `$${headerData.position_usd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 
         this.updateElement('btc-price', headerData.btc_price || 'N/A');
         this.updateElement('position-btc',btcFormatado || 'N/A');
-        this.updateElement('position-usd', position_usd || 'N/A');
+        this.updateElement('position-usd', position_usd_formatado || 'N/A');
         //this.updateElement('leverage-current', headerData.alavancagem_formatado || 'N/A');
         
         // Status dinâmico baseado na alavancagem
