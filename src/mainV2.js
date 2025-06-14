@@ -53,7 +53,7 @@ class HomeDashboardV2 extends DashboardBase {
             const dashboardData = await this.api.getDashboardHome();
             
             if (dashboardData.status === 'success' && dashboardData.data) {
-                const { header, scores, tecnicos, estrategia, alavancagem, indicadores, } = dashboardData.data;
+                const { header, scores, tecnicos, estrategia, alavancagem, indicadores } = dashboardData.data;
                 
                 console.log('📊 Processando dados:', {
                     header: !!header,
@@ -65,11 +65,11 @@ class HomeDashboardV2 extends DashboardBase {
                 });
                 
                 // Atualizar cada seção
-                this.updateHeader(header);
-                //this.updateMercadoScore(scores,indicadores);
-                //this.updateRiscoScore(scores,indicadores);
-                //this.updateAlavancagem(alavancagem);
-                //this.updateEstrategia(estrategia);
+                this.updateHeader(header, dashboardData.status);
+                this.updateMercadoScore(scores, indicadores);
+                this.updateRiscoScore(scores, indicadores);
+                this.updateAlavancagem(alavancagem);
+                this.updateEstrategia(estrategia, tecnicos);
                 
                 console.log('✅ Dashboard atualizado com sucesso!');
             } else {
@@ -91,7 +91,7 @@ class HomeDashboardV2 extends DashboardBase {
         }
     }
 
-    updateHeader(headerData) {
+    updateHeader(headerData, apiStatus) {
         if (!headerData) {
             console.warn('⚠️ Header data não disponível');
             return;
@@ -100,49 +100,46 @@ class HomeDashboardV2 extends DashboardBase {
         console.log('📱 Atualizando header:', headerData);
         
         // Atualizar valores formatados da API
-
         const position_btc = headerData.position_usd / headerData.btc_price || 0;
         const btcFormatado = Number(position_btc).toFixed(4);
         const position_usd_formatado = `$${headerData.position_usd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
         const btc_price_formatado = `$${headerData.btc_price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 
-
         this.updateElement('btc-price', btc_price_formatado || 'N/A');
-        this.updateElement('position-btc',btcFormatado || 'N/A');
+        this.updateElement('position-btc', btcFormatado || 'N/A');
         this.updateElement('position-usd', position_usd_formatado || 'N/A');
-        //this.updateElement('leverage-current', headerData.alavancagem_formatado || 'N/A');
         
-        // Status dinâmico baseado na alavancagem
-        //this.updateStatus(headerData.alavancagem_atual || 0);
+        // Status da API
+        this.updateApiStatus(apiStatus);
         
         console.log('✅ Header atualizado');
     }
 
-    updateStatus(leverage) {
-        const statusEl = document.getElementById('status-operational');
+    updateApiStatus(status) {
+        const statusEl = document.getElementById('api-status');
         if (!statusEl) return;
         
-        if (leverage > 0) {
-            statusEl.innerHTML = '⚡ <span>Operacional</span>';
+        if (status === 'success') {
+            statusEl.innerHTML = '⚡ Operacional';
             statusEl.style.background = '#4caf50';
             statusEl.className = 'status-indicator';
         } else {
-            statusEl.innerHTML = '⏸️ <span>Inativo</span>';
-            statusEl.style.background = '#6b7280';
-            statusEl.className = 'status-indicator';
+            statusEl.innerHTML = '❌ Erro';
+            statusEl.style.background = '#ef4444';
+            statusEl.className = 'status-indicator error';
         }
     }
 
-    updateMercadoScore(data) {
-        if (!data) {
+    updateMercadoScore(scores, indicadores) {
+        if (!scores || !indicadores) {
             console.warn('⚠️ Dados de mercado não disponíveis');
             return;
         }
         
-        console.log('📊 Atualizando score de mercado:', data);
+        console.log('📊 Atualizando score de mercado:', scores, indicadores);
         
-        const score = this.formatScore(data.score || 0);
-        const classification = (data.classificacao || 'neutro').toUpperCase();
+        const score = this.formatScore(scores.mercado || 0);
+        const classification = (scores.classificacao_mercado || 'neutro').toUpperCase();
         
         // Atualizar elementos do layout flat
         this.updateElement('score-mercado-number', score);
@@ -154,23 +151,24 @@ class HomeDashboardV2 extends DashboardBase {
             barElement.style.width = `${score}%`;
         }
         
-        // Métricas MVRV e NUPL
-        this.updateElement('mvrv-value', data.mvrv_formatado || (data.mvrv ? data.mvrv.toFixed(2) : 'N/A'));
-        this.updateElement('nupl-value', data.nupl_formatado || (data.nupl ? data.nupl.toFixed(3) : 'N/A'));
+        // Métricas MVRV, NUPL e Ciclo
+        this.updateElement('mvrv-value', indicadores.mvrv ? indicadores.mvrv.toFixed(2) : 'N/A');
+        this.updateElement('nupl-value', indicadores.nupl ? indicadores.nupl.toFixed(3) : 'N/A');
+        this.updateElement('ciclo-value', scores.ciclo || 'N/A');
         
         console.log('✅ Score Mercado atualizado');
     }
 
-    updateRiscoScore(data) {
-        if (!data) {
+    updateRiscoScore(scores, indicadores) {
+        if (!scores || !indicadores) {
             console.warn('⚠️ Dados de risco não disponíveis');
             return;
         }
         
-        console.log('🛡️ Atualizando score de risco:', data);
+        console.log('🛡️ Atualizando score de risco:', scores, indicadores);
         
-        const score = this.formatScore(data.score || 0);
-        const classification = (data.classificacao || 'neutro').toUpperCase();
+        const score = this.formatScore(scores.risco || 0);
+        const classification = (scores.classificacao_risco || 'neutro').toUpperCase();
         
         // Atualizar elementos do layout flat
         this.updateElement('score-risco-number', score);
@@ -183,8 +181,8 @@ class HomeDashboardV2 extends DashboardBase {
         }
         
         // Métricas HF e Liquidação
-        this.updateElement('hf-value', data.health_factor_formatado || (data.health_factor ? data.health_factor.toFixed(2) : 'N/A'));
-        this.updateElement('liq-value', data.dist_liquidacao_formatado || (data.dist_liquidacao ? `${data.dist_liquidacao.toFixed(1)}%` : 'N/A'));
+        this.updateElement('hf-value', indicadores.health_factor ? indicadores.health_factor.toFixed(2) : 'N/A');
+        this.updateElement('liq-value', indicadores.dist_liquidacao ? `${indicadores.dist_liquidacao.toFixed(1)}%` : 'N/A');
         
         console.log('✅ Score Risco atualizado');
     }
@@ -199,8 +197,11 @@ class HomeDashboardV2 extends DashboardBase {
         
         // Calcular percentuais para as barras (baseado em max 3x)
         const maxLeverage = 3.0;
-        const currentPercent = (data.alavancagem_atual / maxLeverage) * 100;
-        const allowedPercent = (data.alavancagem_permitida / maxLeverage) * 100;
+        const currentPercent = (data.atual / maxLeverage) * 100;
+        const allowedPercent = (data.permitida / maxLeverage) * 100;
+        
+        // Calcular margem percentual corrigido: atual/permitida
+        const margemPercent = data.permitida > 0 ? (data.atual / data.permitida * 100).toFixed(1) : 0;
         
         // Atualizar barras
         const currentBar = document.getElementById('leverage-current-bar');
@@ -209,46 +210,46 @@ class HomeDashboardV2 extends DashboardBase {
         if (currentBar) currentBar.style.width = `${Math.min(currentPercent, 100)}%`;
         if (allowedBar) allowedBar.style.width = `${Math.min(allowedPercent, 100)}%`;
         
+        // Formatações
+        const valorDisponivel = `$${data.valor_disponivel.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+        const dividaTotal = `$${data.divida_total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+        const valorReduzir = data.valor_a_reduzir > 0 ? `$${data.valor_a_reduzir.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}` : 'N/A';
+        
         // Atualizar valores
-        this.updateElement('leverage-current-value', data.alavancagem_atual_formatado);
-        this.updateElement('leverage-allowed-value', data.alavancagem_permitida_formatado);
-        this.updateElement('capital-liquido', data.valor_disponivel_formatado);
-        this.updateElement('margem-percent', data.margem_percentual_formatado);
-        this.updateElement('margem-money', data.divida_total_formatado);
-        this.updateElement('stop-loss', data.stop_loss_formatado);
-        this.updateElement('valor-reduzir', data.valor_a_reduzir_formatado);
+        this.updateElement('leverage-current-value', `${data.atual.toFixed(2)}x`);
+        this.updateElement('leverage-allowed-value', `${data.permitida.toFixed(2)}x`);
+        this.updateElement('capital-liquido', valorDisponivel);
+        this.updateElement('margem-percent', `${margemPercent}%`);
+        this.updateElement('margem-money', dividaTotal);
+        this.updateElement('valor-reduzir', valorReduzir);
+        this.updateElement('alavancagem-status', data.status || 'N/A');
         
         console.log('✅ Alavancagem atualizada');
     }
 
-    updateEstrategia(data) {
-        if (!data) {
+    updateEstrategia(estrategia, tecnicos) {
+        if (!estrategia || !tecnicos) {
             console.warn('⚠️ Dados de estratégia não disponíveis');
             return;
         }
         
-        console.log('🎯 Atualizando estratégia:', data);
+        console.log('🎯 Atualizando estratégia:', estrategia, tecnicos);
         
         // Atualizar ação principal
-        this.updateElement('acao-principal', data.acao || 'HOLD');
+        this.updateElement('acao-principal', estrategia.decisao || 'HOLD');
         
         // Atualizar justificativa
-        this.updateElement('justificativa-valor', data.justificativa || 'Análise em andamento...');
+        this.updateElement('justificativa-valor', estrategia.justificativa || 'Análise em andamento...');
         
-        // Atualizar matriz usada
-        this.updateElement('matriz-usada', data.dados_decisao?.matriz_usada || 'N/A');
-        
-        // Atualizar cenário
-        const cenario = data.cenario || 'N/A';
-        this.updateElement('cenario-valor', cenario.replace('matriz_', '').replace('_', ' ').toUpperCase());
+        // Atualizar setup (antes era cenário)
+        const setup = estrategia.setup_4h || 'N/A';
+        this.updateElement('setup-valor', setup.replace(/_/g, ' '));
         
         // Atualizar RSI Diário
-        const rsiDiario = data.dados_decisao?.rsi_diario;
-        this.updateElement('rsi-diario-valor', rsiDiario ? rsiDiario.toFixed(1) : 'N/A');
+        this.updateElement('rsi-diario-valor', tecnicos.rsi ? tecnicos.rsi.toFixed(1) : 'N/A');
         
         // Atualizar Distância EMA 144
-        const emaDistance = data.dados_decisao?.ema_distance;
-        this.updateElement('ema-distance-valor', emaDistance ? `${emaDistance.toFixed(1)}%` : 'N/A');
+        this.updateElement('ema-distance-valor', tecnicos.ema_144_distance ? `${tecnicos.ema_144_distance.toFixed(1)}%` : 'N/A');
         
         console.log('✅ Estratégia atualizada');
     }
@@ -256,8 +257,8 @@ class HomeDashboardV2 extends DashboardBase {
     startRealTimeUpdates() {
         // Auto-refresh a cada 30 segundos
         setInterval(() => {
-            //console.log('🔄 Auto-refresh dos dados...');
-            //this.loadAllData();
+            console.log('🔄 Auto-refresh dos dados...');
+            this.loadAllData();
         }, 30 * 1000);
         
         console.log('⏰ Auto-refresh configurado para 30s');
@@ -306,22 +307,15 @@ class HomeDashboardV2 extends DashboardBase {
         this.updateElement('btc-price', 'Erro');
         this.updateElement('position-btc', 'Erro');
         this.updateElement('position-usd', 'Erro');
-        this.updateElement('leverage-current', 'Erro');
         
         // Estratégia com erro
         this.updateElement('acao-principal', 'ERRO');
-        this.updateElement('matriz-usada', 'Erro');
-        this.updateElement('cenario-valor', 'Erro');
+        this.updateElement('setup-valor', 'Erro');
         this.updateElement('rsi-diario-valor', 'Erro');
         this.updateElement('ema-distance-valor', 'Erro');
         
         // Status de erro
-        const statusEl = document.getElementById('status-operational');
-        if (statusEl) {
-            statusEl.innerHTML = '❌ <span>Erro de Conexão</span>';
-            statusEl.style.background = '#ef4444';
-            statusEl.className = 'status-indicator error';
-        }
+        this.updateApiStatus('error');
         
         // Limpar gauges
         Object.values(this.gauges).forEach(gauge => {

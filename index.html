@@ -262,10 +262,9 @@ Dashboard BTC Turbo com Gestão de Alavancagem + Decisão Estratégica
                     <div class="header-metric-value loading" id="position-usd">Carregando...</div>
                 </div>
                 
-                <!--<div class="header-metric">
-                    <div class="header-metric-label">Alavancagem</div>
-                    <div class="header-metric-value loading" id="leverage-current">Carregando...</div>
-                </div>-->
+                <div class="status-indicator" id="api-status">
+                    ⏳ Conectando...
+                </div>
             </div>
         </div>
 
@@ -289,6 +288,10 @@ Dashboard BTC Turbo com Gestão de Alavancagem + Decisão Estratégica
                 <div class="score-metrics">
                     <span>MVRV: <span id="mvrv-value" class="loading">-</span></span>
                     <span>NUPL: <span id="nupl-value" class="loading">-</span></span>
+                </div>
+                
+                <div style="margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3; text-align: center;">
+                    Ciclo: <span id="ciclo-value" class="loading" style="color: #ffffff; font-weight: 600;">-</span>
                 </div>
                 
                 <a href="/mercado.html" class="btn-detail-minimal">Ver Detalhes →</a>
@@ -349,11 +352,11 @@ Dashboard BTC Turbo com Gestão de Alavancagem + Decisão Estratégica
                 <span>Disponível: <span id="capital-liquido" style="color: #ffffff; font-weight: 600;">$0</span></span>
                 <span>Usado: <span id="margem-percent" style="color: #ffffff; font-weight: 600;">0%</span></span>
                 <span>Divida: <span id="margem-money" style="color: #ffffff; font-weight: 600;">$0</span></span>
-                <!--<span>Stop Loss: <span id="stop-loss" style="color: #ffffff; font-weight: 600;">-0%</span></span>-->
             </div>
             
             <div style="margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
                 <span>Valor a reduzir: <span id="valor-reduzir" style="color: #ffffff; font-weight: 600;">-</span></span>
+                <span style="margin-left: 20px;">Status: <span id="alavancagem-status" style="color: #ffffff; font-weight: 600;">-</span></span>
             </div>
             
             <a href="#" class="btn-detail-minimal" onclick="alert('Simulador em desenvolvimento!'); return false;" style="width: 100%; text-align: center; display: block;">
@@ -375,9 +378,6 @@ Dashboard BTC Turbo com Gestão de Alavancagem + Decisão Estratégica
                         HOLD
                     </div>
                 </div>
-                <div style="color: #8b9dc3; font-size: 0.9rem; margin-bottom: 10px;">
-                    Matriz: <span id="matriz-usada" style="color: #ffffff; font-weight: 600;">Carregando...</span>
-                </div>
                 <div style="color: #8b9dc3; font-size: 0.85rem; text-align: center; padding: 10px; background: #323746; border-radius: 8px;">
                     <span id="justificativa-valor">Carregando...</span>
                 </div>
@@ -386,12 +386,12 @@ Dashboard BTC Turbo com Gestão de Alavancagem + Decisão Estratégica
             <!-- Métricas da Decisão -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 20px;">
                 <div style="text-align: center; padding: 15px; background: #323746; border-radius: 8px;">
-                    <div style="color: #8b9dc3; font-size: 0.8rem; margin-bottom: 5px;">Cenário</div>
-                    <div style="color: #ffffff; font-weight: 600; font-size: 0.9rem;" id="cenario-valor">Carregando...</div>
+                    <div style="color: #8b9dc3; font-size: 0.8rem; margin-bottom: 5px;">Setup</div>
+                    <div style="color: #ffffff; font-weight: 600; font-size: 0.9rem;" id="setup-valor">Carregando...</div>
                 </div>
                 
                 <div style="text-align: center; padding: 15px; background: #323746; border-radius: 8px;">
-                    <div style="color: #8b9dc3; font-size: 0.8rem; margin-bottom: 5px;">RSI Diário</div>
+                    <div style="color: #8b9dc3; font-size: 0.8rem; margin-bottom: 5px;">RSI</div>
                     <div style="color: #ffffff; font-weight: 600; font-size: 0.9rem;" id="rsi-diario-valor">Carregando...</div>
                 </div>
                 
