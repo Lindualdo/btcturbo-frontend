@@ -99,9 +99,7 @@ class HomeDashboardV2 extends DashboardBase {
         
         console.log('📱 Atualizando header:', headerData);
         
-
         // Atualizar valores formatados da API
-        position_btc = headerData.position_usd / (headerData.btc_price || 1);
 
         const btcFormatado = Number(position_btc).toFixed(4);
         const position_usd = `$${headerData.position_usd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
