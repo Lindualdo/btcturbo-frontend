@@ -1,0 +1,304 @@
+/* 
+Arquivo: src/styles/components.css
+Estilos específicos dos componentes modulares
+*/
+
+/* =========================
+   HEADER COMPONENT
+   ========================= */
+.top-header {
+    background: linear-gradient(135deg, #2a2f3e 0%, #1a1d29 100%);
+    border: 1px solid #3a3f4e;
+    border-radius: 16px;
+    padding: 20px 30px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-subtitle {
+    font-size: 0.9rem;
+    color: #ff8c42;
+    font-weight: 600;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-metric {
+    text-align: center;
+}
+
+.header-metric-label {
+    font-size: 0.8rem;
+    color: #8b9dc3;
+    margin-bottom: 2px;
+}
+
+.header-metric-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.status-indicator {
+    background: #4caf50;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* =========================
+   SCORE CARDS
+   ========================= */
+.scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.score-card {
+    background: #2a2f3e;
+    border: 1px solid #3a3f4e;
+    border-radius: 16px;
+    padding: 25px;
+    position: relative;
+}
+
+.score-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.score-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.score-display {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.score-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.score-bar {
+    background: #404552;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.score-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #718096, #a0aec0);
+    border-radius: 6px;
+    transition: width 0.8s ease;
+}
+
+.score-classification {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #8b9dc3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.score-metrics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #8b9dc3;
+}
+
+/* =========================
+   LEVERAGE BARS
+   ========================= */
+.leverage-bar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.leverage-bar-label {
+    color: #8b9dc3;
+    min-width: 80px;
+}
+
+.leverage-bar {
+    flex: 1;
+    height: 8px;
+    background: #404552;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 300px;
+}
+
+.leverage-bar-fill {
+    height: 100%;
+    background: #8b9dc3;
+    transition: width 0.8s ease;
+}
+
+.leverage-value {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* =========================
+   STRATEGY COMPONENT
+   ========================= */
+.strategy-action {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.strategy-main-action {
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    padding: 15px 30px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.strategy-action-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+}
+
+.strategy-justification {
+    color: #8b9dc3;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 10px;
+    background: #323746;
+    border-radius: 8px;
+}
+
+.strategy-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.strategy-metric {
+    text-align: center;
+    padding: 15px;
+    background: #323746;
+    border-radius: 8px;
+}
+
+.strategy-metric-label {
+    color: #8b9dc3;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.strategy-metric-value {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* =========================
+   LOADING E ESTADOS
+   ========================= */
+.loading {
+    color: #8b9dc3;
+    font-style: italic;
+}
+
+.error {
+    color: #ff4757;
+    font-weight: 600;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 768px) {
+    .top-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .header-right {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .scores-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .header-title {
+        font-size: 1.2rem;
+    }
+
+    .strategy-metrics {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   ANIMAÇÕES
+   ========================= */
+.score-card, .top-header, .panel {
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

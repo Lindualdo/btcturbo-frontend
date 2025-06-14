@@ -6,28 +6,46 @@ Dashboard modular para análise e gestão de posições Bitcoin alavancadas.
 
 ```
 btcturbo-frontend/
-├── src/
-│   ├── pages/
-│   │   ├── home/
-│   │   │   ├── components/
-│   │   │   │   ├── header/ (Header.js + header-data.js)
-│   │   │   │   ├── mercado/ (Mercado.js + mercado-data.js)
-│   │   │   │   ├── risco/ (Risco.js + risco-data.js)
-│   │   │   │   ├── alavancagem/ (Alavancagem.js + alavancagem-data.js)
-│   │   │   │   └── estrategia/ (Estrategia.js + estrategia-data.js)
-│   │   │   └── index.js (orquestrador)
-│   │   ├── portfolio/ (futuro)
-│   │   └── analytics/ (futuro)
-│   ├── shared/
-│   │   ├── api.js
-│   │   ├── formatters.js
-│   │   └── constants.js
-│   └── styles/
-│       ├── shared.css
-│       └── components.css
-├── index.html
+├── index.html                    # Página home
+├── index.js                     # Entry point → home
+├── portfolio.html               # (futuro)
+├── analytics.html              # (futuro)
 ├── package.json
-└── vite.config.js
+├── vite.config.js
+├── vercel.json
+└── src/
+    ├── shared/                  # Código comum
+    │   ├── api.js              # ApiClient
+    │   ├── formatters.js       # Formatadores
+    │   └── constants.js        # Configurações
+    ├── styles/
+    │   ├── shared.css          # Base styles
+    │   └── components.css      # Componentes
+    └── pages/
+        ├── home/               # Dashboard home
+        │   ├── index.js        # Orquestrador
+        │   └── components/
+        │       ├── header/
+        │       │   ├── Header.js
+        │       │   └── header-data.js
+        │       ├── mercado/
+        │       │   ├── Mercado.js
+        │       │   └── mercado-data.js
+        │       ├── risco/
+        │       │   ├── Risco.js
+        │       │   └── risco-data.js
+        │       ├── alavancagem/
+        │       │   ├── Alavancagem.js
+        │       │   └── alavancagem-data.js
+        │       └── estrategia/
+        │           ├── Estrategia.js
+        │           └── estrategia-data.js
+        ├── portfolio/          # (futuro)
+        │   ├── index.js
+        │   └── components/
+        └── analytics/          # (futuro)
+            ├── index.js
+            └── components/
 ```
 
 ## 🏗️ Arquitetura de Componentes
