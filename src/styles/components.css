@@ -311,3 +311,15 @@ Estilos específicos dos componentes modulares
     grid-template-columns: 1fr 1fr;
     gap: 25px;
 }
+
+.leverage-bar-container {
+    margin-bottom: 15px;
+}
+
+.leverage-bar {
+    height: 12px;
+    background: #404552;
+    border-radius: 0px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
