@@ -123,7 +123,7 @@ Estilos específicos dos componentes modulares
 .score-bar {
     background: #404552;
     height: 12px;
-    border-radius: 6px;
+    border-radius: 0px;
     overflow: hidden;
     margin-bottom: 15px;
 }
@@ -131,7 +131,7 @@ Estilos específicos dos componentes modulares
 .score-bar-fill {
     height: 100%;
     background: linear-gradient(90deg, #718096, #a0aec0);
-    border-radius: 6px;
+    border-radius: 0px;
     transition: width 0.8s ease;
 }
 
