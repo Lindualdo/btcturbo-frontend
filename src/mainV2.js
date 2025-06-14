@@ -221,7 +221,7 @@ class HomeDashboardV2 extends DashboardBase {
         this.updateElement('capital-liquido', valorDisponivel);
         this.updateElement('margem-percent', `${margemPercent}%`);
         this.updateElement('margem-money', dividaTotal);
-        this.updateElement('valor-reduzir', valorReduzir);
+        this.updateElement('valor-reduzir', data.valor_a_reduzir);
         this.updateElement('alavancagem-status', data.status || 'N/A');
         
         console.log('✅ Alavancagem atualizada');
