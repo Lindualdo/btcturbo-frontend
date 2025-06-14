@@ -67,7 +67,7 @@ export class SimpleGauge {
 
 export class ApiClient {
     constructor() {
-        this.baseURL = 'https://btcturbo-v5-production.up.railway.app/api/v1';
+        this.baseURL = 'https://btcturbo-v5-production.up.railway.app/api/v2';
     }
 
     async fetchData(endpoint) {

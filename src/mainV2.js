@@ -53,20 +53,21 @@ class HomeDashboardV2 extends DashboardBase {
             const dashboardData = await this.api.getDashboardHome();
             
             if (dashboardData.status === 'success' && dashboardData.data) {
-                const { header, mercado, risco, alavancagem, estrategia } = dashboardData.data;
+                const { header, scores, tecnicos, estrategia, alavancagem, indicadores, } = dashboardData.data;
                 
                 console.log('📊 Processando dados:', {
                     header: !!header,
-                    mercado: !!mercado, 
-                    risco: !!risco,
+                    scores: !!scores, 
+                    tecnicos: !!tecnicos,
                     alavancagem: !!alavancagem,
-                    estrategia: !!estrategia
+                    estrategia: !!estrategia,
+                    indicadores: !!indicadores
                 });
                 
                 // Atualizar cada seção
                 this.updateHeader(header);
-                this.updateMercadoScore(mercado);
-                this.updateRiscoScore(risco);
+                this.updateMercadoScore(scores,indicadores);
+                this.updateRiscoScore(scores,indicadores);
                 this.updateAlavancagem(alavancagem);
                 this.updateEstrategia(estrategia);
                 
@@ -98,12 +99,17 @@ class HomeDashboardV2 extends DashboardBase {
         
         console.log('📱 Atualizando header:', headerData);
         
+
         // Atualizar valores formatados da API
-        const btcFormatado = Number(headerData.position_btc).toFixed(4);
-        this.updateElement('btc-price', headerData.btc_price_formatado || 'N/A');
-        this.updateElement('position-btc', btcFormatado || 'N/A');
-        this.updateElement('position-usd', headerData.position_dolar_formatado|| 'N/A');
-        this.updateElement('leverage-current', headerData.alavancagem_formatado || 'N/A');
+        position_btc = headerData.position_usd / (headerData.btc_price || 1);
+
+        const btcFormatado = Number(position_btc).toFixed(4);
+        const position_usd = `$${headerData.position_usd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+
+        this.updateElement('btc-price', headerData.btc_price || 'N/A');
+        this.updateElement('position-btc',btcFormatado || 'N/A');
+        this.updateElement('position-usd', position_usd || 'N/A');
+        //this.updateElement('leverage-current', headerData.alavancagem_formatado || 'N/A');
         
         // Status dinâmico baseado na alavancagem
         this.updateStatus(headerData.alavancagem_atual || 0);
