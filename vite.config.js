@@ -11,11 +11,7 @@ export default defineConfig({
     assetsDir: 'assets',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        ciclos: resolve(__dirname, 'ciclos.html'),
-        momentum: resolve(__dirname, 'momentum.html'),
-        tecnico: resolve(__dirname, 'tecnco.html'),
-        mercado: resolve(__dirname, 'mercado.html')
+        main: resolve(__dirname, 'index.html')
       }
     }
   },

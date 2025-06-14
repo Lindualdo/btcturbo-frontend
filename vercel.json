@@ -3,23 +3,5 @@
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "vite",
-  "rewrites": [
-    {
-      "source": "/ciclos",
-      "destination": "/ciclos.html"
-    },
-    {
-      "source": "/momentum",
-      "destination": "/momentum.html"
-    },
-    {
-      "source": "/tecnico",
-      "destination": "/tecnico.html"
-    },
-     {
-      "source": "/mercado",
-      "destination": "/mercado.html"
-    }
-  ]
+  "framework": "vite"
 }
