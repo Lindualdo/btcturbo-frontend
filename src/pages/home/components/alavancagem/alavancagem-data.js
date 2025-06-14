@@ -31,9 +31,9 @@ export class AlavancagemData {
             allowedPercent: Math.min(allowedPercent, 100),
             usagePercent: Math.min(usagePercent, 100),
             capitalLiquido: formatters.currency(data.valor_disponivel),
-            margemPercent: `${margemPercent.toFixed(1)}%`,
+            //margemPercent: `${margemPercent.toFixed(1)}%`,
             margemMoney: formatters.currency(data.divida_total),
-            valorReduzir: data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 'N/A',
+            valorReduzir: data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 0,
             status: data.status || 'N/A'
         };
     }
