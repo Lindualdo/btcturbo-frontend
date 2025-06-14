@@ -44,6 +44,8 @@ export class Mercado {
     updateScoreBar(score) {
         const barElement = this.elements.scoreBar;
         if (barElement) {
+            // Remove loading primeiro
+            barElement.classList.remove('loading');
             barElement.style.width = `${score}%`;
             
             // Cores dinâmicas baseadas no score
