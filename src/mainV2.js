@@ -66,10 +66,10 @@ class HomeDashboardV2 extends DashboardBase {
                 
                 // Atualizar cada seção
                 this.updateHeader(header);
-                this.updateMercadoScore(scores,indicadores);
-                this.updateRiscoScore(scores,indicadores);
-                this.updateAlavancagem(alavancagem);
-                this.updateEstrategia(estrategia);
+                //this.updateMercadoScore(scores,indicadores);
+                //this.updateRiscoScore(scores,indicadores);
+                //this.updateAlavancagem(alavancagem);
+                //this.updateEstrategia(estrategia);
                 
                 console.log('✅ Dashboard atualizado com sucesso!');
             } else {
@@ -112,7 +112,7 @@ class HomeDashboardV2 extends DashboardBase {
         //this.updateElement('leverage-current', headerData.alavancagem_formatado || 'N/A');
         
         // Status dinâmico baseado na alavancagem
-        this.updateStatus(headerData.alavancagem_atual || 0);
+        //this.updateStatus(headerData.alavancagem_atual || 0);
         
         console.log('✅ Header atualizado');
     }
