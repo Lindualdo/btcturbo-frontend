@@ -257,32 +257,24 @@ Estilos específicos dos componentes modulares
 }
 
 /* =========================
-   RESPONSIVE
+   GRID INFERIOR - ALAVANCAGEM E ESTRATÉGIAS
    ========================= */
-@media (max-width: 768px) {
-    .top-header {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
-    }
+.bottom-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
 
-    .header-right {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
+.leverage-bar-container {
+    margin-bottom: 15px;
+}
 
-    .scores-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .header-title {
-        font-size: 1.2rem;
-    }
-
-    .strategy-metrics {
-        grid-template-columns: 1fr;
-    }
+.leverage-bar {
+    height: 12px;
+    background: #404552;
+    border-radius: 0px;
+    overflow: hidden;
+    margin-bottom: 10px;
 }
 
 /* =========================
@@ -304,22 +296,71 @@ Estilos específicos dos componentes modulares
 }
 
 /* =========================
-   GRID INFERIOR - ALAVANCAGEM E ESTRATÉGIAS
+   RESPONSIVE - CORREÇÃO MOBILE
    ========================= */
-.bottom-panels {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
+
+/* Tablet e Mobile */
+@media (max-width: 1024px) {
+    .scores-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .bottom-panels {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }
 
-.leverage-bar-container {
-    margin-bottom: 15px;
+/* Mobile específico */
+@media (max-width: 768px) {
+    .top-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .header-right {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .scores-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .bottom-panels {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .header-title {
+        font-size: 1.2rem;
+    }
+
+    .strategy-metrics {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
 }
 
-.leverage-bar {
-    height: 12px;
-    background: #404552;
-    border-radius: 0px;
-    overflow: hidden;
-    margin-bottom: 10px;
+/* Mobile muito pequeno */
+@media (max-width: 480px) {
+    .header-right {
+        gap: 10px;
+    }
+    
+    .header-metric {
+        min-width: 80px;
+    }
+    
+    .score-number {
+        font-size: 2.5rem;
+    }
 }
