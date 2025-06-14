@@ -28,12 +28,12 @@ export class ApiClient {
 
     // Endpoints específicos
     async getDashboardHome() { return this.fetchData('dashboard-home'); }
-    async getMercado() { return this.fetchData('analise-mercado'); }
-    async getRisco() { return this.fetchData('analise-risco'); }
-    async getAlavancagem() { return this.fetchData('analise-alavancagem'); }
-    async getCiclos() { return this.fetchData('calcular-score/ciclos'); }
-    async getMomentum() { return this.fetchData('calcular-score/momentum'); }
-    async getTecnico() { return this.fetchData('calcular-score/tecnico'); }
+   // async getMercado() { return this.fetchData('analise-mercado'); }
+   // async getRisco() { return this.fetchData('analise-risco'); }
+   // async getAlavancagem() { return this.fetchData('analise-alavancagem'); }
+   // async getCiclos() { return this.fetchData('calcular-score/ciclos'); }
+   // async getMomentum() { return this.fetchData('calcular-score/momentum'); }
+   // async getTecnico() { return this.fetchData('calcular-score/tecnico'); }
 }
 
 export default ApiClient;

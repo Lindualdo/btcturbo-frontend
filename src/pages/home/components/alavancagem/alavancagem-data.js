@@ -7,25 +7,7 @@ import formatters from '../../../../shared/formatters.js';
 import { LEVERAGE_CONFIG } from '../../../../shared/constants.js';
 
 export class AlavancagemData {
-    constructor(apiClient) {
-        this.api = apiClient;
-    }
-
-    async fetchData() {
-        try {
-            console.log('📡 Alavancagem: Buscando dados...');
-            const response = await this.api.getDashboardHome();
-            
-            if (response.status === 'success' && response.data?.alavancagem) {
-                return this.formatAlavancagemData(response.data.alavancagem);
-            }
-            
-            throw new Error('Dados de alavancagem inválidos');
-        } catch (error) {
-            console.error('❌ Alavancagem: Erro ao buscar dados:', error);
-            throw error;
-        }
-    }
+    constructor() {}
 
     formatAlavancagemData(data) {
         console.log('🔄 Alavancagem: Formatando dados:', data);
