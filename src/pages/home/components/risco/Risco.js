@@ -42,6 +42,9 @@ export class Risco {
     updateScoreBar(score) {
         const barElement = this.elements.scoreBar;
         if (barElement) {
+            // Remove loading e limpa texto
+            barElement.classList.remove('loading');
+            barElement.textContent = ''; // Remove texto "Carregando..."
             barElement.style.width = `${score}%`;
             
             // Cores dinâmicas baseadas no score (risco = inverso)
