@@ -95,68 +95,71 @@ Dashboard BTC Turbo V2 - Arquitetura Modular
             </div>
         </div>
 
-        <!-- GESTÃO DE ALAVANCAGEM -->
-        <div class="panel">
-            <div><span style="color: #8b9dc3; min-width: 50px;">Quanto posso alavancar?</span></div>
-            <div class="score-header">
-                <span class="score-title">📈 Alavancagem</span>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <div class="leverage-bar-container">
-                    <span class="leverage-bar-label">Atual:</span>
-                    <div class="leverage-bar">
-                        <div class="leverage-bar-fill" id="leverage-current-bar" style="width: 84%;"></div>
-                    </div>
-                    <span class="leverage-value" id="leverage-current-value">0</span>
+        <!-- PAINÉIS INFERIORES -->
+        <div class="bottom-panels">
+            <!-- GESTÃO DE ALAVANCAGEM -->
+            <div class="panel">
+                <div><span style="color: #8b9dc3; min-width: 50px;">Quanto posso alavancar?</span></div>
+                <div class="score-header">
+                    <span class="score-title">📈 Alavancagem</span>
                 </div>
-            </div>
-            
-            <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
-                <span>Disponível: <span id="capital-liquido" style="color: #ffffff; font-weight: 600;">$0</span></span>
-                <span>Usado: <span id="margem-percent" style="color: #ffffff; font-weight: 600;">0%</span></span>
-            </div>
-            
-            <div style="margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
-                <span>Valor a reduzir: <span id="valor-reduzir" style="color: #ffffff; font-weight: 600;">-</span></span>
-                <span style="margin-left: 20px;">Status: <span id="alavancagem-status" style="color: #ffffff; font-weight: 600;">-</span></span>
-            </div>
-        </div>
 
-        <!-- DECISÃO ESTRATÉGICA -->
-        <div class="panel">
-            <div><span style="color: #8b9dc3; min-width: 50px;">O que devo fazer agora?</span></div>
-            <div class="score-header">
-                <span class="score-title">🎯 Decisão Estratégica</span>
-            </div>
-
-            <!-- Ação Principal -->
-            <div class="strategy-action">
-                <div class="strategy-main-action">
-                    <div class="strategy-action-text" id="acao-principal">
-                        HOLD
+                <div style="margin-bottom: 20px;">
+                    <div class="leverage-bar-container">
+                        <span class="leverage-bar-label">Atual:</span>
+                        <div class="leverage-bar">
+                            <div class="leverage-bar-fill" id="leverage-current-bar" style="width: 84%;"></div>
+                        </div>
+                        <span class="leverage-value" id="leverage-current-value">0</span>
                     </div>
                 </div>
-                <div class="strategy-justification">
-                    <span id="justificativa-valor">Carregando...</span>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
+                    <span>Disponível: <span id="capital-liquido" style="color: #ffffff; font-weight: 600;">$0</span></span>
+                    <span>Usado: <span id="margem-percent" style="color: #ffffff; font-weight: 600;">0%</span></span>
+                </div>
+                
+                <div style="margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
+                    <span>Valor a reduzir: <span id="valor-reduzir" style="color: #ffffff; font-weight: 600;">-</span></span>
+                    <span style="margin-left: 20px;">Status: <span id="alavancagem-status" style="color: #ffffff; font-weight: 600;">-</span></span>
                 </div>
             </div>
 
-            <!-- Métricas da Decisão -->
-            <div class="strategy-metrics">
-                <div class="strategy-metric">
-                    <div class="strategy-metric-label">Setup</div>
-                    <div class="strategy-metric-value" id="setup-valor">Carregando...</div>
+            <!-- DECISÃO ESTRATÉGICA -->
+            <div class="panel">
+                <div><span style="color: #8b9dc3; min-width: 50px;">O que devo fazer agora?</span></div>
+                <div class="score-header">
+                    <span class="score-title">🎯 Decisão Estratégica</span>
                 </div>
-                
-                <div class="strategy-metric">
-                    <div class="strategy-metric-label">RSI (4h)</div>
-                    <div class="strategy-metric-value" id="rsi-diario-valor">Carregando...</div>
+
+                <!-- Ação Principal -->
+                <div class="strategy-action">
+                    <div class="strategy-main-action">
+                        <div class="strategy-action-text" id="acao-principal">
+                            HOLD
+                        </div>
+                    </div>
+                    <div class="strategy-justification">
+                        <span id="justificativa-valor">Carregando...</span>
+                    </div>
                 </div>
-                
-                <div class="strategy-metric">
-                    <div class="strategy-metric-label">Dist. EMA 144 (4h)</div>
-                    <div class="strategy-metric-value" id="ema-distance-valor">Carregando...</div>
+
+                <!-- Métricas da Decisão -->
+                <div class="strategy-metrics">
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-label">Setup</div>
+                        <div class="strategy-metric-value" id="setup-valor">Carregando...</div>
+                    </div>
+                    
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-label">RSI (4h)</div>
+                        <div class="strategy-metric-value" id="rsi-diario-valor">Carregando...</div>
+                    </div>
+                    
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-label">Dist. EMA 144 (4h)</div>
+                        <div class="strategy-metric-value" id="ema-distance-valor">Carregando...</div>
+                    </div>
                 </div>
             </div>
         </div>
