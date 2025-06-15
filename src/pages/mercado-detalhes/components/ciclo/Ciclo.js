@@ -70,9 +70,9 @@ export class Ciclo {
         this.ctx.lineWidth = 15;
         
         // Cores baseadas no score
-        if (score < 4) {
+        if (score < 40) {
             this.ctx.strokeStyle = '#ff4757';
-        } else if (score < 7) {
+        } else if (score < 70) {
             this.ctx.strokeStyle = '#ffa726';
         } else {
             this.ctx.strokeStyle = '#4caf50';
@@ -103,9 +103,9 @@ export class Ciclo {
             barraElement.style.width = `${Math.min(percentage, 100)}%`;
             
             // Cores baseadas no score
-            if (indicadorData.score < 4) {
+            if (indicadorData.score < 40) {
                 barraElement.style.background = 'linear-gradient(90deg, #ff4757, #ff6b6b)';
-            } else if (indicadorData.score < 7) {
+            } else if (indicadorData.score < 70) {
                 barraElement.style.background = 'linear-gradient(90deg, #ffa726, #ffb74d)';
             } else {
                 barraElement.style.background = 'linear-gradient(90deg, #4caf50, #66bb6a)';
