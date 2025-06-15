@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/mercado/Mercado.js
-Componente UI do Score de Mercado
+Componente UI do Score de Mercado - COM NAVEGAÇÃO
 */
 
 export class Mercado {
@@ -13,6 +13,27 @@ export class Mercado {
             nuplValue: document.getElementById('nupl-value'),
             cicloValue: document.getElementById('ciclo-value')
         };
+
+        // NOVA FUNCIONALIDADE: Setup da navegação
+        this.setupNavigation();
+    }
+
+    setupNavigation() {
+        // Encontrar o botão "Ver Detalhes" no card de mercado
+        const mercadoCard = document.getElementById('score-mercado-number')?.closest('.score-card');
+        const detailButton = mercadoCard?.querySelector('.btn-detail-minimal');
+        
+        if (detailButton) {
+            detailButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🔄 Navegando para detalhes do mercado...');
+                window.location.href = '/mercado-detalhes.html';
+            });
+            
+            console.log('✅ Navegação configurada para mercado detalhes');
+        } else {
+            console.log('⚠️ Botão de detalhes não encontrado no card de mercado');
+        }
     }
 
     render(data) {
