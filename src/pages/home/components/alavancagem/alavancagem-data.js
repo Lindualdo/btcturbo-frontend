@@ -24,16 +24,16 @@ export class AlavancagemData {
         const usagePercent = data.permitida > 0 ? (data.atual / data.permitida * 100) : 0;
 
         return {
+            valorReduzir: data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 0,
             currentLeverage: formatters.leverage(data.atual),
             allowedLeverage: formatters.leverage(data.permitida),
             labelText: `${data.atual.toFixed(2)} / ${data.permitida.toFixed(2)}`,
             currentPercent: Math.min(currentPercent, 100),
             allowedPercent: Math.min(allowedPercent, 100),
             usagePercent: Math.min(usagePercent, 100),
-            capitalLiquido: formatters.currency(data.valor_disponivel),
+            capitalLiquido: formatters.currency(data.valor_disponivel + valorReduzir),
             //margemPercent: `${margemPercent.toFixed(1)}%`,
             margemMoney: formatters.currency(data.divida_total),
-            valorReduzir: data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 0,
             status: data.status || 'N/A'
         };
     }
