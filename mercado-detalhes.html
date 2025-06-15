@@ -145,56 +145,57 @@ Dashboard Detalhado - Score de Mercado
             <!-- Bloco Ciclo -->
             <div class="bloco-card">
                 <div class="panel-title">🔄 Análise de Ciclo</div>
-                <div class="bloco-content">
-                    <div class="gauge-container">
-                        <div class="gauge">
-                            <canvas id="gauge-ciclo" width="200" height="200"></canvas>
-                            <div class="gauge-center">
-                                <div class="gauge-score" id="score-ciclo">0</div>
-                                <div class="gauge-label" id="class-ciclo">neutro</div>
-                            </div>
+                
+                <!-- Gauge no topo -->
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div class="gauge">
+                        <canvas id="gauge-ciclo" width="200" height="200"></canvas>
+                        <div class="gauge-center">
+                            <div class="gauge-score" id="score-ciclo">0</div>
+                            <div class="gauge-label" id="class-ciclo">neutro</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Indicadores embaixo -->
+                <div class="bloco-indicadores">
+                    <div class="indicador-item">
+                        <div class="indicador-header">
+                            <span class="indicador-nome">MVRV</span>
+                            <span class="indicador-valor" id="mvrv-valor">-</span>
+                        </div>
+                        <div class="indicador-barra">
+                            <div class="indicador-barra-fill" id="mvrv-barra"></div>
                         </div>
                     </div>
                     
-                    <div class="bloco-indicadores">
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">MVRV</span>
-                                <span class="indicador-valor" id="mvrv-valor">-</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="mvrv-barra"></div>
-                            </div>
+                    <div class="indicador-item">
+                        <div class="indicador-header">
+                            <span class="indicador-nome">NUPL</span>
+                            <span class="indicador-valor" id="nupl-valor">-</span>
                         </div>
-                        
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">NUPL</span>
-                                <span class="indicador-valor" id="nupl-valor">-</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="nupl-barra"></div>
-                            </div>
+                        <div class="indicador-barra">
+                            <div class="indicador-barra-fill" id="nupl-barra"></div>
                         </div>
-                        
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">Puell Multiple</span>
-                                <span class="indicador-valor" id="puell-valor">-</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="puell-barra"></div>
-                            </div>
+                    </div>
+                    
+                    <div class="indicador-item">
+                        <div class="indicador-header">
+                            <span class="indicador-nome">Puell Multiple</span>
+                            <span class="indicador-valor" id="puell-valor">-</span>
                         </div>
-                        
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">Realized Price Ratio</span>
-                                <span class="indicador-valor" id="realized-valor">-</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="realized-barra"></div>
-                            </div>
+                        <div class="indicador-barra">
+                            <div class="indicador-barra-fill" id="puell-barra"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="indicador-item">
+                        <div class="indicador-header">
+                            <span class="indicador-nome">Realized Price Ratio</span>
+                            <span class="indicador-valor" id="realized-valor">-</span>
+                        </div>
+                        <div class="indicador-barra">
+                            <div class="indicador-barra-fill" id="realized-barra"></div>
                         </div>
                     </div>
                 </div>
