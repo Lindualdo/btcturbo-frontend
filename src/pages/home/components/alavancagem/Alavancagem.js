@@ -73,7 +73,7 @@ export class Alavancagem {
     showLoading() {
         const loadingElements = [
             'currentValue', 'allowedValue', 'capitalLiquido', 
-            'margemPercent', 'margemMoney', 'valorReduzir', 'alavancagemStatus'
+            'margemPercent', 'margemMoney', 'alavancagemStatus'
         ];
 
         loadingElements.forEach(key => {
@@ -91,7 +91,7 @@ export class Alavancagem {
     showError() {
         const errorElements = [
             'currentValue', 'allowedValue', 'capitalLiquido', 
-            'margemPercent', 'margemMoney', 'valorReduzir', 'alavancagemStatus'
+            'margemPercent', 'margemMoney', 'alavancagemStatus'
         ];
 
         errorElements.forEach(key => {
