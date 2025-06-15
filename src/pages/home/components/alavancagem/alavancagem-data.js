@@ -23,9 +23,10 @@ export class AlavancagemData {
         // Percentual de uso da alavancagem permitida
         const usagePercent = data.permitida > 0 ? (data.atual / data.permitida * 100) : 0;
         const status = data.status.replace(/_/g, " ").toUpperCase(); 
+        const valorReduzir = data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 0;
 
         return {
-            valorReduzir: data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 0,
+           
             currentLeverage: formatters.leverage(data.atual),
             allowedLeverage: formatters.leverage(data.permitida),
             labelText: `${data.atual.toFixed(2)} / ${data.permitida.toFixed(2)}`,
@@ -37,7 +38,6 @@ export class AlavancagemData {
             margemMoney: formatters.currency(data.divida_total),
             status: status|| 'N/A'
 
-          
         };
     }
 }
