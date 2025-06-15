@@ -16,23 +16,23 @@ export class TecnicoData {
         }
 
         return {
-            score: tecnicoData.score || 0,
+            score: (tecnicoData.score || 0) * 10,
             classification: tecnicoData.classificacao || 'neutro',
             indicadores: {
                 diario_score: {
-                    score: tecnicoData.indicadores?.diario?.score || 0,
+                    score: (tecnicoData.indicadores?.diario?.score || 0) * 10,
                     valor: formatters.decimal(tecnicoData.indicadores?.diario?.score)
                 },
                 diario_posicao: {
-                    score: tecnicoData.indicadores?.diario?.posicao || 0,
+                    score: (tecnicoData.indicadores?.diario?.posicao || 0) * 10,
                     valor: formatters.decimal(tecnicoData.indicadores?.diario?.posicao)
                 },
                 semanal_score: {
-                    score: tecnicoData.indicadores?.semanal?.score || 0,
+                    score: (tecnicoData.indicadores?.semanal?.score || 0) * 10,
                     valor: formatters.decimal(tecnicoData.indicadores?.semanal?.score)
                 },
                 semanal_posicao: {
-                    score: tecnicoData.indicadores?.semanal?.posicao || 0,
+                    score: (tecnicoData.indicadores?.semanal?.posicao || 0) * 10,
                     valor: formatters.decimal(tecnicoData.indicadores?.semanal?.posicao)
                 }
             }
