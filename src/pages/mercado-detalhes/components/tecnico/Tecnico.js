@@ -62,8 +62,8 @@ export class Tecnico {
         this.ctx.strokeStyle = '#404552';
         this.ctx.stroke();
 
-        // Preenchimento baseado no score (0-10)
-        const scoreAngle = startAngle + (score / 10) * Math.PI;
+        // Preenchimento baseado no score (0-100)
+        const scoreAngle = startAngle + (score / 100) * Math.PI;
         
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY, radius, startAngle, scoreAngle);
@@ -99,7 +99,7 @@ export class Tecnico {
         }
 
         if (barraElement) {
-            const percentage = (indicadorData.score / 10) * 100;
+            const percentage = indicadorData.score;
             barraElement.style.width = `${Math.min(percentage, 100)}%`;
             
             // Cores baseadas no score
