@@ -152,7 +152,8 @@ export class Momentum {
             }
         });
     }
-      clearLoading() {
+
+    clearLoading() {
         Object.values(this.elements).forEach(element => {
             if (element) {
                 element.classList.remove('loading');
@@ -160,3 +161,5 @@ export class Momentum {
         });
     }
 }
+
+export default Momentum;
