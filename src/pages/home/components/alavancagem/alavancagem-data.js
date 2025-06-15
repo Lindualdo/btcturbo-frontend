@@ -22,6 +22,7 @@ export class AlavancagemData {
         
         // Percentual de uso da alavancagem permitida
         const usagePercent = data.permitida > 0 ? (data.atual / data.permitida * 100) : 0;
+        const status = data.status.replace(/_/g, " ").toUpperCase(); 
 
         return {
             valorReduzir: data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 0,
@@ -34,7 +35,9 @@ export class AlavancagemData {
             capitalLiquido: formatters.currency(data.valor_disponivel + valorReduzir),
             //margemPercent: `${margemPercent.toFixed(1)}%`,
             margemMoney: formatters.currency(data.divida_total),
-            status: data.status || 'N/A'
+            status: status|| 'N/A'
+
+          
         };
     }
 }
