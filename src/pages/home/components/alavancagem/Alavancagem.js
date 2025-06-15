@@ -13,7 +13,7 @@ export class Alavancagem {
             capitalLiquido: document.getElementById('capital-liquido'),
             margemPercent: document.getElementById('margem-percent'),
             margemMoney: document.getElementById('margem-money'),
-            valorReduzir: document.getElementById('valor-reduzir'),
+            //valorReduzir: document.getElementById('valor-reduzir'),
             alavancagemStatus: document.getElementById('alavancagem-status')
         };
     }
@@ -31,7 +31,7 @@ export class Alavancagem {
         this.updateElement('capitalLiquido', data.capitalLiquido);
         this.updateElement('margemPercent', data.margemPercent);
         this.updateElement('margemMoney', data.margemMoney);
-        this.updateElement('valorReduzir', data.valorReduzir);
+        //this.updateElement('valorReduzir', data.valorReduzir);
         this.updateElement('alavancagemStatus', data.status);
 
         this.updateLeverageBars(data.currentPercent, data.allowedPercent, data.usagePercent);
