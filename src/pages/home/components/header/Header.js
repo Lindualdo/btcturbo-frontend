@@ -42,7 +42,7 @@ export class Header {
         if (!element) return;
 
         if (status === 'success') {
-            element.innerHTML = '⚡ Operacional';
+            element.innerHTML = '⚡ Online';
             element.style.background = '#4caf50';
             element.className = 'status-indicator';
         } else {
