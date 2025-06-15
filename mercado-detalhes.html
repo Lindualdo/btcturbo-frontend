@@ -11,11 +11,39 @@ Dashboard Detalhado - Score de Mercado
     <link rel="stylesheet" href="/src/styles/shared.css">
     <link rel="stylesheet" href="/src/styles/components.css">
     <style>
-        /* Estilos específicos para gauges */
+        /* Layout dos blocos */
+        .bloco-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .bloco-card {
+            background: #2a2f3e;
+            border: 1px solid #3a3f4e;
+            border-radius: 16px;
+            padding: 25px;
+            overflow: hidden;
+        }
+        
+        .bloco-content {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        /* Gauge */
+        .gauge-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
         .gauge {
             width: 200px;
             height: 200px;
-            margin: 0 auto;
             position: relative;
         }
         
@@ -43,36 +71,15 @@ Dashboard Detalhado - Score de Mercado
         .gauge-label {
             font-size: 0.8rem;
             color: #8b9dc3;
+            text-transform: uppercase;
         }
         
-        .bloco-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-        
-        .bloco-card {
-            background: #2a2f3e;
-            border: 1px solid #3a3f4e;
-            border-radius: 16px;
-            padding: 25px;
-            overflow: hidden !important;
-        }
-        
-        .bloco-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            align-items: center;
-            padding: 0 10px
-        }
-        
+        /* Indicadores */
         .bloco-indicadores {
             display: flex;
             flex-direction: column;
             gap: 15px;
-             padding-right: 15px; /* Adicionar esta linha */
+            max-width: 100%;
         }
         
         .indicador-item {
@@ -85,11 +92,13 @@ Dashboard Detalhado - Score de Mercado
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 3px;
         }
         
         .indicador-nome {
             color: #8b9dc3;
             font-size: 0.9rem;
+            font-weight: 500;
         }
         
         .indicador-valor {
@@ -103,26 +112,27 @@ Dashboard Detalhado - Score de Mercado
             height: 8px;
             border-radius: 4px;
             overflow: hidden;
-            max-width: 180px
+            width: 100%;
         }
         
         .indicador-barra-fill {
             height: 100%;
             transition: width 0.8s ease;
+            border-radius: 4px;
         }
         
+        /* Responsive */
         @media (max-width: 768px) {
-            .bloco-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
             .bloco-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .bloco-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 20px;
+            }
         }
-
-        
     </style>
 </head>
 <body>
@@ -195,7 +205,7 @@ Dashboard Detalhado - Score de Mercado
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Realiz Price</span>
+                                <span class="indicador-nome">Realized Price</span>
                                 <span class="indicador-valor" id="realized-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -253,7 +263,7 @@ Dashboard Detalhado - Score de Mercado
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Long/Short Ratio</span>
+                                <span class="indicador-nome">L/S Ratio</span>
                                 <span class="indicador-valor" id="longshort-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -281,7 +291,7 @@ Dashboard Detalhado - Score de Mercado
                     <div class="bloco-indicadores">
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Diário</span>
+                                <span class="indicador-nome">Score Diário</span>
                                 <span class="indicador-valor" id="diario-score-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -289,7 +299,7 @@ Dashboard Detalhado - Score de Mercado
                             </div>
                         </div>
                         
-                        <!--<div class="indicador-item">
+                        <div class="indicador-item">
                             <div class="indicador-header">
                                 <span class="indicador-nome">Posição Diária</span>
                                 <span class="indicador-valor" id="diario-posicao-valor">-</span>
@@ -297,11 +307,11 @@ Dashboard Detalhado - Score de Mercado
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="diario-posicao-barra"></div>
                             </div>
-                        </div>-->
+                        </div>
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Semanal</span>
+                                <span class="indicador-nome">Score Semanal</span>
                                 <span class="indicador-valor" id="semanal-score-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -309,7 +319,7 @@ Dashboard Detalhado - Score de Mercado
                             </div>
                         </div>
                         
-                        <!--<div class="indicador-item">
+                        <div class="indicador-item">
                             <div class="indicador-header">
                                 <span class="indicador-nome">Posição Semanal</span>
                                 <span class="indicador-valor" id="semanal-posicao-valor">-</span>
@@ -317,7 +327,7 @@ Dashboard Detalhado - Score de Mercado
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="semanal-posicao-barra"></div>
                             </div>
-                        </div>-->
+                        </div>
                     </div>
                 </div>
             </div>
