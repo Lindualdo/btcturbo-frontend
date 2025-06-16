@@ -8,13 +8,13 @@ import formatters from '../../../../shared/formatters.js';
 export class HeaderData {
     constructor() {}
 
-    formatHeaderData(headerData, alavancagemData, apiStatus) {
-        console.log('🔄 Header: Formatando dados:', { headerData, alavancagemData, apiStatus });
+    formatHeaderData(dashboardData, apiStatus) {
+        console.log('🔄 Header: Formatando dados:', dashboardData);
 
-        // Dados básicos
-        const btcPrice = headerData.btc_price || 0;
-        const positionUsd = headerData.position_usd || 0;
-        const dividaTotal = alavancagemData.divida_total || 0;
+        // Extrair dados dos objetos corretos
+        const btcPrice = dashboardData.header?.btc_price || 0;
+        const positionUsd = dashboardData.header?.position_usd || 0;
+        const dividaTotal = dashboardData.alavancagem?.divida_total || 0;
 
         // Cálculos
         const saldoLiquidoUsd = positionUsd - dividaTotal;
@@ -26,7 +26,7 @@ export class HeaderData {
             dividaTotal: formatters.currency(dividaTotal),
             saldoLiquidoUsd: formatters.currency(saldoLiquidoUsd),
             saldoLiquidoBtc: formatters.btc(saldoLiquidoBtc),
-            apiStatus: apiStatus
+            apiStatus: apiStatus || 'error'
         };
     }
 }

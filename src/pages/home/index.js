@@ -76,7 +76,7 @@ class HomeDashboard {
                 const { header, scores, tecnicos, estrategia, alavancagem, indicadores } = response.data;
                 
                 // Distribuir dados formatados para cada componente
-                this.components.header.render(this.dataHandlers.header.formatHeaderData(header, response.status));
+                this.components.header.render(this.dataHandlers.header.formatHeaderData(response.data, response.status));
                 this.components.mercado.render(this.dataHandlers.mercado.formatMercadoData(scores, indicadores));
                 this.components.risco.render(this.dataHandlers.risco.formatRiscoData(scores, indicadores));
                 this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
