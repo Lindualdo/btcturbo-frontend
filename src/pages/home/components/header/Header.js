@@ -62,13 +62,19 @@ export class Header {
         if (!element) return;
 
         if (status === 'success') {
-            element.innerHTML = '⚡ Online';
-            element.style.background = '#4caf50';
-            element.className = 'status-indicator';
+            element.innerHTML = '⚡ 🟢';
+            element.style.background = 'transparent';
+            element.style.color = '#ffffff';
+            element.style.padding = '0';
+            element.style.borderRadius = '0';
+            element.className = 'header-metric-value';
         } else {
-            element.innerHTML = '❌ Erro';
-            element.style.background = '#ef4444';
-            element.className = 'status-indicator error';
+            element.innerHTML = '⚡ 🔴';
+            element.style.background = 'transparent';
+            element.style.color = '#ffffff';
+            element.style.padding = '0';
+            element.style.borderRadius = '0';
+            element.className = 'header-metric-value';
         }
     }
 
@@ -88,7 +94,9 @@ export class Header {
         });
 
         if (this.elements.apiStatus) {
-            this.elements.apiStatus.innerHTML = '⏳ Conectando...';
+            this.elements.apiStatus.innerHTML = '⚡ 🟡';
+            this.elements.apiStatus.style.background = 'transparent';
+            this.elements.apiStatus.style.padding = '0';
         }
     }
 
