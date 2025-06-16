@@ -62,14 +62,14 @@ export class Header {
         if (!element) return;
 
         if (status === 'success') {
-            element.innerHTML = '⚡ 🟢';
+            element.innerHTML = '🟢';
             element.style.background = 'transparent';
             element.style.color = '#ffffff';
             element.style.padding = '0';
             element.style.borderRadius = '0';
             element.className = 'header-metric-value';
         } else {
-            element.innerHTML = '⚡ 🔴';
+            element.innerHTML = '🔴';
             element.style.background = 'transparent';
             element.style.color = '#ffffff';
             element.style.padding = '0';
@@ -94,7 +94,7 @@ export class Header {
         });
 
         if (this.elements.apiStatus) {
-            this.elements.apiStatus.innerHTML = '⚡ 🟡';
+            this.elements.apiStatus.innerHTML = '🟡';
             this.elements.apiStatus.style.background = 'transparent';
             this.elements.apiStatus.style.padding = '0';
         }
