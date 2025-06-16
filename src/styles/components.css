@@ -121,18 +121,35 @@ Estilos específicos dos componentes modulares
 }
 
 /* Centralizar títulos dos score cards */
-.score-card .score-header .bottom-panels {
+.score-card .score-header {
     justify-content: center;
 }
 
-.score-card .bottom-panels> div:first-child  {
+.score-card > div:first-child {
     text-align: center;
     margin-bottom: 10px;
 }
 
-.score-card .bottom-panels> div:first-child span {
+.score-card > div:first-child span {
     font-size: 0.9rem;
 }
+
+/* Centralizar títulos dos painéis inferiores */
+.panel .score-header {
+    justify-content: center;
+}
+
+.panel > div:first-child {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.panel > div:first-child span {
+    font-size: 0.9rem;
+}
+
+
+
 
 .score-bar {
     background: #404552;
