@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/alavancagem/Alavancagem.js
-Componente UI de Gestão de Alavancagem
+Componente UI de Gestão de Alavancagem - CORRIGIDO
 */
 
 export class Alavancagem {
@@ -13,7 +13,6 @@ export class Alavancagem {
             capitalLiquido: document.getElementById('capital-liquido'),
             margemPercent: document.getElementById('margem-percent'),
             margemMoney: document.getElementById('margem-money'),
-            //valorReduzir: document.getElementById('valor-reduzir'),
             alavancagemStatus: document.getElementById('alavancagem-status')
         };
     }
@@ -28,14 +27,29 @@ export class Alavancagem {
 
         this.updateElement('currentValue', data.labelText);
         this.updateElement('allowedValue', data.allowedLeverage);
-        this.updateElement('capitalLiquido', data.capitalLiquido);
-        this.updateElement('margemPercent', data.margemPercent);
         this.updateElement('margemMoney', data.margemMoney);
-        //this.updateElement('valorReduzir', data.valorReduzir);
         this.updateElement('alavancagemStatus', data.status);
 
-        this.updateLeverageBars(data.currentPercent, data.allowedPercent, data.usagePercent);
+        // Destacar valor negativo em vermelho
+        this.updateCapitalLiquido(data.capitalLiquido, data.capitalLiquido.includes('-'));
+
+        this.updateLeverageBars(data.usagePercent, data.isOverLimit);
         this.clearLoading();
+    }
+
+    updateCapitalLiquido(value, isNegative) {
+        const element = this.elements.capitalLiquido;
+        if (element) {
+            element.textContent = value;
+            element.classList.remove('loading');
+            
+            // Destacar valores negativos em vermelho
+            if (isNegative) {
+                element.style.color = '#ff4757';
+            } else {
+                element.style.color = '#ffffff';
+            }
+        }
     }
 
     updateElement(key, value) {
@@ -46,27 +60,22 @@ export class Alavancagem {
         }
     }
 
-    updateLeverageBars(currentPercent, allowedPercent, usagePercent) {
+    updateLeverageBars(usagePercent, isOverLimit) {
         const currentBar = this.elements.currentBar;
-        const allowedBar = this.elements.allowedBar;
 
         if (currentBar) {
-            // Barra única mostra uso atual vs permitido
-            currentBar.style.width = `${Math.min(usagePercent, 100)}%`;
+            // Permitir que a barra passe de 100% quando estourar
+            const barWidth = Math.min(usagePercent, 100);
+            currentBar.style.width = `${barWidth}%`;
             
-            // Cores baseadas no uso da alavancagem permitida
-            if (usagePercent > 100) {
-                currentBar.style.background = '#ff4757'; // Vermelho - ultrapassou
+            // Cores baseadas no status da alavancagem
+            if (isOverLimit) {
+                currentBar.style.background = '#ff4757'; // Vermelho - estourou o limite
             } else if (usagePercent > 80) {
                 currentBar.style.background = '#ffa726'; // Laranja - próximo do limite
             } else {
                 currentBar.style.background = '#4caf50'; // Verde - seguro
             }
-        }
-
-        // Esconder segunda barra
-        if (allowedBar && allowedBar.parentElement) {
-            allowedBar.parentElement.style.display = 'none';
         }
     }
 

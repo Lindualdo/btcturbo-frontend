@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/alavancagem/alavancagem-data.js
-Lógica de dados da Gestão de Alavancagem
+Lógica de dados da Gestão de Alavancagem - CORRIGIDO
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -12,32 +12,24 @@ export class AlavancagemData {
     formatAlavancagemData(data) {
         console.log('🔄 Alavancagem: Formatando dados:', data);
 
-        // Calcular percentuais para as barras (baseado em max 3x)
-        const maxLeverage = LEVERAGE_CONFIG.MAX;
-        const currentPercent = (data.atual / maxLeverage) * 100;
-        const allowedPercent = (data.permitida / maxLeverage) * 100;
+        // Calcular valor disponível real (pode ser negativo)
+        const valorDisponivelReal = data.valor_disponivel - data.valor_a_reduzir;
         
-        // Calcular margem percentual: atual/permitida
-        const margemPercent = data.permitida > 0 ? (data.atual / data.permitida * 100) : 0;
-        
-        // Percentual de uso da alavancagem permitida
+        // Percentual de uso da alavancagem permitida (pode passar de 100%)
         const usagePercent = data.permitida > 0 ? (data.atual / data.permitida * 100) : 0;
-        const status = data.status.replace(/_/g, " ").toUpperCase(); 
-        const valorReduzir = data.valor_a_reduzir > 0 ? formatters.currency(data.valor_a_reduzir) : 0;
+        
+        // Status formatado
+        const status = data.status.replace(/_/g, " ").toUpperCase();
 
         return {
-           
             currentLeverage: formatters.leverage(data.atual),
             allowedLeverage: formatters.leverage(data.permitida),
             labelText: `${data.atual.toFixed(2)} / ${data.permitida.toFixed(2)}`,
-            currentPercent: Math.min(currentPercent, 100),
-            allowedPercent: Math.min(allowedPercent, 100),
-            usagePercent: Math.min(usagePercent, 100),
-            capitalLiquido: formatters.currency(data.valor_disponivel + valorReduzir),
-            //margemPercent: `${margemPercent.toFixed(1)}%`,
+            usagePercent: usagePercent, // Remove Math.min para permitir > 100%
+            capitalLiquido: formatters.currency(valorDisponivelReal), // Pode ser negativo
             margemMoney: formatters.currency(data.divida_total),
-            status: status|| 'N/A'
-
+            status: status || 'N/A',
+            isOverLimit: data.atual > data.permitida // Flag para saber se estourou
         };
     }
 }
