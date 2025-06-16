@@ -66,7 +66,7 @@ export class Header {
         element.style.cssText = '';
 
         if (status === 'success') {
-            element.innerHTML = '<i class="bi bi-power"></i>';
+            element.innerHTML = '';
             element.style.color = '#4caf50'; // Verde
             element.style.fontSize = '1.2rem';
             element.style.display = 'flex';
