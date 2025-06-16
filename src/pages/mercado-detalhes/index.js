@@ -95,11 +95,11 @@ class MercadoDetalhes {
 
         if (scoreElement) {
             scoreFormatado = parseInt(score) * 10;
-            scoreElement.textContent = score.toFixed(1);
+            scoreElement.textContent = scoreFormatado;
         }
 
         if (classElement) {
-            classElement.textContent = classificacao || 'neutro';
+            classElement.textContent =  classificacao.toUpperCase() || 'erro';
         }
     }
 
