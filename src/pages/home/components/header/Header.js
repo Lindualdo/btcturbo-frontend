@@ -1,16 +1,34 @@
 /* 
 Arquivo: src/pages/home/components/header/Header.js
-Componente UI do Header
+Componente UI do Header - Atualizado com novos campos financeiros
 */
 
 export class Header {
     constructor() {
         this.elements = {
             btcPrice: document.getElementById('btc-price'),
-            positionBtc: document.getElementById('position-btc'),
             positionUsd: document.getElementById('position-usd'),
-            apiStatus: document.getElementById('api-status')
+            dividaTotal: document.getElementById('divida-total'),
+            saldoLiquidoUsd: document.getElementById('saldo-liquido-usd'),
+            saldoLiquidoBtc: document.getElementById('saldo-liquido-btc'),
+            apiStatus: document.getElementById('api-status'),
+            financeBtn: document.getElementById('finance-detalhe-btn')
         };
+
+        // Setup da navegação para finanças
+        this.setupNavigation();
+    }
+
+    setupNavigation() {
+        if (this.elements.financeBtn) {
+            this.elements.financeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🔄 Navegando para detalhes financeiros...');
+                window.location.href = '/finance-detalhe.html';
+            });
+            
+            console.log('✅ Navegação configurada para finance-detalhe');
+        }
     }
 
     render(data) {
@@ -22,8 +40,10 @@ export class Header {
         console.log('📱 Renderizando header:', data);
 
         this.updateElement('btcPrice', data.btcPrice);
-        this.updateElement('positionBtc', data.positionBtc);
         this.updateElement('positionUsd', data.positionUsd);
+        this.updateElement('dividaTotal', data.dividaTotal);
+        this.updateElement('saldoLiquidoUsd', data.saldoLiquidoUsd);
+        this.updateElement('saldoLiquidoBtc', data.saldoLiquidoBtc);
         this.updateApiStatus(data.apiStatus);
 
         this.clearLoading();
@@ -53,8 +73,15 @@ export class Header {
     }
 
     showLoading() {
-        Object.values(this.elements).forEach(element => {
-            if (element && element.id !== 'api-status') {
+        // Loading em todos os campos exceto status e botão
+        const loadingElements = [
+            'btcPrice', 'positionUsd', 'dividaTotal', 
+            'saldoLiquidoUsd', 'saldoLiquidoBtc'
+        ];
+
+        loadingElements.forEach(key => {
+            const element = this.elements[key];
+            if (element) {
                 element.textContent = 'Carregando...';
                 element.classList.add('loading');
             }
@@ -66,8 +93,15 @@ export class Header {
     }
 
     showError() {
-        Object.values(this.elements).forEach(element => {
-            if (element && element.id !== 'api-status') {
+        // Erro em todos os campos exceto status e botão
+        const errorElements = [
+            'btcPrice', 'positionUsd', 'dividaTotal', 
+            'saldoLiquidoUsd', 'saldoLiquidoBtc'
+        ];
+
+        errorElements.forEach(key => {
+            const element = this.elements[key];
+            if (element) {
                 element.textContent = 'Erro';
                 element.classList.add('error');
                 element.classList.remove('loading');
@@ -79,7 +113,7 @@ export class Header {
 
     clearLoading() {
         Object.values(this.elements).forEach(element => {
-            if (element) {
+            if (element && element.id !== 'finance-detalhe-btn') {
                 element.classList.remove('loading');
             }
         });

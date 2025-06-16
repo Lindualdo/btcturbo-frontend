@@ -27,8 +27,8 @@ export class ApiClient {
     }
 
     // Endpoints específicos
-    async getDashboardHome() { return this.fetchData('dashboard-home'); }
-    async getDashMercado() { return this.fetchData('dash-mercado'); }
+    async getDashboardHome() { return this.fetchData('dashboard-home'); } // Home
+    async getDashMercado() { return this.fetchData('dash-mercado'); } // Detalhes Mercado
    // async getMercado() { return this.fetchData('analise-mercado'); }
    // async getRisco() { return this.fetchData('analise-risco'); }
    // async getAlavancagem() { return this.fetchData('analise-alavancagem'); }

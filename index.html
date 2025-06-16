@@ -1,6 +1,6 @@
 <!-- 
 Arquivo: index.html
-Dashboard BTC Turbo V2 - Arquitetura Modular
+Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -31,17 +31,36 @@ Dashboard BTC Turbo V2 - Arquitetura Modular
                 </div>
                 
                 <div class="header-metric">
-                    <div class="header-metric-label">Posição BTC</div>
-                    <div class="header-metric-value loading" id="position-btc">Carregando...</div>
-                </div>
-                
-                <div class="header-metric">
                     <div class="header-metric-label">Posição USD</div>
                     <div class="header-metric-value loading" id="position-usd">Carregando...</div>
                 </div>
                 
-                <div class="status-indicator" id="api-status">
-                    ⏳ Conectando...
+                <div class="header-metric">
+                    <div class="header-metric-label">Dívida Total</div>
+                    <div class="header-metric-value loading" id="divida-total">Carregando...</div>
+                </div>
+                
+                <div class="header-metric">
+                    <div class="header-metric-label">Saldo Líquido USD</div>
+                    <div class="header-metric-value loading" id="saldo-liquido-usd">Carregando...</div>
+                </div>
+                
+                <div class="header-metric">
+                    <div class="header-metric-label">Saldo Líquido BTC</div>
+                    <div class="header-metric-value loading" id="saldo-liquido-btc">Carregando...</div>
+                </div>
+                
+                <div class="header-metric">
+                    <div class="header-metric-label">Status</div>
+                    <div class="status-indicator" id="api-status">
+                        ⏳ Conectando...
+                    </div>
+                </div>
+                
+                <div class="header-metric">
+                    <button class="btn-detail-minimal" id="finance-detalhe-btn" onclick="window.location.href='/finance-detalhe.html'">
+                        💼 Finanças
+                    </button>
                 </div>
             </div>
         </div>

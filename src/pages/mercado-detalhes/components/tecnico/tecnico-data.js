@@ -21,19 +21,19 @@ export class TecnicoData {
             indicadores: {
                 diario_score: {
                     score: (tecnicoData.indicadores?.diario?.score || 0) * 10,
-                    valor: formatters.decimal(tecnicoData.indicadores?.diario?.score)
+                    valor: formatters.decimal(tecnicoData.indicadores?.diario?.score) * 10
                 },
                 diario_posicao: {
                     score: (tecnicoData.indicadores?.diario?.posicao || 0) * 10,
-                    valor: formatters.decimal(tecnicoData.indicadores?.diario?.posicao)
+                    valor: formatters.decimal(tecnicoData.indicadores?.diario?.posicao) *10
                 },
                 semanal_score: {
                     score: (tecnicoData.indicadores?.semanal?.score || 0) * 10,
-                    valor: formatters.decimal(tecnicoData.indicadores?.semanal?.score)
+                    valor: formatters.decimal(tecnicoData.indicadores?.semanal?.score) *10
                 },
                 semanal_posicao: {
                     score: (tecnicoData.indicadores?.semanal?.posicao || 0) * 10,
-                    valor: formatters.decimal(tecnicoData.indicadores?.semanal?.posicao)
+                    valor: formatters.decimal(tecnicoData.indicadores?.semanal?.posicao)*10
                 }
             }
         };
