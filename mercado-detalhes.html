@@ -31,14 +31,14 @@ Dashboard Detalhado - Score de Mercado
             display: grid;
             grid-template-columns: 220px 1fr;
             gap: 25px;
-            align-items: center;
+            align-items: start;
         }
         
-        /* Gauge */
         .gauge-container {
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 200px;
         }
         
         .gauge {
@@ -74,12 +74,13 @@ Dashboard Detalhado - Score de Mercado
             text-transform: uppercase;
         }
         
-        /* Indicadores */
         .bloco-indicadores {
             display: flex;
             flex-direction: column;
+            justify-content: center;
             gap: 15px;
             max-width: 100%;
+            min-height: 200px;
         }
         
         .indicador-item {
