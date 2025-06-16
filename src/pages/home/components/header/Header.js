@@ -62,16 +62,16 @@ export class Header {
         if (!element) return;
 
         if (status === 'success') {
-            element.innerHTML = '🟢';
+            element.innerHTML = '⚡';
             element.style.background = 'transparent';
-            element.style.color = '#ffffff';
+            element.style.color = '#4caf50'; // Verde
             element.style.padding = '0';
             element.style.borderRadius = '0';
             element.className = 'header-metric-value';
         } else {
-            element.innerHTML = '🔴';
+            element.innerHTML = '⚡';
             element.style.background = 'transparent';
-            element.style.color = '#ffffff';
+            element.style.color = '#ff4757'; // Vermelho
             element.style.padding = '0';
             element.style.borderRadius = '0';
             element.className = 'header-metric-value';
@@ -94,8 +94,9 @@ export class Header {
         });
 
         if (this.elements.apiStatus) {
-            this.elements.apiStatus.innerHTML = '🟡';
+            this.elements.apiStatus.innerHTML = '⚡';
             this.elements.apiStatus.style.background = 'transparent';
+            this.elements.apiStatus.style.color = '#ffa726'; // Amarelo/Laranja
             this.elements.apiStatus.style.padding = '0';
         }
     }
