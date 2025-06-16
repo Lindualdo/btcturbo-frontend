@@ -11,6 +11,7 @@ export class Header {
             dividaTotal: document.getElementById('divida-total'),
             saldoLiquidoUsd: document.getElementById('saldo-liquido-usd'),
             saldoLiquidoBtc: document.getElementById('saldo-liquido-btc'),
+            leverageValue: document.getElementById('leverage-current-value-header'),
             apiStatus: document.getElementById('api-status'),
             financeBtn: document.getElementById('finance-detalhe-btn')
         };
@@ -44,6 +45,7 @@ export class Header {
         this.updateElement('dividaTotal', data.dividaTotal);
         this.updateElement('saldoLiquidoUsd', data.saldoLiquidoUsd);
         this.updateElement('saldoLiquidoBtc', data.saldoLiquidoBtc);
+        this.updateElement('leverageValue', data.leverageValue);
         this.updateApiStatus(data.apiStatus);
 
         this.clearLoading();
@@ -86,7 +88,7 @@ export class Header {
         // Loading em todos os campos exceto status e botão
         const loadingElements = [
             'btcPrice', 'positionUsd', 'dividaTotal', 
-            'saldoLiquidoUsd', 'saldoLiquidoBtc'
+            'saldoLiquidoUsd', 'saldoLiquidoBtc', 'leverageValue'
         ];
 
         loadingElements.forEach(key => {
@@ -113,7 +115,7 @@ export class Header {
         // Erro em todos os campos exceto status e botão
         const errorElements = [
             'btcPrice', 'positionUsd', 'dividaTotal', 
-            'saldoLiquidoUsd', 'saldoLiquidoBtc'
+            'saldoLiquidoUsd', 'saldoLiquidoBtc', 'leverageValue'
         ];
 
         errorElements.forEach(key => {

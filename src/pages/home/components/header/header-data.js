@@ -26,6 +26,7 @@ export class HeaderData {
             dividaTotal: formatters.currency(dividaTotal),
             saldoLiquidoUsd: formatters.currency(saldoLiquidoUsd),
             saldoLiquidoBtc: formatters.btc(saldoLiquidoBtc),
+            leverageValue: `${dashboardData.alavancagem?.atual?.toFixed(2) || 0} / ${dashboardData.alavancagem?.permitida?.toFixed(2) || 0}`,
             apiStatus: apiStatus || 'error'
         };
     }
