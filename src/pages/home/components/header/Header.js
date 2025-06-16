@@ -66,14 +66,14 @@ export class Header {
         element.style.cssText = '';
 
         if (status === 'success') {
-            element.innerHTML = '⚡';
+            element.innerHTML = '●';
             element.style.color = '#4caf50'; // Verde
             element.style.fontSize = '1.2rem';
             element.style.display = 'flex';
             element.style.alignItems = 'center';
             element.style.justifyContent = 'center';
         } else {
-            element.innerHTML = '⚡';
+            element.innerHTML = '●';
             element.style.color = '#ff4757'; // Vermelho
             element.style.fontSize = '1.2rem';
             element.style.display = 'flex';
@@ -98,7 +98,7 @@ export class Header {
         });
 
         if (this.elements.apiStatus) {
-            this.elements.apiStatus.innerHTML = '⚡';
+            this.elements.apiStatus.innerHTML = '●';
             this.elements.apiStatus.className = '';
             this.elements.apiStatus.style.cssText = '';
             this.elements.apiStatus.style.color = '#ffa726'; // Amarelo/Laranja
