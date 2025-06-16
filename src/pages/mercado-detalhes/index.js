@@ -94,8 +94,8 @@ class MercadoDetalhes {
         const classElement = document.getElementById('classificacao-consolidada');
 
         if (scoreElement) {
-            const scoreFormatado = parseInt(score) * 10;
-            scoreElement.textContent = scoreFormatado;
+            //const scoreFormatado = parseInt(score) * 10;
+            scoreElement.textContent = score.toFixed(0);
         }
 
         if (classElement) {
