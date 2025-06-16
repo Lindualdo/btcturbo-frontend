@@ -29,9 +29,9 @@ Dashboard Detalhado - Score de Mercado
         
         .bloco-content {
             display: grid;
-            grid-template-columns: 220px 1fr;
-            gap: 25px;
-            align-items: center;
+            grid-template-columns: 200px 1fr;
+            gap: 30px;
+            align-items: start;
         }
         
         /* Gauge */
@@ -133,8 +133,12 @@ Dashboard Detalhado - Score de Mercado
                 gap: 20px;
             }
             
-           .bloco-card .panel-title {
-                margin-bottom: 40px; /* Ajuste aqui */
+            .panel-title {
+                margin-bottom: 25px;
+            }
+            
+            .bloco-card .panel-title {
+                margin-bottom: 30px;
             }
         }
     </style>
@@ -154,7 +158,9 @@ Dashboard Detalhado - Score de Mercado
         <div class="score-summary">
             <div class="score-main" id="score-consolidado">0.0</div>
             <div class="score-details">
-                Mercado: <span id="classificacao-consolidada">Carregando...</span>
+                Score Consolidado de Mercado
+                <br>
+                <span id="classificacao-consolidada">Carregando...</span>
             </div>
         </div>
 
@@ -222,7 +228,7 @@ Dashboard Detalhado - Score de Mercado
             <div class="bloco-card">
                 <div class="panel-title">⚡ Análise de Momentum</div>
                 <div class="bloco-content">
-                    <div class="gauge-container">
+                    <div class="gauge-box">
                         <div class="gauge">
                             <canvas id="gauge-momentum" width="200" height="200"></canvas>
                             <div class="gauge-center">
@@ -232,7 +238,7 @@ Dashboard Detalhado - Score de Mercado
                         </div>
                     </div>
                     
-                    <div class="bloco-indicadores">
+                    <div class="barras-box">
                         <div class="indicador-item">
                             <div class="indicador-header">
                                 <span class="indicador-nome">SOPR</span>
@@ -293,7 +299,7 @@ Dashboard Detalhado - Score de Mercado
                     <div class="bloco-indicadores">
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Tempo gráfico - Diário</span>
+                                <span class="indicador-nome">Score Diário</span>
                                 <span class="indicador-valor" id="diario-score-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -301,35 +307,15 @@ Dashboard Detalhado - Score de Mercado
                             </div>
                         </div>
                         
-                        <!--<div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">Posição Preço: Diária</span>
-                                <span class="indicador-valor" id="diario-posicao-valor">-</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="diario-posicao-barra"></div>
-                            </div>
-                        </div>-->
-                        
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Tempo gráfico - Semanal</span>
+                                <span class="indicador-nome">Score Semanal</span>
                                 <span class="indicador-valor" id="semanal-score-valor">-</span>
                             </div>
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="semanal-score-barra"></div>
                             </div>
                         </div>
-                        
-                        <!--<div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">Posição Preço: Semanal</span>
-                                <span class="indicador-valor" id="semanal-posicao-valor">-</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="semanal-posicao-barra"></div>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
             </div>
