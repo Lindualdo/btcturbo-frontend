@@ -40,30 +40,30 @@ export class Estrategia {
         }
     }
 
-    updateActionStyle(decisao) {
-        const actionElement = this.elements.acaoPrincipal;
-        if (!actionElement) return;
+   updateActionStyle(decisao) {
+    const actionElement = this.elements.acaoPrincipal;
+    if (!actionElement) return;
 
-        const parentDiv = actionElement.parentElement;
-        if (!parentDiv) return;
+    const parentDiv = actionElement.parentElement;
+    if (!parentDiv) return;
 
-        // Cores baseadas na decisão
-        switch (decisao?.toUpperCase()) {
-            case 'BUY':
-            case 'COMPRAR':
-                parentDiv.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
-                break;
-            case 'SELL':
-            case 'VENDER':
-                parentDiv.style.background = 'linear-gradient(135deg, #ff4757, #ff6b6b)';
-                break;
-            case 'HOLD':
-            case 'MANTER':
-            default:
-                parentDiv.style.background = 'linear-gradient(135deg, #ff8c42, #ff6b35)';
-                break;
-        }
+    // Cores baseadas na decisão - APLICAR NO PAI
+    switch (decisao?.toUpperCase()) {
+        case 'BUY':
+        case 'COMPRAR':
+            parentDiv.style.background = '#4caf50'; // Verde direto
+            break;
+        case 'SELL':
+        case 'VENDER': 
+            parentDiv.style.background = '#ff4757'; // Vermelho
+            break;
+        case 'HOLD':
+        case 'MANTER':
+        default:
+            parentDiv.style.background = 'linear-gradient(135deg, #ff8c42, #ff6b35)'; // Laranja
+            break;
     }
+}
 
     showLoading() {
         const loadingElements = [
