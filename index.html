@@ -1,6 +1,6 @@
 <!-- 
 Arquivo: index.html
-Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
+Dashboard BTC Turbo V2 - CSS Inline Removido
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -18,7 +18,7 @@ Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
         <div class="top-header">
             <div class="header-left">
                 <div>
-                    <div id="api-status" style="margin-bottom: 5px;">
+                    <div id="api-status">
                         ⏳ Conectando...
                     </div>
                     <div class="header-title">
@@ -43,23 +43,6 @@ Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
                     <div class="header-metric-label">Alavancagem</div>
                     <div class="header-metric-value loading" id="leverage-current-value-header">Carregando...</div>
                 </div>
-
-                <!--<div class="header-metric">
-                    <div class="header-metric-label">Dívida Total</div>
-                    <div class="header-metric-value loading" id="divida-total">Carregando...</div>
-                </div>
-                
-                <div class="header-metric">
-                    <div class="header-metric-label">Saldo USD</div>
-                    <div class="header-metric-value loading" id="saldo-liquido-usd">Carregando...</div>
-                </div>-->
-                
-                <!--<div class="header-metric">
-                    <div class="header-metric-label">Saldo liq. BTC</div>
-                    <div class="header-metric-value loading" id="saldo-liquido-btc">Carregando...</div>
-                </div>-->
-                
-
                 
                 <div class="header-metric">
                     <button class="btn-detail-minimal" id="finance-detalhe-btn" onclick="window.location.href='/finance-detalhe'">
@@ -73,7 +56,7 @@ Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
         <div class="scores-grid">
             <!-- Score de Mercado -->
             <div class="score-card">
-                <div><span style="color: #8b9dc3; min-width: 50px;">Devo estar posicionado?</span></div>
+                <div><span>Devo estar posicionado?</span></div>
                 <div class="score-header">
                     <span class="score-title"><i class="bi bi-bank"></i> Score de Mercado</span>
                 </div>
@@ -81,24 +64,19 @@ Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
                 <div class="score-display">
                     <div class="score-number loading" id="score-mercado-number">58</div>
                     <div class="score-bar">
-                        <div class="score-bar-fill" id="score-mercado-bar" style="width: 58%"></div>
+                        <div class="score-bar-fill" id="score-mercado-bar"></div>
                     </div>
                     <div class="score-classification loading" id="score-mercado-class">NEUTRO</div>
                 </div>
                 
-                <!--INDICADORES CICLO-->
-                <!--<div class="score-metrics">
-                    <span>MVRV: <span id="mvrv-value" class="loading">-</span></span>
-                    <span>NUPL: <span id="nupl-value" class="loading">-</span></span>
-                </div>-->
-                <div style="text-align: center; margin-top: 15px;">
+                <div class="score-metrics-center">
                     <a href="#" class="btn-detail-minimal">Ver Detalhes →</a>
                 </div>
             </div>
 
             <!-- Score de Risco -->
             <div class="score-card">
-                <div><span style="color: #8b9dc3; min-width: 50px;">Minha posição está segura?</span></div>
+                <div><span>Minha posição está segura?</span></div>
                 <div class="score-header">
                     <span class="score-title"><i class="bi bi-shield"></i> Score de Risco</span>
                 </div>
@@ -106,7 +84,7 @@ Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
                 <div class="score-display">
                     <div class="score-number loading" id="score-risco-number">75</div>
                     <div class="score-bar">
-                        <div class="score-bar-fill" id="score-risco-bar" style="width: 75%"></div>
+                        <div class="score-bar-fill" id="score-risco-bar"></div>
                     </div>
                     <div class="score-classification loading" id="score-risco-class">BOM</div>
                 </div>
@@ -122,31 +100,27 @@ Dashboard BTC Turbo V2 - Arquitetura Modular - Header Atualizado
         <div class="bottom-panels">
             <!-- GESTÃO DE ALAVANCAGEM -->
             <div class="panel">
-                <div><span style="color: #8b9dc3; min-width: 50px;">Quanto posso alavancar?</span></div>
+                <div><span>Quanto posso alavancar?</span></div>
                 <div class="score-header">
                     <span class="score-title"><i class="bi bi-graph-up-arrow"></i> Alavancagem</span>
                 </div>
 
-                <div style="text-align: center; margin-bottom: 20px;">
+                <div class="leverage-display">
                     <div class="score-number" id="leverage-current-value"></div>
                     <div class="score-bar">
-                        <div class="score-bar-fill" id="leverage-current-bar" style="width: 84%;"></div>
+                        <div class="score-bar-fill" id="leverage-current-bar"></div>
                     </div>
                 </div>
                 
-                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
-                    <span>Disponível: <span id="capital-liquido" style="color: #ffffff; font-weight: 600;">$0</span></span>
-                    <span><span id="alavancagem-status" style="color: #ffffff; font-weight: 600;"></span></span>
+                <div class="leverage-info">
+                    <span>Disponível: <span id="capital-liquido">$0</span></span>
+                    <span><span id="alavancagem-status"></span></span>
                 </div>
-                
-                <!--<div style="margin-bottom: 15px; font-size: 0.9rem; color: #8b9dc3;">
-                    <span>Valor a reduzir: <span id="valor-reduzir" style="color: #ffffff; font-weight: 600;">-</span></span>
-                </div>-->
             </div>
 
             <!-- DECISÃO ESTRATÉGICA -->
             <div class="panel">
-                <div><span style="color: #8b9dc3; min-width: 50px;">O que devo fazer agora?</span></div>
+                <div><span>O que devo fazer agora?</span></div>
                 <div class="score-header">
                     <span class="score-title"><i class="bi bi-bullseye"></i> Decisão Estratégica</span>
                 </div>

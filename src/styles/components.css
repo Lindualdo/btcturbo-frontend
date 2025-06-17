@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/styles/components.css
-Estilos específicos dos componentes modulares
+Estilos específicos dos componentes modulares - CORRIGIDO
 */
 
 /* =========================
@@ -148,26 +148,6 @@ Estilos específicos dos componentes modulares
     font-size: 0.9rem;
 }
 
-/* Cores da estratégia */
-.strategy-main-action {
-    padding: 15px 30px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-
-.strategy-main-action.comprar {
-    background: #4caf50;
-}
-
-.strategy-main-action.vender {
-    background: #ff4757;
-}
-
-.strategy-main-action.hold {
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-}
-
-
 .score-bar {
     background: #404552;
     height: 12px;
@@ -235,25 +215,50 @@ Estilos específicos dos componentes modulares
 }
 
 /* =========================
-   STRATEGY COMPONENT
+   STRATEGY COMPONENT - CORRIGIDO
    ========================= */
 .strategy-action {
     text-align: center;
     margin-bottom: 25px;
 }
 
+/* BASE: Reset completo antes de aplicar cores */
 .strategy-main-action {
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
     padding: 15px 30px;
     border-radius: 12px;
     margin-bottom: 15px;
+    background: none !important; /* Remove background padrão */
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* CORES ESPECÍFICAS - Com !important para forçar precedência */
+.strategy-main-action.comprar {
+    background: linear-gradient(135deg, #4caf50, #66bb6a) !important;
+}
+
+.strategy-main-action.vender {
+    background: linear-gradient(135deg, #ff4757, #ff6b6b) !important;
+}
+
+.strategy-main-action.hold {
+    background: linear-gradient(135deg, #ff8c42, #ff6b35) !important;
+}
+
+/* FALLBACK: Se nenhuma classe específica for aplicada */
+.strategy-main-action:not(.comprar):not(.vender):not(.hold) {
+    background: linear-gradient(135deg, #8b9dc3, #718096) !important;
 }
 
 .strategy-action-text {
     font-size: 1.5rem;
     font-weight: 700;
-    color: white;
+    color: white !important;
     text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 2;
 }
 
 .strategy-justification {
@@ -263,6 +268,7 @@ Estilos específicos dos componentes modulares
     padding: 10px;
     background: #323746;
     border-radius: 8px;
+    line-height: 1.4;
 }
 
 .strategy-metrics {
@@ -277,12 +283,14 @@ Estilos específicos dos componentes modulares
     padding: 15px;
     background: #323746;
     border-radius: 8px;
+    border: 1px solid #404552;
 }
 
 .strategy-metric-label {
     color: #8b9dc3;
     font-size: 0.8rem;
     margin-bottom: 5px;
+    font-weight: 500;
 }
 
 .strategy-metric-value {
@@ -300,6 +308,16 @@ Estilos específicos dos componentes modulares
 }
 
 .error {
+    color: #ff4757;
+    font-weight: 600;
+}
+
+.strategy-metric-value.loading {
+    color: #8b9dc3;
+    font-style: italic;
+}
+
+.strategy-metric-value.error {
     color: #ff4757;
     font-weight: 600;
 }
@@ -341,6 +359,32 @@ Estilos específicos dos componentes modulares
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* =========================
+   NOVAS CLASSES PARA INDEX.HTML
+   ========================= */
+.score-metrics-center {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.leverage-display {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.leverage-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #8b9dc3;
+}
+
+.leverage-info span span {
+    color: #ffffff;
+    font-weight: 600;
 }
 
 /* =========================
@@ -395,6 +439,14 @@ Estilos específicos dos componentes modulares
     
     .container {
         padding: 15px;
+    }
+
+    .strategy-action-text {
+        font-size: 1.3rem;
+    }
+    
+    .strategy-main-action {
+        padding: 12px 20px;
     }
 }
 

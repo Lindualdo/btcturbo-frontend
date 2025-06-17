@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/estrategia/Estrategia.js
-Componente UI da Decisão Estratégica
+Componente UI da Decisão Estratégica - CORRIGIDO
 */
 
 export class Estrategia {
@@ -47,25 +47,29 @@ export class Estrategia {
         const parentDiv = actionElement.parentElement;
         if (!parentDiv) return;
 
-        // Remove classes anteriores
+        // RESET COMPLETO - Remove todas as classes e estilos inline
         parentDiv.className = 'strategy-main-action';
+        parentDiv.style.background = ''; // Limpa qualquer estilo inline
+        parentDiv.style.cssText = ''; // Limpa completamente inline styles
         
-        // Adiciona classe baseada na decisão
-        switch (decisao?.toUpperCase()) {
-            case 'BUY':
-            case 'COMPRAR':
+        // Força um reflow para garantir que os estilos foram removidos
+        parentDiv.offsetHeight;
+        
+        // Aplica nova classe baseada na decisão com timeout para garantir aplicação
+        setTimeout(() => {
+            const decisaoLower = decisao?.toLowerCase() || 'hold';
+            
+            if (decisaoLower.includes('buy') || decisaoLower.includes('comprar')) {
                 parentDiv.classList.add('comprar');
-                break;
-            case 'SELL':
-            case 'VENDER':
+                console.log('✅ Aplicando classe: comprar');
+            } else if (decisaoLower.includes('sell') || decisaoLower.includes('vender')) {
                 parentDiv.classList.add('vender');
-                break;
-            case 'HOLD':
-            case 'MANTER':
-            default:
+                console.log('✅ Aplicando classe: vender');
+            } else {
                 parentDiv.classList.add('hold');
-                break;
-        }
+                console.log('✅ Aplicando classe: hold');
+            }
+        }, 10);
     }
 
     showLoading() {
@@ -81,6 +85,14 @@ export class Estrategia {
                 element.classList.add('loading');
             }
         });
+
+        // Reset do container de ação para estado loading
+        const actionElement = this.elements.acaoPrincipal;
+        if (actionElement?.parentElement) {
+            const parentDiv = actionElement.parentElement;
+            parentDiv.className = 'strategy-main-action';
+            parentDiv.style.cssText = '';
+        }
     }
 
     showError() {
@@ -98,10 +110,12 @@ export class Estrategia {
             }
         });
 
-        // Reset da cor de ação
+        // Reset da cor de ação para estado de erro
         const actionElement = this.elements.acaoPrincipal;
         if (actionElement?.parentElement) {
-            actionElement.parentElement.style.background = 'linear-gradient(135deg, #666, #555)';
+            const parentDiv = actionElement.parentElement;
+            parentDiv.className = 'strategy-main-action';
+            parentDiv.style.cssText = '';
         }
     }
 
