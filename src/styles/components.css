@@ -215,67 +215,53 @@ Estilos específicos dos componentes modulares - CORRIGIDO
 }
 
 /* =========================
-   STRATEGY COMPONENT - CORRIGIDO
+   STRATEGY COMPONENT - REFATORADO
    ========================= */
 .strategy-action {
-    text-align: center;
     margin-bottom: 25px;
 }
 
-/* BASE: Reset completo antes de aplicar cores */
 .strategy-main-action {
-    padding: 15px 30px;
+    padding: 15px 20px;
     border-radius: 12px;
     margin-bottom: 15px;
-    background: none !important; /* Remove background padrão */
+    text-align: center;
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
 }
 
-/* CORES ESPECÍFICAS - Com !important para forçar precedência */
 .strategy-main-action.comprar {
-    background: linear-gradient(135deg, #4caf50, #66bb6a) !important;
+    background: #4caf50;
 }
 
 .strategy-main-action.vender {
-    background: linear-gradient(135deg, #ff4757, #ff6b6b) !important;
+    background: #ff4757;
 }
 
 .strategy-main-action.hold {
-    background: linear-gradient(135deg, #ff8c42, #ff6b35) !important;
-}
-
-/* FALLBACK: Se nenhuma classe específica for aplicada */
-.strategy-main-action:not(.comprar):not(.vender):not(.hold) {
-    background: linear-gradient(135deg, #8b9dc3, #718096) !important;
+    background: #ff8c42;
 }
 
 .strategy-action-text {
     font-size: 1.5rem;
     font-weight: 700;
-    color: white !important;
+    color: white;
     text-transform: uppercase;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    position: relative;
-    z-index: 2;
 }
 
 .strategy-justification {
     color: #8b9dc3;
     font-size: 0.85rem;
     text-align: center;
-    padding: 10px;
-    background: #2a2f3e;
+    padding: 15px;
+    background: #323746;
     border-radius: 8px;
-    line-height: 1.4;
+    margin-bottom: 20px;
 }
 
 .strategy-metrics {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 15px;
-    margin-bottom: 20px;
 }
 
 .strategy-metric {
@@ -283,14 +269,12 @@ Estilos específicos dos componentes modulares - CORRIGIDO
     padding: 15px;
     background: #323746;
     border-radius: 8px;
-    border: 1px solid #404552;
 }
 
 .strategy-metric-label {
     color: #8b9dc3;
     font-size: 0.8rem;
     margin-bottom: 5px;
-    font-weight: 500;
 }
 
 .strategy-metric-value {
