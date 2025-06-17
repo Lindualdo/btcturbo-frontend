@@ -42,20 +42,29 @@ export class Estrategia {
 
     updateActionStyle(decisao) {
         const actionElement = this.elements.acaoPrincipal;
-        const parentDiv = actionElement?.parentElement;
+        if (!actionElement) return;
+
+        const parentDiv = actionElement.parentElement;
         if (!parentDiv) return;
 
+        // Remove classes anteriores
+        parentDiv.className = 'strategy-main-action';
+        
+        // Adiciona classe baseada na decisão
         switch (decisao?.toUpperCase()) {
             case 'BUY':
             case 'COMPRAR':
-                parentDiv.style.setProperty('background', '#4caf50', 'important');
+                parentDiv.classList.add('comprar');
                 break;
             case 'SELL':
             case 'VENDER':
-                parentDiv.style.setProperty('background', '#ff4757', 'important');
+                parentDiv.classList.add('vender');
                 break;
+            case 'HOLD':
+            case 'MANTER':
             default:
-                parentDiv.style.setProperty('background', 'linear-gradient(135deg, #ff8c42, #ff6b35)', 'important');
+                parentDiv.classList.add('hold');
+                break;
         }
     }
 
