@@ -5,7 +5,7 @@ API Client centralizado para todas as páginas
 
 export class ApiClient {
     constructor() {
-        this.baseURL = 'https://btcturbo-prod.up.railway.app/api/v1';
+        this.baseURL = 'https:btcturbo-prod.up.railway.app/api/v1';
     }
 
     async fetchData(endpoint) {
