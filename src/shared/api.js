@@ -5,7 +5,7 @@ API Client centralizado para todas as páginas
 
 export class ApiClient {
     constructor() {
-        this.baseURL = 'https://btcturbo-v5-production.up.railway.app/api/v3';
+        this.baseURL = 'https://btcturbo-v5-production.up.railway.app/api/v1';
     }
 
     async fetchData(endpoint) {
@@ -28,7 +28,7 @@ export class ApiClient {
 
     // Endpoints específicos
     async getDashboardHome() { return this.fetchData('dash-main'); } // Home
-    async getDashMercado() { return this.fetchData('analise-mercado'); } // Detalhes Mercado
+    async getDashMercado() { return this.fetchData('dash-mercado'); } // Detalhes Mercado
    // async getMercado() { return this.fetchData('analise-mercado'); }
    // async getRisco() { return this.fetchData('analise-risco'); }
    // async getAlavancagem() { return this.fetchData('analise-alavancagem'); }

@@ -82,13 +82,12 @@ pages/[dashboard]/
 
 ## 📡 API Integration
 
-Base URL: `https://btcturbo-v5-production.up.railway.app/api/v2`
+Base URL: `https://btcturbo-v5-production.up.railway.app/api/v1`
 
 ### Endpoints Utilizados
-- `/dashboard-home` - Dados completos da home
-- `/analise-mercado` - Score e métricas de mercado
-- `/analise-risco` - Health factor e liquidação
-- `/analise-alavancagem` - Gestão de posições
+- `/dash-main` - Dados completos da home - Analise em 4 camadas (mercado, riscos, alavancagem e ações táticas)
+- `/dash-mercado` - Score e métricas de mercado
+
 
 ## 🎯 Funcionalidades
 
