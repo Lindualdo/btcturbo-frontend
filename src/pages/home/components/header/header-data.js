@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/header/header-data.js
-Lógica de dados do Header - Atualizada com novos campos financeiros
+Lógica de dados do Header - Atualizada com timestamp
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -20,6 +20,9 @@ export class HeaderData {
         const saldoLiquidoUsd = positionUsd - dividaTotal;
         const saldoLiquidoBtc = btcPrice > 0 ? saldoLiquidoUsd / btcPrice : 0;
 
+        // Formatar timestamp
+        const lastUpdate = this.formatTimestamp(dashboardData.timestamp);
+
         return {
             btcPrice: formatters.currency(btcPrice),
             positionUsd: formatters.currency(positionUsd),
@@ -27,8 +30,24 @@ export class HeaderData {
             saldoLiquidoUsd: formatters.currency(saldoLiquidoUsd),
             saldoLiquidoBtc: formatters.btc(saldoLiquidoBtc),
             leverageValue: `${dashboardData.alavancagem?.atual?.toFixed(2) || 0} / ${dashboardData.alavancagem?.permitida?.toFixed(2) || 0}`,
-            apiStatus: apiStatus || 'error'
+            apiStatus: apiStatus || 'error',
+            lastUpdate: lastUpdate
         };
+    }
+
+    formatTimestamp(timestamp) {
+        if (!timestamp) return '--:--';
+        
+        try {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (error) {
+            console.warn('Erro ao formatar timestamp:', error);
+            return '--:--';
+        }
     }
 }
 

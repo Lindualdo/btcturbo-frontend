@@ -17,6 +17,7 @@ body {
     min-height: 100vh;
 }
 
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -211,11 +212,30 @@ body {
     font-style: italic;
 }
 
+.api-status-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.last-update {
+    font-size: 0.7rem;
+    color: #8b9dc3;
+    font-weight: 400;
+}
+
 @media (max-width: 768px) {
     .cards-grid {
         grid-template-columns: 1fr;
     }
     
+    .api-status-block {
+        flex-direction: column;
+        gap: 2px;
+        align-items: flex-start;
+    }
+
     .container {
         padding: 15px;
     }
