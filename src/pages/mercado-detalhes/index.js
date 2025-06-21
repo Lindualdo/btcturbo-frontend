@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/index.js
-Orquestrador da página Mercado Detalhes
+Orquestrador da página Mercado Detalhes - COM TIMESTAMP
 */
 
 import ApiClient from '../../shared/api.js';
@@ -70,6 +70,9 @@ class MercadoDetalhes {
                 // Atualizar score consolidado
                 this.updateConsolidatedScore(score_consolidado, classificacao);
                 
+                // NOVO: Atualizar timestamp (está na raiz, não em metadata)
+                this.updateTimestamp(response.timestamp);
+                
                 // Distribuir dados para cada componente
                 this.components.ciclo.render(this.dataHandlers.ciclo.formatCicloData(blocos.ciclo));
                 this.components.momentum.render(this.dataHandlers.momentum.formatMomentumData(blocos.momentum));
@@ -99,7 +102,25 @@ class MercadoDetalhes {
         }
 
         if (classElement) {
-            classElement.textContent =  classificacao.toUpperCase() || 'erro';
+            classElement.textContent = classificacao.toUpperCase() || 'erro';
+        }
+    }
+
+    updateTimestamp(timestamp) {
+        const timestampElement = document.getElementById('last-update-mercado');
+        
+        if (timestampElement && timestamp) {
+            try {
+                const date = new Date(timestamp);
+                const formattedTime = date.toLocaleTimeString('pt-PT', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZone: 'Europe/Lisbon'
+                });
+                timestampElement.textContent = `Última: ${formattedTime}`;
+            } catch (error) {
+                timestampElement.textContent = 'Última: --:--';
+            }
         }
     }
 
@@ -113,9 +134,11 @@ class MercadoDetalhes {
         // Loading no score consolidado
         const scoreElement = document.getElementById('score-consolidado');
         const classElement = document.getElementById('classificacao-consolidada');
+        const timestampElement = document.getElementById('last-update-mercado');
         
         if (scoreElement) scoreElement.textContent = 'Carregando...';
         if (classElement) classElement.textContent = 'Carregando...';
+        if (timestampElement) timestampElement.textContent = 'Última: --:--';
     }
 
     handleLoadError() {
@@ -143,9 +166,11 @@ class MercadoDetalhes {
         // Erro no score consolidado
         const scoreElement = document.getElementById('score-consolidado');
         const classElement = document.getElementById('classificacao-consolidada');
+        const timestampElement = document.getElementById('last-update-mercado');
         
         if (scoreElement) scoreElement.textContent = 'Erro';
         if (classElement) classElement.textContent = 'Erro de conexão';
+        if (timestampElement) timestampElement.textContent = 'Última: Erro';
     }
 
     startAutoRefresh() {
