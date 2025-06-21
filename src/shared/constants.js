@@ -4,10 +4,10 @@ Constantes e configurações globais
 */
 
 export const API_CONFIG = {
-    BASE_URL: 'https://btcturbo-v5-production.up.railway.app/api/v2',
+    BASE_URL: 'https://btcturbo-prod.up.railway.app/api/v1',
     TIMEOUT: 10000,
     RETRY_DELAY: 5000,
-    AUTO_REFRESH_INTERVAL: 300000 // 30 segundos
+    AUTO_REFRESH_INTERVAL: 1800000 // 30 minutos
 };
 
 export const SCORE_THRESHOLDS = {

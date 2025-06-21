@@ -8,7 +8,7 @@ import formatters from '../../../../shared/formatters.js';
 export class HeaderData {
     constructor() {}
 
-    formatHeaderData(dashboardData, apiStatus) {
+    formatHeaderData(dashboardData, apiStatus, metadata) {
         console.log('🔄 Header: Formatando dados:', dashboardData);
 
         // Extrair dados dos objetos corretos
@@ -20,8 +20,8 @@ export class HeaderData {
         const saldoLiquidoUsd = positionUsd - dividaTotal;
         const saldoLiquidoBtc = btcPrice > 0 ? saldoLiquidoUsd / btcPrice : 0;
 
-        // Formatar timestamp
-        const lastUpdate = this.formatTimestamp(dashboardData.timestamp);
+        // Formatar timestamp do metadata
+        const lastUpdate = this.formatTimestamp(metadata?.timestamp);
 
         return {
             btcPrice: formatters.currency(btcPrice),
