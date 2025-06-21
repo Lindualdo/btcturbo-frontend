@@ -40,9 +40,10 @@ export class HeaderData {
         
         try {
             const date = new Date(timestamp);
-            return date.toLocaleTimeString('pt-BR', {
+            return date.toLocaleTimeString('pt-PT', {
                 hour: '2-digit',
-                minute: '2-digit'
+                minute: '2-digit',
+                timeZone: 'Europe/Lisbon' // Horário de Lisboa
             });
         } catch (error) {
             console.warn('Erro ao formatar timestamp:', error);
