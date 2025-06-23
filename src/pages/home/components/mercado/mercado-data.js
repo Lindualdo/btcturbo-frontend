@@ -11,7 +11,7 @@ export class MercadoData {
     formatMercadoData(mercado) {
         console.log('🔄 Mercado: Formatando dados:', mercado);
         //const classification = formatters.classification(mercado?.classificacao_mercado);
-        classification = `Ciclo: ${mercado?.ciclo_name} - ${mercado?.ciclo_detail}`;
+        const classification = `Ciclo: ${mercado?.ciclo_name} - ${mercado?.ciclo_detail}`;
 
         return {
             score: formatters.score(mercado?.score_mercado || 0),
