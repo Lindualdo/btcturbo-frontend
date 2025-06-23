@@ -73,7 +73,7 @@ class HomeDashboard {
             const response = await this.api.getDashboardHome();
             
             if (response.status === 'success' && response.data) {
-                const { header, risco, mercado, estrategia, alavancagem } = response.data;
+                const { header, risco, mercado, estrategia, alavancagem, tecnicos} = response.data;
                 const metadata = response.metadata; // CORRIGIDO: extrair metadata
                 
                 // Distribuir dados formatados para cada componente
