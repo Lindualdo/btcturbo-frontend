@@ -73,13 +73,13 @@ class HomeDashboard {
             const response = await this.api.getDashboardHome();
             
             if (response.status === 'success' && response.data) {
-                const { header, scores, tecnicos, estrategia, alavancagem, indicadores } = response.data;
+                const { header, risco, mercado, estrategia, alavancagem } = response.data;
                 const metadata = response.metadata; // CORRIGIDO: extrair metadata
                 
                 // Distribuir dados formatados para cada componente
                 this.components.header.render(this.dataHandlers.header.formatHeaderData(response.data, response.status, metadata));
-                this.components.mercado.render(this.dataHandlers.mercado.formatMercadoData(scores, indicadores));
-                this.components.risco.render(this.dataHandlers.risco.formatRiscoData(scores, indicadores));
+                this.components.mercado.render(this.dataHandlers.mercado.formatMercadoData(mercado));
+                this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
                 this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
                 this.components.estrategia.render(this.dataHandlers.estrategia.formatEstrategiaData(estrategia, tecnicos));
                 
