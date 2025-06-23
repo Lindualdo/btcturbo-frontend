@@ -10,12 +10,12 @@ export class MercadoData {
 
     formatMercadoData(mercado) {
         console.log('🔄 Mercado: Formatando dados:', mercado);
+        //const classification = formatters.classification(mercado?.classificacao_mercado);
+        classification = `Ciclo: ${mercado?.ciclo_name} - ${mercado?.ciclo_detail}`;
 
         return {
             score: formatters.score(mercado?.score_mercado || 0),
-            classification: formatters.classification(mercado?.classificacao_mercado),
-            ciclo: mercado?.ciclo_name,
-            ciclo_detail: mercado?.ciclo_detail
+            classification: formatters.classification(classification),
         };
     }
 }
