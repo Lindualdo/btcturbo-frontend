@@ -58,11 +58,11 @@ class RiscoDetalhes {
             // Fetch do endpoint dash-finance/health-factor
             const response = await this.api.fetchData('dash-finance/health-factor');
             
-            if (response.status === 'success' && response.data) {
-                const formattedData = this.dataHandler.formatRiscoDetalhesData(response.data);
+            if (response.status === 'success' && response.dados) {
+                const formattedData = this.dataHandler.formatRiscoDetalhesData(response);
                 
-                // Atualizar timestamp
-                this.updateTimestamp(response.metadata?.timestamp);
+                // Atualizar timestamp (pegar o primeiro item dos dados)
+                this.updateTimestamp(response.dados[0]?.timestamp);
                 
                 // Distribuir dados para componentes
                 this.components.metricsCards.render(formattedData.current);
