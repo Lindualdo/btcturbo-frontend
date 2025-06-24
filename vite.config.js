@@ -12,7 +12,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        mercadoDetalhes: resolve(__dirname, 'mercado-detalhes.html')
+        mercadoDetalhes: resolve(__dirname, 'mercado-detalhes.html'),
+        riscoDetalhes: resolve(__dirname, 'risco-detalhes.html')
       }
     }
   },

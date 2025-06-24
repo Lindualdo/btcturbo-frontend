@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/risco/Risco.js
-Componente UI do Score de Risco
+Componente UI do Score de Risco - COM NAVEGAÇÃO
 */
 
 export class Risco {
@@ -12,6 +12,27 @@ export class Risco {
             hfValue: document.getElementById('hf-value'),
             liqValue: document.getElementById('liq-value')
         };
+
+        // NOVA FUNCIONALIDADE: Setup da navegação
+        this.setupNavigation();
+    }
+
+    setupNavigation() {
+        // Encontrar o botão "Ver Detalhes" no card de risco
+        const riscoCard = document.getElementById('score-risco-number')?.closest('.score-card');
+        const detailButton = riscoCard?.querySelector('.btn-detail-minimal');
+        
+        if (detailButton) {
+            detailButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🔄 Navegando para detalhes do risco...');
+                window.location.href = '/risco-detalhes.html';
+            });
+            
+            console.log('✅ Navegação configurada para risco detalhes');
+        } else {
+            console.log('⚠️ Botão de detalhes não encontrado no card de risco');
+        }
     }
 
     render(data) {
@@ -42,9 +63,8 @@ export class Risco {
     updateScoreBar(score) {
         const barElement = this.elements.scoreBar;
         if (barElement) {
-            // Remove loading e limpa texto
             barElement.classList.remove('loading');
-            barElement.textContent = ''; // Remove texto "Carregando..."
+            barElement.textContent = '';
             barElement.style.width = `${score}%`;
             
             // Cores dinâmicas baseadas no score (risco = inverso)
@@ -59,7 +79,6 @@ export class Risco {
     }
 
     showLoading() {
-        // Loading apenas nos textos, não nas barras
         ['scoreNumber', 'scoreClass', 'hfValue', 'liqValue'].forEach(key => {
             const element = this.elements[key];
             if (element) {
