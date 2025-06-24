@@ -100,6 +100,22 @@ export class HealthFactorChart {
 
         console.log('📊 Renderizando Health Factor Chart:', data);
 
+        // Calcular média
+        const values = data.datasets[0].data;
+        const average = values.reduce((a, b) => a + b, 0) / values.length;
+
+        // Adicionar linha de média
+        data.datasets.push({
+            label: `Média (${average.toFixed(2)})`,
+            data: new Array(values.length).fill(average),
+            borderColor: '#8b9dc3',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            pointRadius: 0,
+            fill: false
+        });
+
         this.chart.data = data;
         this.chart.update('none');
         
