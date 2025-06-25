@@ -106,6 +106,7 @@ class PatrimonioDetalhes {
                 
                 // DEBUG no console
                 console.log('Timestamp:', timestamp, '→', formattedTime);
+                timestampElement.textContent = formattedTime;
             } catch (error) {
                 timestampElement.textContent = 'Última: --:--';
             }
