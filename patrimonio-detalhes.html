@@ -157,10 +157,6 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             gap: 25px;
             margin-bottom: 25px;
         }
-
-        html, body {
-        overflow-x: hidden;
-        }
         
        /* Substituir o CSS mobile existente no patrimonio-detalhes.html */
 
@@ -168,14 +164,15 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
 
     @media (max-width: 768px) {
         .chart-container {
-        position: relative;
-        width: 100%;
-        height: 40vh; /* ou px fixo/mobile-friendly */
+            height: 400px !important;
+            padding: 20px;
+            margin-bottom: 30px;
         }
-
-        .chart-container canvas {
-        width: 100% !important;
-        height: 100% !important;
+        
+        .chart-canvas {
+            width: 100% !important;
+            height: 300px !important;
+            max-height: 300px !important;
         }
         
         .current-metrics {
