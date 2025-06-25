@@ -53,7 +53,7 @@ export class UsdDistributionChart {
                                 const data = chart.data;
                                 const dataset = data.datasets[0];
                                 return data.labels.map((label, i) => ({
-                                    text: `${label}: $${dataset.data[i].toLocaleString()}`,
+                                    text: `${label}: ${(dataset.data[i] / 1000000).toFixed(1)}M`,
                                     fillStyle: dataset.backgroundColor[i],
                                     strokeStyle: dataset.backgroundColor[i],
                                     fontColor: '#8b9dc3',
