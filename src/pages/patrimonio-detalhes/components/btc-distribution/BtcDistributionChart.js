@@ -53,7 +53,7 @@ export class BtcDistributionChart {
                                 const data = chart.data;
                                 const dataset = data.datasets[0];
                                 return data.labels.map((label, i) => ({
-                                    text: `${label}: ${dataset.data[i].toFixed(4)} BTC`,
+                                    text: `${label}: ${dataset.data[i].toFixed(4)}`,
                                     fillStyle: dataset.backgroundColor[i],
                                     strokeStyle: dataset.backgroundColor[i],
                                     pointStyle: 'circle'
