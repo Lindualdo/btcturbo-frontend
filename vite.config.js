@@ -13,7 +13,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         mercadoDetalhes: resolve(__dirname, 'mercado-detalhes.html'),
-        riscoDetalhes: resolve(__dirname, 'risco-detalhes.html')
+        riscoDetalhes: resolve(__dirname, 'risco-detalhes.html'),
+        patrimonioDetalhes: resolve(__dirname, 'patrimonio-detalhes.html')
       }
     }
   },

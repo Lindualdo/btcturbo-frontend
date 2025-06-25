@@ -1,0 +1,261 @@
+<!-- 
+Arquivo: patrimonio-detalhes.html
+Dashboard Detalhado - Evolução Patrimônio
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 BTC Turbo - Evolução Patrimônio</title>
+    <link rel="stylesheet" href="/src/styles/shared.css">
+    <link rel="stylesheet" href="/src/styles/components.css">
+    <style>
+        .chart-container {
+            background: #2a2f3e;
+            border: 1px solid #3a3f4e;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            height: 400px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .period-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .period-btn {
+            background: #404552;
+            color: #8b9dc3;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .period-btn:hover {
+            background: #ff8c42;
+            color: white;
+        }
+        
+        .period-btn.active {
+            background: #ff8c42;
+            color: white;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chart-canvas {
+            width: 100% !important;
+            height: 320px !important;
+        }
+        
+        .current-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .metric-card {
+            background: #2a2f3e;
+            border: 1px solid #3a3f4e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            color: #8b9dc3;
+            font-size: 0.9rem;
+        }
+        
+        .metric-change {
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        .positive { color: #4caf50; }
+        .negative { color: #ff4757; }
+        .neutral { color: #8b9dc3; }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 350px;
+                padding: 20px;
+            }
+            
+            .chart-canvas {
+                height: 270px !important;
+            }
+            
+            .current-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header com navegação -->
+        <div class="back-button" onclick="window.location.href='/'">
+            ← Voltar ao Dashboard
+        </div>
+        
+        <div class="breadcrumb">
+            <a href="/">Home</a> > Evolução Patrimônio
+        </div>
+
+        <!-- Status com timestamp -->
+        <div style="text-align: center; margin-bottom: 15px;">
+            <div class="last-update" id="last-update-patrimonio">Última: --:--</div>
+        </div>
+
+        <!-- Métricas Atuais -->
+        <div class="current-metrics">
+            <div class="metric-card">
+                <div class="metric-value" id="current-patrimonio-usd">$0</div>
+                <div class="metric-label">Patrimônio Atual (USD)</div>
+                <div class="metric-change" id="usd-change">--</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-value" id="current-patrimonio-btc">0.0000 BTC</div>
+                <div class="metric-label">Patrimônio Atual (BTC)</div>
+                <div class="metric-change" id="btc-change">--</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-value" id="current-btc-price">$0</div>
+                <div class="metric-label">Preço BTC</div>
+                <div class="metric-change" id="btc-price-change">--</div>
+            </div>
+        </div>
+
+        <!-- Gráfico Patrimônio USD -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <span class="chart-title">
+                    <i class="bi bi-currency-dollar"></i> Evolução Patrimônio (USD)
+                </span>
+                <div class="period-filters">
+                    <button class="period-btn active" onclick="loadPatrimonioUsdPeriod('30d')">30d</button>
+                    <button class="period-btn" onclick="loadPatrimonioUsdPeriod('3m')">3 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioUsdPeriod('6m')">6 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioUsdPeriod('1y')">1 Ano</button>
+                    <button class="period-btn" onclick="loadPatrimonioUsdPeriod('all')">All</button>
+                </div>
+            </div>
+            <canvas id="chart-patrimonio-usd" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- Gráfico Patrimônio BTC -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <span class="chart-title">
+                    <i class="bi bi-currency-bitcoin"></i> Evolução Patrimônio (BTC)
+                </span>
+                <div class="period-filters">
+                    <button class="period-btn active" onclick="loadPatrimonioBtcPeriod('30d')">30d</button>
+                    <button class="period-btn" onclick="loadPatrimonioBtcPeriod('3m')">3 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioBtcPeriod('6m')">6 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioBtcPeriod('1y')">1 Ano</button>
+                    <button class="period-btn" onclick="loadPatrimonioBtcPeriod('all')">All</button>
+                </div>
+            </div>
+            <canvas id="chart-patrimonio-btc" class="chart-canvas"></canvas>
+        </div>
+    </div>
+
+    <script type="module" src="/src/pages/patrimonio-detalhes/index.js"></script>
+    
+    <script>
+        // Funções globais para filtros de período
+        function loadPatrimonioUsdPeriod(period) {
+            updatePeriodButtons('patrimonio-usd', period);
+            if (window.patrimonioDetalhes) {
+                window.patrimonioDetalhes.components.patrimonioUsdChart.updatePeriod(period);
+                loadDataForPeriod(period, 'patrimonio-usd');
+            }
+        }
+        
+        function loadPatrimonioBtcPeriod(period) {
+            updatePeriodButtons('patrimonio-btc', period);
+            if (window.patrimonioDetalhes) {
+                window.patrimonioDetalhes.components.patrimonioBtcChart.updatePeriod(period);
+                loadDataForPeriod(period, 'patrimonio-btc');
+            }
+        }
+        
+        function updatePeriodButtons(chartType, activePeriod) {
+            const chartId = chartType === 'patrimonio-usd' ? 'chart-patrimonio-usd' : 'chart-patrimonio-btc';
+            const chart = document.getElementById(chartId);
+            const container = chart?.closest('.chart-container');
+            const buttons = container?.querySelectorAll('.period-btn');
+            
+            buttons?.forEach(btn => {
+                btn.classList.remove('active');
+                const onclick = btn.getAttribute('onclick');
+                if (onclick?.includes(`'${activePeriod}'`)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        async function loadDataForPeriod(period, chartType) {
+            if (window.patrimonioDetalhes) {
+                try {
+                    const response = await fetch(`https://btcturbo-prod.up.railway.app/api/v1/dash-finance/patrimonio?periodo=${period}`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        const formattedData = window.patrimonioDetalhes.dataHandler?.formatPatrimonioDetalhesData(data);
+                        if (formattedData) {
+                            if (chartType === 'patrimonio-usd') {
+                                window.patrimonioDetalhes.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
+                            } else {
+                                window.patrimonioDetalhes.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar período:', error);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

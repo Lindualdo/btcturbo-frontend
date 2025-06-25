@@ -26,7 +26,7 @@ export class Header {
             this.elements.financeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log('🔄 Navegando para detalhes financeiros...');
-                window.location.href = '/finance-detalhe.html';
+                window.location.href = '/patrimonio-detalhes.html';
             });
             
             console.log('✅ Navegação configurada para finance-detalhe');
