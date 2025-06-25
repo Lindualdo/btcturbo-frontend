@@ -160,13 +160,12 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
         
         @media (max-width: 768px) {
             .chart-container {
-                height: 500px !important; /* Muito maior para caber tudo */
+                height: 350px;
                 padding: 20px;
-                margin-bottom: 30px;
             }
             
             .chart-canvas {
-                height: 300px !important; /* Proporcionalmente maior */
+                height: 270px !important;
             }
             
             .current-metrics {
@@ -175,25 +174,18 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             
             .chart-header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
                 text-align: center;
-                margin-bottom: 20px;
             }
 
             .distribution-grid {
                 grid-template-columns: 1fr;
-                gap: 30px;
             }
             
-            .period-filters {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px;
-            }
-            
-            .period-btn {
-                min-width: 60px;
-                padding: 8px 12px;
+            /* Ocultar legendas dos gráficos de linha no mobile */
+            #chart-patrimonio-usd + .chartjs-legend,
+            #chart-patrimonio-btc + .chartjs-legend {
+                display: none !important;
             }
         }
     </style>
