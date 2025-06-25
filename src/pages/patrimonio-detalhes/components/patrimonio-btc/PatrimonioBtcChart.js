@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/patrimonio-btc/PatrimonioBtcChart.js
-Componente de Gráfico Patrimônio BTC
+Componente de Gráfico Patrimônio BTC - INCLUI BTC CORE
 */
 
 import Chart from 'chart.js/auto';
@@ -47,7 +47,7 @@ export class PatrimonioBtcChart {
                         callbacks: {
                             label: function(context) {
                                 if (context.datasetIndex === 0) {
-                                    return `Patrimônio: ${context.parsed.y.toFixed(4)} BTC`;
+                                    return `Patrimônio Total: ${context.parsed.y.toFixed(4)} BTC`;
                                 } else {
                                     return `Média: ${context.parsed.y.toFixed(4)} BTC`;
                                 }
@@ -113,7 +113,7 @@ export class PatrimonioBtcChart {
             this.chart.data = {
                 labels: ['Carregando...'],
                 datasets: [{
-                    label: 'Patrimônio BTC',
+                    label: 'Patrimônio Total BTC',
                     data: [0],
                     borderColor: '#8b9dc3',
                     backgroundColor: 'rgba(139, 157, 195, 0.1)'
@@ -128,7 +128,7 @@ export class PatrimonioBtcChart {
             this.chart.data = {
                 labels: ['Erro'],
                 datasets: [{
-                    label: 'Patrimônio BTC',
+                    label: 'Patrimônio Total BTC',
                     data: [0],
                     borderColor: '#ff4757',
                     backgroundColor: 'rgba(255, 71, 87, 0.1)'

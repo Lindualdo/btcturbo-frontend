@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/patrimonio-detalhes-data.js
-Formatação de dados do Patrimônio Detalhes
+Formatação de dados do Patrimônio Detalhes - INCLUI BTC CORE
 */
 
 import formatters from '../../../shared/formatters.js';
@@ -16,29 +16,36 @@ export class PatrimonioDetalhesData {
         }
 
         const dados = response.dados;
+        const btcCore = response.saldo_btc_core || 0;
         
         // Calcular métricas atuais e variações
-        const currentUsd = dados[0].valor;
+        const currentUsdSatelite = dados[0].valor;
         const currentBtcPrice = dados[0].btc_price;
-        const currentBtc = currentUsd / currentBtcPrice;
+        const currentBtcSatelite = currentUsdSatelite / currentBtcPrice;
         
-        const previousUsd = dados[1]?.valor;
+        // INCLUIR BTC CORE no patrimônio total
+        const currentBtcTotal = currentBtcSatelite + btcCore;
+        const currentUsdTotal = currentBtcTotal * currentBtcPrice;
+        
+        const previousUsdSatelite = dados[1]?.valor;
         const previousBtcPrice = dados[1]?.btc_price;
-        const previousBtc = previousUsd ? previousUsd / previousBtcPrice : 0;
+        const previousBtcSatelite = previousUsdSatelite ? previousUsdSatelite / previousBtcPrice : 0;
+        const previousBtcTotal = previousBtcSatelite + btcCore;
+        const previousUsdTotal = previousBtcTotal * previousBtcPrice;
 
-        const usdChange = previousUsd ? ((currentUsd - previousUsd) / previousUsd) * 100 : 0;
-        const btcChange = previousBtc ? ((currentBtc - previousBtc) / previousBtc) * 100 : 0;
+        const usdChange = previousUsdTotal ? ((currentUsdTotal - previousUsdTotal) / previousUsdTotal) * 100 : 0;
+        const btcChange = previousBtcTotal ? ((currentBtcTotal - previousBtcTotal) / previousBtcTotal) * 100 : 0;
         const btcPriceChange = previousBtcPrice ? ((currentBtcPrice - previousBtcPrice) / previousBtcPrice) * 100 : 0;
 
-        // Preparar dados para gráficos
-        const patrimonioUsdChart = this.prepareUsdChartData(dados);
-        const patrimonioBtcChart = this.prepareBtcChartData(dados);
-        const btcDistributionChart = this.prepareBtcDistributionData(response.saldo_btc_core, currentBtc);
+        // Preparar dados para gráficos (usando totais com BTC Core)
+        const patrimonioUsdChart = this.prepareUsdChartData(dados, btcCore);
+        const patrimonioBtcChart = this.prepareBtcChartData(dados, btcCore);
+        const btcDistributionChart = this.prepareBtcDistributionData(btcCore, currentBtcSatelite);
         
         return {
             current: {
-                patrimonioUsd: formatters.currency(currentUsd),
-                patrimonioBtc: formatters.btc(currentBtc),
+                patrimonioUsd: formatters.currency(currentUsdTotal),
+                patrimonioBtc: formatters.btc(currentBtcTotal),
                 btcPrice: formatters.currency(currentBtcPrice),
                 changes: {
                     usd: usdChange,
@@ -57,19 +64,24 @@ export class PatrimonioDetalhesData {
         };
     }
 
-    prepareUsdChartData(dados) {
+    prepareUsdChartData(dados, btcCore) {
         // Ordenar por data (mais antiga primeiro)
         const sortedData = dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         
-        // Calcular média
-        const values = sortedData.map(item => item.valor);
+        // Calcular valores USD totais (satélite + core)
+        const values = sortedData.map(item => {
+            const btcSatelite = item.valor / item.btc_price;
+            const btcTotal = btcSatelite + btcCore;
+            return btcTotal * item.btc_price;
+        });
+        
         const average = values.reduce((a, b) => a + b, 0) / values.length;
         
         return {
             labels: sortedData.map(item => this.formatChartDate(item.timestamp)),
             datasets: [
                 {
-                    label: 'Patrimônio (USD)',
+                    label: 'Patrimônio Total (USD)',
                     data: values,
                     borderColor: '#4caf50',
                     backgroundColor: 'rgba(76, 175, 80, 0.1)',
@@ -95,18 +107,22 @@ export class PatrimonioDetalhesData {
         };
     }
 
-    prepareBtcChartData(dados) {
+    prepareBtcChartData(dados, btcCore) {
         const sortedData = dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         
-        // Calcular valores em BTC
-        const btcValues = sortedData.map(item => item.valor / item.btc_price);
+        // Calcular valores BTC totais (satélite + core)
+        const btcValues = sortedData.map(item => {
+            const btcSatelite = item.valor / item.btc_price;
+            return btcSatelite + btcCore;
+        });
+        
         const average = btcValues.reduce((a, b) => a + b, 0) / btcValues.length;
         
         return {
             labels: sortedData.map(item => this.formatChartDate(item.timestamp)),
             datasets: [
                 {
-                    label: 'Patrimônio (BTC)',
+                    label: 'Patrimônio Total (BTC)',
                     data: btcValues,
                     borderColor: '#ff8c42',
                     backgroundColor: 'rgba(255, 140, 66, 0.1)',

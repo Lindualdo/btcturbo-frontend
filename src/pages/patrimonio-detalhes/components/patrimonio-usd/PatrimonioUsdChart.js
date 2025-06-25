@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/patrimonio-usd/PatrimonioUsdChart.js
-Componente de Gráfico Patrimônio USD
+Componente de Gráfico Patrimônio USD - INCLUI BTC CORE
 */
 
 import Chart from 'chart.js/auto';
@@ -49,7 +49,7 @@ export class PatrimonioUsdChart {
                         callbacks: {
                             label: function(context) {
                                 if (context.datasetIndex === 0) {
-                                    return `Patrimônio: $${context.parsed.y.toLocaleString()}`;
+                                    return `Patrimônio Total: $${context.parsed.y.toLocaleString()}`;
                                 } else {
                                     return `Média: $${context.parsed.y.toLocaleString()}`;
                                 }
@@ -131,7 +131,7 @@ export class PatrimonioUsdChart {
             this.chart.data = {
                 labels: ['Carregando...'],
                 datasets: [{
-                    label: 'Patrimônio USD',
+                    label: 'Patrimônio Total USD',
                     data: [0],
                     borderColor: '#8b9dc3',
                     backgroundColor: 'rgba(139, 157, 195, 0.1)'
@@ -146,7 +146,7 @@ export class PatrimonioUsdChart {
             this.chart.data = {
                 labels: ['Erro'],
                 datasets: [{
-                    label: 'Patrimônio USD',
+                    label: 'Patrimônio Total USD',
                     data: [0],
                     borderColor: '#ff4757',
                     backgroundColor: 'rgba(255, 71, 87, 0.1)'
