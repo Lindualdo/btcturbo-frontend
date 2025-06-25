@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/patrimonio-usd/PatrimonioUsdChart.js
-Componente de Gráfico Patrimônio USD - INCLUI BTC CORE
+Componente de Gráfico Patrimônio USD - SEM LEGENDAS NO MOBILE
 */
 
 import Chart from 'chart.js/auto';
@@ -18,6 +18,7 @@ export class PatrimonioUsdChart {
 
     initChart() {
         const ctx = this.canvas.getContext('2d');
+        const isMobile = window.innerWidth <= 768;
         
         this.chart = new Chart(ctx, {
             type: 'line',
@@ -30,12 +31,10 @@ export class PatrimonioUsdChart {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: true,
+                        display: !isMobile,
                         labels: {
                             color: '#8b9dc3',
-                            font: {
-                                size: 12
-                            }
+                            font: { size: 12 }
                         }
                     },
                     tooltip: {
@@ -59,20 +58,11 @@ export class PatrimonioUsdChart {
                 },
                 scales: {
                     x: {
-                        grid: {
-                            color: '#404552',
-                            borderColor: '#404552'
-                        },
-                        ticks: {
-                            color: '#8b9dc3',
-                            maxTicksLimit: 10
-                        }
+                        grid: { color: '#404552', borderColor: '#404552' },
+                        ticks: { color: '#8b9dc3', maxTicksLimit: 10 }
                     },
                     y: {
-                        grid: {
-                            color: '#404552',
-                            borderColor: '#404552'
-                        },
+                        grid: { color: '#404552', borderColor: '#404552' },
                         ticks: {
                             color: '#8b9dc3',
                             callback: function(value) {
@@ -85,11 +75,6 @@ export class PatrimonioUsdChart {
                     mode: 'nearest',
                     axis: 'x',
                     intersect: false
-                },
-                elements: {
-                    point: {
-                        hoverRadius: 6
-                    }
                 }
             }
         });
@@ -102,10 +87,8 @@ export class PatrimonioUsdChart {
         }
 
         console.log('📊 Renderizando Patrimônio USD Chart:', data);
-
         this.chart.data = data;
         this.chart.update('none');
-        
         this.clearLoading();
     }
 
