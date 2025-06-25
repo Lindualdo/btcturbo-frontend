@@ -45,7 +45,7 @@ class PatrimonioDetalhes {
         console.log('✅ Patrimônio Detalhes inicializado!');
     }
 
-    async loadAllData() {
+   async loadAllData() {
         if (this.isLoading) {
             console.log('⏳ Carregamento já em andamento...');
             return;
@@ -60,11 +60,21 @@ class PatrimonioDetalhes {
             // Fetch do endpoint dash-finance/patrimonio
             const response = await this.api.fetchData('dash-finance/patrimonio');
             
+            // DEBUG COMPLETO DA RESPOSTA
+            console.log('📡 RESPOSTA COMPLETA:', response);
+            console.log('📊 DADOS ARRAY:', response.dados);
+            console.log('🕐 PRIMEIRO ITEM:', response.dados[0]);
+            console.log('🕐 TIMESTAMP PRIMEIRO:', response.dados[0]?.timestamp);
+            
             if (response.status === 'success' && response.dados) {
                 const formattedData = this.dataHandler.formatPatrimonioDetalhesData(response);
                 
+                // DEBUG: qual timestamp está sendo usado
+                const timestampUsado = response.dados[0]?.timestamp;
+                console.log('🔍 TIMESTAMP SENDO USADO:', timestampUsado);
+                
                 // Atualizar timestamp (pegar o primeiro item dos dados)
-                this.updateTimestamp(response.dados[0]?.timestamp);
+                this.updateTimestamp(timestampUsado);
                 
                 // Distribuir dados para componentes
                 this.components.metricsCards.render(formattedData.current);
