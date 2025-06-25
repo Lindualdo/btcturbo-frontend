@@ -92,12 +92,17 @@ class PatrimonioDetalhes {
         if (timestampElement && timestamp) {
             try {
                 const date = new Date(timestamp);
-                const formattedTime = date.toLocaleTimeString('pt-PT', {
+                
+                // Tratar como UTC
+                const utcDate = new Date(timestamp + 'Z'); // Força UTC
+                const formattedTime = utcDate.toLocaleTimeString('pt-PT', {
                     hour: '2-digit',
                     minute: '2-digit',
                     timeZone: 'Europe/Lisbon'
                 });
-                timestampElement.textContent = `Última: ${formattedTime}`;
+                
+                // DEBUG no console
+                console.log('Timestamp:', timestamp, '→', formattedTime);
             } catch (error) {
                 timestampElement.textContent = 'Última: --:--';
             }
