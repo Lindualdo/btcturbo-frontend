@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/usd-distribution/UsdDistributionChart.js
-Componente de Gráfico de Rosca - Distribuição Patrimônio USD - IGUAL AO BTC
+Componente de Gráfico de Rosca - Distribuição USD - CÓPIA EXATA DO BTC
 */
 
 import Chart from 'chart.js/auto';
@@ -18,7 +18,7 @@ export class UsdDistributionChart {
     initChart() {
         const ctx = this.canvas.getContext('2d');
         
-        // Definir tamanho do canvas IGUAL AO BTC
+        // CÓPIA EXATA DO BTC
         this.canvas.width = 300;
         this.canvas.height = 230;
         

@@ -18,7 +18,6 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             padding: 25px;
             margin-bottom: 25px;
             height: 400px;
-            color: #8b9dc3 !important;
         }
         
         .chart-header {
@@ -115,6 +114,29 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             justify-content: center;
             padding: 20px;
             position: relative;
+        }
+        
+        /* FORÇA mesmo tamanho para ambos os gráficos */
+        #chart-btc-distribution,
+        #chart-usd-distribution {
+            width: 300px !important;
+            height: 230px !important;
+        }
+        
+        /* FORÇA mesmo container para ambos */
+        .distribution-chart-container canvas {
+            max-width: 300px !important;
+            max-height: 230px !important;
+            width: 300px !important;
+            height: 230px !important;
+        }
+        
+        /* Forçar cor das labels dos gráficos de distribuição */
+        .chart-container .chartjs-legend-item,
+        .chart-container .chartjs-legend-item span,
+        .chart-container canvas + div,
+        .chart-container canvas ~ div {
+            color: #8b9dc3 !important;
         }
         
         .distribution-chart-container canvas {
