@@ -160,13 +160,18 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
         
         @media (max-width: 768px) {
             .chart-container {
-                height: 500px !important; /* Muito maior para caber tudo */
+                height: 350px !important;
                 padding: 20px;
                 margin-bottom: 30px;
             }
             
+            .chart-container:has(#chart-patrimonio-usd),
+                .chart-container:has(#chart-patrimonio-btc) {
+                height: 500px !important;
+            }
+
             .chart-canvas {
-                height: 300px !important; /* Proporcionalmente maior */
+                height: 200px !important; /* Proporcionalmente maior */
             }
             
             .current-metrics {
@@ -263,7 +268,7 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
         </div>
 
         <!-- Gráfico Patrimônio USD -->
-        <div class="chart-container chart-line">
+        <div class="chart-container">
             <div class="chart-header">
                 <span class="chart-title">
                     <i class="bi bi-currency-dollar"></i> Evolução Patrimônio Total (USD)
@@ -273,14 +278,14 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
                     <button class="period-btn" onclick="loadPatrimonioUsdPeriod('3m')">3 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioUsdPeriod('6m')">6 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioUsdPeriod('1y')">1 Ano</button>
-                    <button class="period-btn" onclick="loadPatrimonioUsdPeriod('all')">All</button>
+                    <!--<button class="period-btn" onclick="loadPatrimonioUsdPeriod('all')">All</button>-->
                 </div>
             </div>
             <canvas id="chart-patrimonio-usd" class="chart-canvas"></canvas>
         </div>
 
         <!-- Gráfico Patrimônio BTC -->
-        <div class="chart-container chart-line">
+        <div class="chart-container">
             <div class="chart-header">
                 <span class="chart-title">
                     <i class="bi bi-currency-bitcoin"></i> Evolução Patrimônio Total (BTC)
@@ -290,7 +295,7 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
                     <button class="period-btn" onclick="loadPatrimonioBtcPeriod('3m')">3 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioBtcPeriod('6m')">6 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioBtcPeriod('1y')">1 Ano</button>
-                    <button class="period-btn" onclick="loadPatrimonioBtcPeriod('all')">All</button>
+                    <!--<button class="period-btn" onclick="loadPatrimonioBtcPeriod('all')">All</button>-->
                 </div>
             </div>
             <canvas id="chart-patrimonio-btc" class="chart-canvas"></canvas>
