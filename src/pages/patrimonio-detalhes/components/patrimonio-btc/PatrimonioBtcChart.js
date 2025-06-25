@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/patrimonio-btc/PatrimonioBtcChart.js
-Componente de Gráfico Patrimônio BTC - INCLUI BTC CORE
+Componente de Gráfico Patrimônio BTC - SEM LEGENDAS NO MOBILE
 */
 
 import Chart from 'chart.js/auto';
@@ -18,6 +18,7 @@ export class PatrimonioBtcChart {
 
     initChart() {
         const ctx = this.canvas.getContext('2d');
+        const isMobile = window.innerWidth <= 768;
         
         this.chart = new Chart(ctx, {
             type: 'line',
@@ -30,7 +31,7 @@ export class PatrimonioBtcChart {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: true,
+                        display: !isMobile,
                         labels: {
                             color: '#8b9dc3',
                             font: { size: 12 }
