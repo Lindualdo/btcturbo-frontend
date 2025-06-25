@@ -33,6 +33,7 @@ export class PatrimonioDetalhesData {
         // Preparar dados para gráficos
         const patrimonioUsdChart = this.prepareUsdChartData(dados);
         const patrimonioBtcChart = this.prepareBtcChartData(dados);
+        const btcDistributionChart = this.prepareBtcDistributionData(response.saldo_btc_core, currentBtc);
         
         return {
             current: {
@@ -47,6 +48,7 @@ export class PatrimonioDetalhesData {
             },
             patrimonioUsd: patrimonioUsdChart,
             patrimonioBtc: patrimonioBtcChart,
+            btcDistribution: btcDistributionChart,
             metadata: {
                 periodo: response.periodo,
                 indicador: response.indicador,
@@ -127,6 +129,24 @@ export class PatrimonioDetalhesData {
                     fill: false
                 }
             ]
+        };
+    }
+
+    prepareBtcDistributionData(btcCore, btcSatelite) {
+        return {
+            labels: ['BTC Core', 'BTC Satélite'],
+            datasets: [{
+                data: [btcCore, btcSatelite],
+                backgroundColor: [
+                    '#ff8c42',  // Laranja para Core
+                    '#4caf50'   // Verde para Satélite
+                ],
+                borderWidth: 0,
+                hoverBackgroundColor: [
+                    '#ff6b35',  // Laranja mais escuro no hover
+                    '#388e3c'   // Verde mais escuro no hover
+                ]
+            }]
         };
     }
 

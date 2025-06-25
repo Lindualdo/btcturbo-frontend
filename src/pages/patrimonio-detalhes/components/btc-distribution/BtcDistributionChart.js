@@ -1,4 +1,5 @@
-/* 
+// Distribuir dados para componentes
+         /* 
 Arquivo: src/pages/patrimonio-detalhes/index.js
 Orquestrador da página Patrimônio Detalhes
 */
@@ -68,7 +69,6 @@ class PatrimonioDetalhes {
                 
                 // Distribuir dados para componentes
                 this.components.metricsCards.render(formattedData.current);
-                this.components.btcDistributionChart.render(formattedData.btcDistribution);
                 this.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
                 this.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
                 
@@ -184,7 +184,6 @@ class PatrimonioDetalhes {
                 
                 this.updateTimestamp(response.dados[0]?.timestamp);
                 this.components.metricsCards.render(formattedData.current);
-                this.components.btcDistributionChart.render(formattedData.btcDistribution);
                 this.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
                 this.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
                 
