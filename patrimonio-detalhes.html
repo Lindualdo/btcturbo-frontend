@@ -1,6 +1,6 @@
 <!-- 
 Arquivo: patrimonio-detalhes.html
-Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core)
+Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribuição USD
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -129,6 +129,14 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core)
             width: auto !important;
             height: auto !important;
         }
+
+        /* Grid para os gráficos de distribuição lado a lado */
+        .distribution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
         
         @media (max-width: 768px) {
             .chart-container {
@@ -148,6 +156,10 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core)
                 flex-direction: column;
                 gap: 10px;
                 text-align: center;
+            }
+
+            .distribution-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -189,15 +201,30 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core)
             </div>
         </div>
 
-        <!-- Gráfico Distribuição BTC -->
-        <div class="chart-container" style="height: 350px;">
-            <div class="chart-header">
-                <span class="chart-title">
-                    <i class="bi bi-pie-chart"></i> Distribuição BTC
-                </span>
+        <!-- Gráficos de Distribuição -->
+        <div class="distribution-grid">
+            <!-- Gráfico Distribuição BTC -->
+            <div class="chart-container" style="height: 350px;">
+                <div class="chart-header">
+                    <span class="chart-title">
+                        <i class="bi bi-pie-chart"></i> Distribuição BTC
+                    </span>
+                </div>
+                <div class="distribution-chart-container">
+                    <canvas id="chart-btc-distribution"></canvas>
+                </div>
             </div>
-            <div class="distribution-chart-container">
-                <canvas id="chart-btc-distribution"></canvas>
+
+            <!-- Gráfico Distribuição USD -->
+            <div class="chart-container" style="height: 350px;">
+                <div class="chart-header">
+                    <span class="chart-title">
+                        <i class="bi bi-currency-dollar"></i> Distribuição USD
+                    </span>
+                </div>
+                <div class="distribution-chart-container">
+                    <canvas id="chart-usd-distribution"></canvas>
+                </div>
             </div>
         </div>
 

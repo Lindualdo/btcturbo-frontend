@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/index.js
-Orquestrador da página Patrimônio Detalhes
+Orquestrador da página Patrimônio Detalhes - INCLUINDO DISTRIBUIÇÃO USD
 */
 
 import ApiClient from '../../shared/api.js';
@@ -11,6 +11,7 @@ import PatrimonioUsdChart from './components/patrimonio-usd/PatrimonioUsdChart.j
 import PatrimonioBtcChart from './components/patrimonio-btc/PatrimonioBtcChart.js';
 import PatrimonioMetricsCards from './components/metrics/PatrimonioMetricsCards.js';
 import BtcDistributionChart from './components/btc-distribution/BtcDistributionChart.js';
+import UsdDistributionChart from './components/usd-distribution/UsdDistributionChart.js';
 
 // Data Handler
 import PatrimonioDetalhesData from './components/patrimonio-detalhes-data.js';
@@ -24,7 +25,8 @@ class PatrimonioDetalhes {
             patrimonioUsdChart: new PatrimonioUsdChart(),
             patrimonioBtcChart: new PatrimonioBtcChart(),
             metricsCards: new PatrimonioMetricsCards(),
-            btcDistributionChart: new BtcDistributionChart()
+            btcDistributionChart: new BtcDistributionChart(),
+            usdDistributionChart: new UsdDistributionChart()
         };
 
         // Inicializar data handler
@@ -72,6 +74,7 @@ class PatrimonioDetalhes {
                 // Distribuir dados para componentes
                 this.components.metricsCards.render(formattedData.current);
                 this.components.btcDistributionChart.render(formattedData.btcDistribution);
+                this.components.usdDistributionChart.render(formattedData.usdDistribution);
                 this.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
                 this.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
                 
@@ -194,6 +197,7 @@ class PatrimonioDetalhes {
                 this.updateTimestamp(response.dados[0]?.timestamp);
                 this.components.metricsCards.render(formattedData.current);
                 this.components.btcDistributionChart.render(formattedData.btcDistribution);
+                this.components.usdDistributionChart.render(formattedData.usdDistribution);
                 this.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
                 this.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
                 
