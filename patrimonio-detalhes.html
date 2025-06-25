@@ -181,6 +181,12 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             .distribution-grid {
                 grid-template-columns: 1fr;
             }
+            
+            /* Ocultar legendas dos gráficos de linha no mobile */
+            #chart-patrimonio-usd + .chartjs-legend,
+            #chart-patrimonio-btc + .chartjs-legend {
+                display: none !important;
+            }
         }
     </style>
 </head>
