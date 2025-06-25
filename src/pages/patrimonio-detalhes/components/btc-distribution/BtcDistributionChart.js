@@ -1,210 +1,121 @@
-// Distribuir dados para componentes
-         /* 
-Arquivo: src/pages/patrimonio-detalhes/index.js
-Orquestrador da página Patrimônio Detalhes
+/* 
+Arquivo: src/pages/patrimonio-detalhes/components/btc-distribution/BtcDistributionChart.js
+Componente de Gráfico de Rosca - Distribuição BTC
 */
 
-import ApiClient from '../../shared/api.js';
-import { API_CONFIG } from '../../shared/constants.js';
+import Chart from 'chart.js/auto';
 
-// Componentes UI
-import PatrimonioUsdChart from './components/patrimonio-usd/PatrimonioUsdChart.js';
-import PatrimonioBtcChart from './components/patrimonio-btc/PatrimonioBtcChart.js';
-import PatrimonioMetricsCards from './components/metrics/PatrimonioMetricsCards.js';
-import BtcDistributionChart from './components/btc-distribution/BtcDistributionChart.js';
-
-// Data Handler
-import PatrimonioDetalhesData from './components/patrimonio-detalhes-data.js';
-
-class PatrimonioDetalhes {
+export class BtcDistributionChart {
     constructor() {
-        this.api = new ApiClient();
+        this.canvas = document.getElementById('chart-btc-distribution');
+        this.chart = null;
         
-        // Inicializar componentes UI
-        this.components = {
-            patrimonioUsdChart: new PatrimonioUsdChart(),
-            patrimonioBtcChart: new PatrimonioBtcChart(),
-            metricsCards: new PatrimonioMetricsCards(),
-            btcDistributionChart: new BtcDistributionChart()
-        };
-
-        // Inicializar data handler
-        this.dataHandler = new PatrimonioDetalhesData();
-
-        this.isLoading = false;
-        this.retryCount = 0;
-        this.maxRetries = 3;
+        if (this.canvas) {
+            this.initChart();
+        }
     }
 
-    async init() {
-        console.log('🚀 Inicializando Patrimônio Detalhes...');
+    initChart() {
+        const ctx = this.canvas.getContext('2d');
         
-        await this.loadAllData();
-        this.startAutoRefresh();
-        this.setupGlobalMethods();
-        
-        console.log('✅ Patrimônio Detalhes inicializado!');
+        this.chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [],
+                datasets: []
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        labels: {
+                            color: '#8b9dc3',
+                            font: { size: 14 },
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#2a2f3e',
+                        titleColor: '#ffffff',
+                        bodyColor: '#8b9dc3',
+                        borderColor: '#3a3f4e',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${context.label}: ${value.toFixed(4)} BTC (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%',
+                elements: {
+                    arc: {
+                        borderWidth: 0
+                    }
+                }
+            }
+        });
     }
 
-    async loadAllData() {
-        if (this.isLoading) {
-            console.log('⏳ Carregamento já em andamento...');
+    render(data) {
+        if (!this.chart || !data) {
+            this.showError();
             return;
         }
 
-        try {
-            this.isLoading = true;
-            this.showLoading();
-            
-            console.log('🔄 Carregando dados de patrimônio...');
+        console.log('🍩 Renderizando BTC Distribution Chart:', data);
 
-            // Fetch do endpoint dash-finance/patrimonio
-            const response = await this.api.fetchData('dash-finance/patrimonio');
-            
-            if (response.status === 'success' && response.dados) {
-                const formattedData = this.dataHandler.formatPatrimonioDetalhesData(response);
-                
-                // Atualizar timestamp (pegar o primeiro item dos dados)
-                this.updateTimestamp(response.dados[0]?.timestamp);
-                
-                // Distribuir dados para componentes
-                this.components.metricsCards.render(formattedData.current);
-                this.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
-                this.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
-                
-                console.log('✅ Patrimônio Detalhes atualizado!');
-                this.retryCount = 0;
-            } else {
-                throw new Error('Estrutura de dados inválida');
-            }
-
-        } catch (error) {
-            console.error('❌ Erro ao carregar patrimônio:', error);
-            this.handleLoadError();
-        } finally {
-            this.isLoading = false;
-        }
-    }
-
-    updateTimestamp(timestamp) {
-        const timestampElement = document.getElementById('last-update-patrimonio');
+        this.chart.data = data;
+        this.chart.update('none');
         
-        if (timestampElement && timestamp) {
-            try {
-                const date = new Date(timestamp);
-                const formattedTime = date.toLocaleTimeString('pt-PT', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    timeZone: 'Europe/Lisbon'
-                });
-                timestampElement.textContent = `Última: ${formattedTime}`;
-            } catch (error) {
-                timestampElement.textContent = 'Última: --:--';
-            }
-        }
+        this.clearLoading();
     }
 
     showLoading() {
-        Object.values(this.components).forEach(component => {
-            if (component.showLoading) {
-                component.showLoading();
-            }
-        });
-
-        // Loading no timestamp
-        const timestampElement = document.getElementById('last-update-patrimonio');
-        if (timestampElement) timestampElement.textContent = 'Última: --:--';
-    }
-
-    handleLoadError() {
-        this.retryCount++;
-        
-        if (this.retryCount <= this.maxRetries) {
-            const retryDelay = API_CONFIG.RETRY_DELAY * this.retryCount;
-            
-            console.log(`🔄 Tentativa ${this.retryCount}/${this.maxRetries} em ${retryDelay/1000}s...`);
-            
-            setTimeout(() => {
-                this.loadAllData();
-            }, retryDelay);
-        } else {
-            console.error('❌ Máximo de tentativas excedido');
-            this.showGlobalError();
+        if (this.chart) {
+            this.chart.data = {
+                labels: ['Carregando...'],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ['#8b9dc3'],
+                    borderWidth: 0
+                }]
+            };
+            this.chart.update('none');
         }
     }
 
-    showGlobalError() {
-        Object.values(this.components).forEach(component => {
-            component.showError?.();
-        });
-
-        const timestampElement = document.getElementById('last-update-patrimonio');
-        if (timestampElement) timestampElement.textContent = 'Última: Erro';
+    showError() {
+        if (this.chart) {
+            this.chart.data = {
+                labels: ['Erro'],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ['#ff4757'],
+                    borderWidth: 0
+                }]
+            };
+            this.chart.update('none');
+        }
     }
 
-    startAutoRefresh() {
-        setInterval(() => {
-            if (!this.isLoading) {
-                console.log('🔄 Auto-refresh patrimônio...');
-                this.loadAllData();
-            }
-        }, API_CONFIG.AUTO_REFRESH_INTERVAL);
-        
-        console.log(`⏰ Auto-refresh configurado para ${API_CONFIG.AUTO_REFRESH_INTERVAL/1000}s`);
+    clearLoading() {
+        console.log('✅ BTC Distribution Chart carregado');
     }
 
-    setupGlobalMethods() {
-        window.patrimonioDetalhes = {
-            refresh: () => this.loadAllData(),
-            changePeriod: (period) => this.loadDataByPeriod(period),
-            getStatus: () => ({
-                isLoading: this.isLoading,
-                retryCount: this.retryCount,
-                apiUrl: this.api.baseURL,
-                lastUpdate: new Date().toISOString()
-            }),
-            components: this.components,
-            dataHandler: this.dataHandler
-        };
-
-        console.log('🔧 Métodos globais: window.patrimonioDetalhes');
-    }
-
-    async loadDataByPeriod(period) {
-        try {
-            this.isLoading = true;
-            this.showLoading();
-            
-            console.log(`🔄 Carregando dados para período: ${period}`);
-
-            const response = await this.api.fetchData(`dash-finance/patrimonio?periodo=${period}`);
-            
-            if (response.status === 'success' && response.dados) {
-                const formattedData = this.dataHandler.formatPatrimonioDetalhesData(response);
-                
-                this.updateTimestamp(response.dados[0]?.timestamp);
-                this.components.metricsCards.render(formattedData.current);
-                this.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
-                this.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
-                
-                console.log(`✅ Dados ${period} carregados!`);
-            }
-
-        } catch (error) {
-            console.error(`❌ Erro ao carregar período ${period}:`, error);
-            this.showGlobalError();
-        } finally {
-            this.isLoading = false;
+    destroy() {
+        if (this.chart) {
+            this.chart.destroy();
+            this.chart = null;
         }
     }
 }
 
-// Inicializar quando DOM estiver pronto
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🎯 DOM carregado, inicializando Patrimônio Detalhes...');
-    
-    const dashboard = new PatrimonioDetalhes();
-    dashboard.init();
-});
-
-console.log('🎯 BTC Turbo - Patrimônio Detalhes carregado!');
+export default BtcDistributionChart;
