@@ -18,15 +18,16 @@ export class PatrimonioDetalhesData {
         const dados = response.dados;
         const btcCore = response.saldo_btc_core || 0;
         
-        // Calcular métricas atuais e variações
+        // USAR PREÇO BTC ATUALIZADO DA API (não dos dados históricos)
+        const currentBtcPrice = response.btc_price;
         const currentUsdSatelite = dados[0].valor;
-        const currentBtcPrice = dados[0].btc_price;
         const currentBtcSatelite = currentUsdSatelite / currentBtcPrice;
         
         // INCLUIR BTC CORE no patrimônio total
         const currentBtcTotal = currentBtcSatelite + btcCore;
         const currentUsdTotal = currentBtcTotal * currentBtcPrice;
         
+        // Para variações, usar preço histórico
         const previousUsdSatelite = dados[1]?.valor;
         const previousBtcPrice = dados[1]?.btc_price;
         const previousBtcSatelite = previousUsdSatelite ? previousUsdSatelite / previousBtcPrice : 0;
