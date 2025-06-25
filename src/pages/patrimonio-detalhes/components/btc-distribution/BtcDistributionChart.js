@@ -18,6 +18,10 @@ export class BtcDistributionChart {
     initChart() {
         const ctx = this.canvas.getContext('2d');
         
+        // Definir tamanho do canvas
+        this.canvas.width = 300;
+        this.canvas.height = 230;
+        
         this.chart = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -26,16 +30,35 @@ export class BtcDistributionChart {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: true,
+                aspectRatio: 1.3,
+                layout: {
+                    padding: {
+                        top: 10,
+                        bottom: 10,
+                        left: 10,
+                        right: 10
+                    }
+                },
                 plugins: {
                     legend: {
                         display: true,
                         position: 'right',
                         labels: {
                             color: '#8b9dc3',
-                            font: { size: 14 },
-                            padding: 20,
-                            usePointStyle: true
+                            font: { size: 12 },
+                            padding: 15,
+                            usePointStyle: true,
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                const dataset = data.datasets[0];
+                                return data.labels.map((label, i) => ({
+                                    text: `${label}: ${dataset.data[i].toFixed(4)} BTC`,
+                                    fillStyle: dataset.backgroundColor[i],
+                                    strokeStyle: dataset.backgroundColor[i],
+                                    pointStyle: 'circle'
+                                }));
+                            }
                         }
                     },
                     tooltip: {
@@ -54,7 +77,7 @@ export class BtcDistributionChart {
                         }
                     }
                 },
-                cutout: '60%',
+                cutout: '50%',
                 elements: {
                     arc: {
                         borderWidth: 0
