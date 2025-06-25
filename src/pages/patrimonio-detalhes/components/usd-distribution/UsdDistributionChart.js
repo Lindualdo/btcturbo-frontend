@@ -54,8 +54,8 @@ export class UsdDistributionChart {
                                 const dataset = data.datasets[0];
                                 return data.labels.map((label, i) => ({
                                     text: `${label}: $${dataset.data[i].toLocaleString()}`,
-                                    fillStyle: '#8b9dc3',
-                                    strokeStyle: '#8b9dc3',
+                                    fillStyle: dataset.backgroundColor[i],
+                                    strokeStyle: dataset.backgroundColor[i],
                                     pointStyle: 'circle'
                                 }));
                             }

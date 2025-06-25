@@ -43,7 +43,7 @@ export class BtcDistributionChart {
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'right',
+                        position: 'bottom',
                         labels: {
                             color: '#8b9dc3',
                             font: { size: 12 },
