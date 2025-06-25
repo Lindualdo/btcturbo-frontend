@@ -116,19 +116,23 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             position: relative;
         }
         
-        /* FORÇA mesmo tamanho para ambos os gráficos */
-        #chart-btc-distribution,
-        #chart-usd-distribution {
-            width: 300px !important;
-            height: 230px !important;
+        /* FORÇA alinhamento das labels - ambos centralizados */
+        .chart-container canvas {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
         }
-        
-        /* FORÇA mesmo container para ambos */
-        .distribution-chart-container canvas {
-            max-width: 300px !important;
-            max-height: 230px !important;
-            width: 300px !important;
-            height: 230px !important;
+
+        /* FORÇA legendas centralizadas para ambos os gráficos */
+        .chart-container .chartjs-legend,
+        .chart-container ul {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            flex-direction: row !important;
+            margin: 0 auto !important;
+            text-align: center !important;
         }
         
         /* Forçar cor das labels dos gráficos de distribuição */
