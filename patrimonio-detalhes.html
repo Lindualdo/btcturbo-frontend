@@ -158,37 +158,20 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             margin-bottom: 25px;
         }
         
-       /* Substituir o CSS mobile existente no patrimonio-detalhes.html */
-
         @media (max-width: 768px) {
             .chart-container {
-                height: auto !important; /* Mudança: auto ao invés de 350px */
-                min-height: 400px; /* Mudança: altura mínima */
+                height: 350px !important;
                 padding: 20px;
                 margin-bottom: 30px;
             }
             
-            /* REMOVER esta regra que está causando conflito */
-            /*
             .chart-container:has(#chart-patrimonio-usd),
-            .chart-container:has(#chart-patrimonio-btc) {
+                .chart-container:has(#chart-patrimonio-btc) {
                 height: 700px !important;
             }
-            */
-            
-            /* Regra específica para containers de gráficos de linha */
-            .chart-container:has(#chart-patrimonio-usd),
-            .chart-container:has(#chart-patrimonio-btc) {
-                height: auto !important;
-                min-height: 500px; /* Altura mínima adequada */
-                padding: 15px;
-            }
 
-            /* CORRIGIR: Remover altura fixa do canvas */
             .chart-canvas {
-                width: 100% !important;
-                height: auto !important; /* Mudança: auto ao invés de 200px */
-                min-height: 400px !important; /* Mudança: altura mínima flexível */
+                height: 200px !important; /* Proporcionalmente maior */
             }
             
             .current-metrics {
