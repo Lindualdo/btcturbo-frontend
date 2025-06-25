@@ -151,7 +151,7 @@ export class PatrimonioDetalhesData {
 
     prepareBtcDistributionData(btcCore, btcSatelite) {
         return {
-            labels: ['BTC Core', 'BTC Satélite'],
+            labels: ['Core', 'Satélite'],
             datasets: [{
                 data: [btcCore, btcSatelite],
                 backgroundColor: [
