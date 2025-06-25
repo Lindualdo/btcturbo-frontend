@@ -56,6 +56,7 @@ export class BtcDistributionChart {
                                     text: `${label}: ${dataset.data[i].toFixed(4)}`,
                                     fillStyle: dataset.backgroundColor[i],
                                     strokeStyle: dataset.backgroundColor[i],
+                                    fontColor: '#8b9dc3',
                                     pointStyle: 'circle'
                                 }));
                             }
