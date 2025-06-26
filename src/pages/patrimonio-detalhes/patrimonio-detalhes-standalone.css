@@ -1,7 +1,7 @@
 /* 
 patrimonio-detalhes-standalone.css
 CSS COMPLETO E INDEPENDENTE para página patrimônio-detalhes
-SUBSTITUI todos os outros CSS - sem conflitos
+CORRIGIDO - Gráficos de rosca circulares no PC
 */
 
 /* ========================================
@@ -195,7 +195,7 @@ body {
 }
 
 /* ========================================
-   GRÁFICOS DE DISTRIBUIÇÃO (ROSCA)
+   GRÁFICOS DE DISTRIBUIÇÃO (ROSCA) - CORRIGIDO
    ======================================== */
 .distribution-grid {
     display: grid;
@@ -212,31 +212,25 @@ body {
     padding: 25px;
     position: relative;
     overflow: hidden;
+    /* CORREÇÃO: Limitar largura máxima para manter aspecto circular */
+    max-width: 400px;
+    margin: 0 auto;
 }
 
+/* CORREÇÃO PRINCIPAL: Permitir que Chart.js controle dimensões */
 .distribution-chart-container canvas {
-    max-width: 100% !important;
-    max-height: 100% !important;
-    width: auto !important;
-    height: auto !important;
-    display: block !important;
-    margin: 0 auto !important;
-    /* Remove qualquer distorção */
-    transform: none !important;
-    perspective: none !important;
-    backface-visibility: visible !important;
-    transform-style: flat !important;
-    image-rendering: auto !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
+    /* Remove overrides problemáticos - deixa Chart.js controlar */
+    display: block;
+    margin: 0 auto;
+    /* Limite apenas quando necessário */
+    max-width: 300px;
+    max-height: 300px;
 }
 
 #chart-btc-distribution,
 #chart-usd-distribution {
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
+    /* Não forçar dimensões - deixar Chart.js decidir */
+    display: block;
 }
 
 /* Legendas dos gráficos de distribuição */
@@ -253,16 +247,6 @@ body {
     margin: 2px 8px !important;
     font-size: 11px !important;
     color: #8b9dc3 !important;
-}
-
-/* Remove renderização problemática */
-.distribution-chart-container .chartjs-render-monitor {
-    animation: none !important;
-    position: relative !important;
-    transform: none !important;
-    perspective: none !important;
-    backface-visibility: visible !important;
-    transform-style: flat !important;
 }
 
 /* ========================================
@@ -371,12 +355,13 @@ body {
         height: 350px !important;
         padding: 15px !important;
         overflow: hidden !important;
+        max-width: none; /* Remove limite no mobile */
     }
     
     .distribution-chart-container canvas {
-        max-width: calc(100% - 10px) !important;
-        max-height: calc(100% - 60px) !important;
-        margin: 5px auto 10px auto !important;
+        max-width: calc(100% - 10px);
+        max-height: calc(100% - 60px);
+        margin: 5px auto 10px auto;
     }
     
     .distribution-chart-container .chartjs-legend-item {
@@ -428,11 +413,9 @@ body {
     }
     
     .distribution-chart-container canvas {
-        max-width: 180px !important;
-        max-height: 180px !important;
-        width: 180px !important;
-        height: 180px !important;
-        margin: 2px auto 8px auto !important;
+        max-width: calc(100% - 5px);
+        max-height: calc(100% - 40px);
+        margin: 2px auto 8px auto;
     }
     
     .current-metrics {
