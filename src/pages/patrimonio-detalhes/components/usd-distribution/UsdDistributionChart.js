@@ -31,8 +31,8 @@ export class UsdDistributionChart {
                 aspectRatio: isMobile ? 1.0 : 1.2, // PC um pouco mais largo para acomodar legenda lateral
                 layout: {
                     padding: {
-                        top: 10,
-                        bottom: 10,
+                        top: 5,
+                        bottom: 15,
                         left: 10,
                         right: isMobile ? 10 : 20 // Mais espaço à direita no PC
                     }
