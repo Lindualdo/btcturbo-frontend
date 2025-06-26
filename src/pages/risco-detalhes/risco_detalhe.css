@@ -190,7 +190,7 @@
         max-width: calc(100% - 10px) !important;
         max-height: calc(100% - 80px) !important;
         margin: 5px 5px 20px 5px;
-        touch-action: none;
+        touch-action: pan-y; /* Permite scroll vertical */
         pointer-events: auto;
     }
 }
