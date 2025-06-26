@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/risco-detalhes/components/health-factor/HealthFactorChart.js
-Componente de Gráfico Health Factor
+Componente de Gráfico Health Factor - CORRIGIDO (sem pontos + mobile otimizado)
 */
 
 import Chart from 'chart.js/auto';
@@ -18,6 +18,7 @@ export class HealthFactorChart {
 
     initChart() {
         const ctx = this.canvas.getContext('2d');
+        const isMobile = window.innerWidth <= 768;
         
         this.chart = new Chart(ctx, {
             type: 'line',
@@ -28,17 +29,33 @@ export class HealthFactorChart {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 20,
+                        bottom: 20,
+                        left: 10,
+                        right: 10
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 0, // Remove os pontos
+                        hoverRadius: isMobile ? 0 : 6
+                    },
+                    line: {
+                        tension: 0.1
+                    }
+                },
                 plugins: {
                     legend: {
-                        display: true,
+                        display: !isMobile,
                         labels: {
                             color: '#8b9dc3',
-                            font: {
-                                size: 12
-                            }
+                            font: { size: 12 }
                         }
                     },
                     tooltip: {
+                        enabled: !isMobile, // Desabilita tooltip no mobile
                         mode: 'index',
                         intersect: false,
                         backgroundColor: '#2a2f3e',
@@ -61,32 +78,34 @@ export class HealthFactorChart {
                         },
                         ticks: {
                             color: '#8b9dc3',
-                            maxTicksLimit: 10
+                            maxTicksLimit: isMobile ? 6 : 10,
+                            padding: 10
                         }
                     },
                     y: {
+                        beginAtZero: false,
+                        grace: '10%', // Adiciona 10% de folga superior e inferior
                         grid: {
                             color: '#404552',
                             borderColor: '#404552'
                         },
                         ticks: {
                             color: '#8b9dc3',
+                            padding: 15,
+                            maxTicksLimit: 8,
                             callback: function(value) {
                                 return value.toFixed(1);
                             }
-                        },
-                        beginAtZero: false
+                        }
                     }
                 },
                 interaction: {
-                    mode: 'nearest',
+                    mode: isMobile ? 'none' : 'nearest', // Desabilita interação no mobile
                     axis: 'x',
                     intersect: false
                 },
-                elements: {
-                    point: {
-                        hoverRadius: 6
-                    }
+                hover: {
+                    mode: isMobile ? null : 'nearest' // Desabilita hover no mobile
                 }
             }
         });
@@ -100,21 +119,13 @@ export class HealthFactorChart {
 
         console.log('📊 Renderizando Health Factor Chart:', data);
 
-        // Calcular média
-        const values = data.datasets[0].data;
-        const average = values.reduce((a, b) => a + b, 0) / values.length;
-
-        // Adicionar linha de média
-        data.datasets.push({
-            label: `Média (${average.toFixed(2)})`,
-            data: new Array(values.length).fill(average),
-            borderColor: '#8b9dc3',
-            backgroundColor: 'transparent',
-            borderWidth: 2,
-            borderDash: [5, 5],
-            pointRadius: 0,
-            fill: false
-        });
+        // Garante que os datasets tenham pointRadius = 0
+        if (data.datasets) {
+            data.datasets.forEach(dataset => {
+                dataset.pointRadius = 0;
+                dataset.pointHoverRadius = window.innerWidth <= 768 ? 0 : 6;
+            });
+        }
 
         this.chart.data = data;
         this.chart.update('none');
@@ -149,7 +160,8 @@ export class HealthFactorChart {
                     label: 'Health Factor',
                     data: [0],
                     borderColor: '#8b9dc3',
-                    backgroundColor: 'rgba(139, 157, 195, 0.1)'
+                    backgroundColor: 'rgba(139, 157, 195, 0.1)',
+                    pointRadius: 0
                 }]
             };
             this.chart.update('none');
@@ -164,7 +176,8 @@ export class HealthFactorChart {
                     label: 'Health Factor',
                     data: [0],
                     borderColor: '#ff4757',
-                    backgroundColor: 'rgba(255, 71, 87, 0.1)'
+                    backgroundColor: 'rgba(255, 71, 87, 0.1)',
+                    pointRadius: 0
                 }]
             };
             this.chart.update('none');
@@ -172,7 +185,6 @@ export class HealthFactorChart {
     }
 
     clearLoading() {
-        // Método para limpar estado de loading se necessário
         console.log('✅ Health Factor Chart carregado');
     }
 

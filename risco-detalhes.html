@@ -10,167 +10,7 @@ Dashboard Detalhado - Análise de Risco - CARDS RESPONSIVOS
     <title>🛡️ BTC Turbo - Análise de Risco</title>
     <link rel="stylesheet" href="/src/styles/shared.css">
     <link rel="stylesheet" href="/src/styles/components.css">
-    <style>
-        .chart-container {
-            background: #2a2f3e;
-            border: 1px solid #3a3f4e;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-            height: 400px;
-        }
-        
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .period-filters {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .period-btn {
-            background: #404552;
-            color: #8b9dc3;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .period-btn:hover {
-            background: #ff8c42;
-            color: white;
-        }
-        
-        .period-btn.active {
-            background: #ff8c42;
-            color: white;
-        }
-        
-        .chart-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .chart-canvas {
-            width: 100% !important;
-            height: 320px !important;
-        }
-        
-        .current-metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        
-        .metric-card {
-            background: #2a2f3e;
-            border: 1px solid #3a3f4e;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .metric-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
-        
-        .metric-label {
-            color: #8b9dc3;
-            font-size: 0.9rem;
-        }
-        
-        .metric-change {
-            font-size: 0.8rem;
-            margin-top: 5px;
-        }
-        
-        /* Mobile: Card único compacto */
-        .current-metrics-mobile {
-            display: none;
-            background: #2a2f3e;
-            border: 1px solid #3a3f4e;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-
-        .metrics-compact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            text-align: center;
-        }
-
-        .metric-compact {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .metric-compact-value {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .metric-compact-label {
-            font-size: 0.7rem;
-            color: #8b9dc3;
-            line-height: 1.2;
-        }
-
-        .metric-compact-change {
-            font-size: 0.65rem;
-            margin-top: 2px;
-        }
-        
-        .positive { color: #4caf50; }
-        .negative { color: #ff4757; }
-        .neutral { color: #8b9dc3; }
-        
-        @media (max-width: 768px) {
-            .chart-container {
-                height: 350px;
-                padding: 20px;
-            }
-            
-            .chart-canvas {
-                height: 270px !important;
-            }
-            
-            .current-metrics {
-                display: none;
-            }
-            
-            .current-metrics-mobile {
-                display: block !important;
-            }
-            
-            .chart-header {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/src/pages/risco-detalhes/risco_detalhe.css">
 </head>
 <body>
     <div class="container">
@@ -233,7 +73,7 @@ Dashboard Detalhado - Análise de Risco - CARDS RESPONSIVOS
         </div>
 
         <!-- Gráfico Health Factor -->
-        <div class="chart-container">
+        <div class="chart-container line-chart-container">
             <div class="chart-header">
                 <span class="chart-title">
                     <i class="bi bi-heart-pulse"></i> Histórico Health Factor
@@ -250,7 +90,7 @@ Dashboard Detalhado - Análise de Risco - CARDS RESPONSIVOS
         </div>
 
         <!-- Gráfico Distância Liquidação -->
-        <div class="chart-container">
+        <div class="chart-container line-chart-container">
             <div class="chart-header">
                 <span class="chart-title">
                     <i class="bi bi-exclamation-triangle"></i> Histórico Distância Liquidação
