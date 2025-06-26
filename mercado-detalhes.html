@@ -147,6 +147,86 @@ Dashboard Detalhado - Score de Mercado
                 text-align: center;
             }
         }
+
+        /* 
+        ADICIONAR ao <style> do patrimonio-detalhes.html - CORREÇÕES DE LAYOUT
+        */
+
+        /* Corrige overflow dos gráficos */
+        .chart-container {
+            background: #2a2f3e;
+            border: 1px solid #3a3f4e;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            height: 400px;
+            overflow: hidden; /* Previne overflow */
+            position: relative;
+        }
+
+        /* Garante que o canvas não ultrapasse os limites */
+        .chart-canvas {
+            width: 100% !important;
+            height: 320px !important;
+            max-width: 100% !important;
+            max-height: 320px !important;
+            position: relative;
+        }
+
+        /* Container específico para os gráficos de linha */
+        .chart-container canvas {
+            max-width: calc(100% - 20px) !important;
+            max-height: calc(100% - 80px) !important;
+            margin: 10px;
+        }
+
+        /* MOBILE - correções específicas */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 380px !important;
+                padding: 15px;
+                margin-bottom: 25px;
+                overflow: hidden;
+            }
+            
+            .chart-canvas {
+                width: 100% !important;
+                height: 300px !important;
+                max-height: 300px !important;
+            }
+            
+            .chart-container canvas {
+                max-width: calc(100% - 10px) !important;
+                max-height: calc(100% - 60px) !important;
+                margin: 5px;
+            }
+            
+            /* Remove interações táteis problemáticas */
+            .chart-container canvas {
+                touch-action: none;
+                pointer-events: auto;
+            }
+        }
+
+        /* Força dimensões dos containers de distribuição */
+        .distribution-chart-container {
+            height: 270px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .distribution-chart-container canvas {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+        }
+
+
     </style>
 </head>
 <body>
