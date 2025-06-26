@@ -41,10 +41,10 @@ export class BtcDistributionChart {
                     legend: {
                         display: true,
                         position: isMobile ? 'bottom' : 'right', // Lateral no PC, embaixo no mobile
-                        align: isMobile ? 'center' : 'start',
+                        align: isMobile ? 'center' : 'center', // Centralizado verticalmente
                         labels: {
                             color: '#8b9dc3',
-                            font: { size: isMobile ? 10 : 11 },
+                            font: { size: isMobile ? 12 : 11 },
                             padding: isMobile ? 10 : 15,
                             usePointStyle: true,
                             boxWidth: 12,
