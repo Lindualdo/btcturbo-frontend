@@ -26,17 +26,17 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             <div class="last-update" id="last-update-patrimonio">Última: --:--</div>
         </div>
 
-        <!-- Métricas Atuais -->
+        <!-- Métricas Atuais - PC (3 cards) -->
         <div class="current-metrics">
             <div class="metric-card">
                 <div class="metric-value" id="current-patrimonio-usd">$0</div>
-                <div class="metric-label">Patrimônio Total (USD)</div>
+                <div class="metric-label">Saldo USD</div>
                 <div class="metric-change" id="usd-change">--</div>
             </div>
             
             <div class="metric-card">
                 <div class="metric-value" id="current-patrimonio-btc">0.0000 BTC</div>
-                <div class="metric-label">Patrimônio Total (BTC)</div>
+                <div class="metric-label">Saldo BTC</div>
                 <div class="metric-change" id="btc-change">--</div>
             </div>
             
@@ -44,6 +44,29 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
                 <div class="metric-value" id="current-btc-price">$0</div>
                 <div class="metric-label">Preço BTC</div>
                 <div class="metric-change" id="btc-price-change">--</div>
+            </div>
+        </div>
+
+        <!-- Métricas Atuais - Mobile (card único compacto) -->
+        <div class="current-metrics-mobile">
+            <div class="metrics-compact-grid">
+                <div class="metric-compact">
+                    <div class="metric-compact-value" id="current-patrimonio-usd-mobile">$0</div>
+                    <div class="metric-compact-label">Saldo USD</div>
+                    <div class="metric-compact-change positive" id="usd-change-mobile">--</div>
+                </div>
+                
+                <div class="metric-compact">
+                    <div class="metric-compact-value" id="current-patrimonio-btc-mobile">0.0000</div>
+                    <div class="metric-compact-label">Saldo BTC</div>
+                    <div class="metric-compact-change positive" id="btc-change-mobile">--</div>
+                </div>
+                
+                <div class="metric-compact">
+                    <div class="metric-compact-value" id="current-btc-price-mobile">$0</div>
+                    <div class="metric-compact-label">Preço BTC</div>
+                    <div class="metric-compact-change positive" id="btc-price-change-mobile">--</div>
+                </div>
             </div>
         </div>
 
