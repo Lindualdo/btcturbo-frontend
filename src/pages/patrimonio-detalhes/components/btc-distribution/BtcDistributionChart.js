@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/btc-distribution/BtcDistributionChart.js
-Componente de Gráfico de Rosca - Distribuição BTC - RESPONSIVO
+Componente de Gráfico de Rosca - Distribuição BTC - LEGENDAS OTIMIZADAS
 */
 
 import Chart from 'chart.js/auto';
@@ -19,10 +19,6 @@ export class BtcDistributionChart {
         const ctx = this.canvas.getContext('2d');
         const isMobile = window.innerWidth <= 768;
         
-        // NÃO definir tamanho fixo - deixar responsivo
-        // this.canvas.width = 300;
-        // this.canvas.height = 230;
-        
         this.chart = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -31,25 +27,28 @@ export class BtcDistributionChart {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true, // Sempre manter aspecto
-                aspectRatio: isMobile ? 1.2 : 1.0, // 1.0 no PC = perfeitamente redondo
+                maintainAspectRatio: true,
+                aspectRatio: isMobile ? 1.0 : 1.2, // PC um pouco mais largo para acomodar legenda lateral
                 layout: {
                     padding: {
-                        top: isMobile ? 5 : 15,
-                        bottom: isMobile ? 10 : 15,
-                        left: isMobile ? 5 : 15,
-                        right: isMobile ? 5 : 15
+                        top: 10,
+                        bottom: 10,
+                        left: 10,
+                        right: isMobile ? 10 : 20 // Mais espaço à direita no PC
                     }
                 },
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'bottom',
+                        position: isMobile ? 'bottom' : 'right', // Lateral no PC, embaixo no mobile
+                        align: isMobile ? 'center' : 'start',
                         labels: {
                             color: '#8b9dc3',
-                            font: { size: isMobile ? 10 : 12 },
+                            font: { size: isMobile ? 10 : 11 },
                             padding: isMobile ? 10 : 15,
                             usePointStyle: true,
+                            boxWidth: 12,
+                            boxHeight: 12,
                             generateLabels: function(chart) {
                                 const data = chart.data;
                                 const dataset = data.datasets[0];
@@ -64,7 +63,7 @@ export class BtcDistributionChart {
                         }
                     },
                     tooltip: {
-                        enabled: !isMobile, // Desabilita tooltip no mobile
+                        enabled: !isMobile,
                         backgroundColor: '#2a2f3e',
                         titleColor: '#ffffff',
                         bodyColor: '#8b9dc3',
@@ -80,7 +79,7 @@ export class BtcDistributionChart {
                         }
                     }
                 },
-                cutout: isMobile ? '45%' : '50%', // Cutout menor no mobile
+                cutout: '50%',
                 elements: {
                     arc: {
                         borderWidth: 0
@@ -89,10 +88,10 @@ export class BtcDistributionChart {
                 // Configurações específicas para mobile
                 ...(isMobile && {
                     animation: {
-                        duration: 0 // Sem animação no mobile
+                        duration: 300
                     },
                     interaction: {
-                        mode: 'none' // Sem interação no mobile
+                        mode: 'none'
                     }
                 })
             }

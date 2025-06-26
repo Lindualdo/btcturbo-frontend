@@ -252,19 +252,18 @@ body {
     padding: 25px;
     position: relative;
     overflow: hidden;
-    /* CORREÇÃO: Limitar largura máxima para manter aspecto circular */
-    max-width: 400px;
+    /* Aumentar espaço para gráficos maiores */
+    max-width: 500px;
     margin: 0 auto;
 }
 
-/* CORREÇÃO PRINCIPAL: Permitir que Chart.js controle dimensões */
+/* Gráficos maiores no PC */
 .distribution-chart-container canvas {
-    /* Remove overrides problemáticos - deixa Chart.js controlar */
     display: block;
     margin: 0 auto;
-    /* Limite apenas quando necessário */
-    max-width: 300px;
-    max-height: 300px;
+    /* Gráficos maiores */
+    max-width: 400px;
+    max-height: 400px;
 }
 
 #chart-btc-distribution,
