@@ -31,14 +31,14 @@ export class UsdDistributionChart {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: !isMobile, // Só manter aspecto no desktop
-                aspectRatio: isMobile ? 1.2 : 1.3, // Aspecto diferente mobile/desktop
+                maintainAspectRatio: true, // Sempre manter aspecto
+                aspectRatio: isMobile ? 1.2 : 1.0, // 1.0 no PC = perfeitamente redondo
                 layout: {
                     padding: {
-                        top: isMobile ? 5 : 10,
-                        bottom: isMobile ? 10 : 10,
-                        left: isMobile ? 5 : 10,
-                        right: isMobile ? 5 : 10
+                        top: isMobile ? 5 : 15,
+                        bottom: isMobile ? 10 : 15,
+                        left: isMobile ? 5 : 15,
+                        right: isMobile ? 5 : 15
                     }
                 },
                 plugins: {

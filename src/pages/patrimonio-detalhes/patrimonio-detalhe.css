@@ -349,6 +349,14 @@ CSS ADICIONAL - Correções específicas para gráficos de distribuição (rosca
 ADICIONAR ao CSS existente da página patrimonio-detalhes.html
 */
 
+/* Grid para os gráficos de distribuição lado a lado */
+.distribution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px; /* MESMO GAP dos outros gráficos */
+    margin-bottom: 25px; /* MESMO MARGIN dos outros gráficos */
+}
+
 /* Container específico para gráficos de distribuição */
 .distribution-chart-container {
     height: 270px;
@@ -456,6 +464,29 @@ ADICIONAR ao CSS existente da página patrimonio-detalhes.html
     height: auto !important;
     max-width: 100% !important;
     max-height: 100% !important;
+}
+
+/* DESKTOP - Garante gráficos redondos no PC */
+@media (min-width: 769px) {
+    .distribution-chart-container {
+        height: 300px; /* Altura ligeiramente maior no desktop */
+        min-height: 300px;
+        max-height: 300px;
+        padding: 25px;
+    }
+    
+    .distribution-chart-container canvas {
+        max-width: 250px !important; /* Largura máxima para manter proporção */
+        max-height: 250px !important; /* Altura máxima igual = círculo perfeito */
+        width: auto !important;
+        height: auto !important;
+        margin: 0 auto !important;
+    }
+    
+    /* Containers dos gráficos de distribuição no desktop */
+    .distribution-grid .chart-container {
+        height: 350px; /* Mesmo padrão dos outros gráficos */
+    }
 }
 
 /* Previne problemas de rendering específicos dos gráficos de rosca */
