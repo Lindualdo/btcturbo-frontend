@@ -23,6 +23,19 @@ body {
     width: 100%;
 }
 
+@media (max-width: 768px) {
+    .header-left {
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .header-left .api-status-block {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 
 .container {
     max-width: 1200px;
