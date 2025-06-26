@@ -1,0 +1,345 @@
+/* 
+CSS COMPLETO - patrimonio-detalhes.html
+Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribuição USD
+*/
+
+/* Containers principais dos gráficos */
+.chart-container {
+    background: #2a2f3e;
+    border: 1px solid #3a3f4e;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    height: 400px;
+    overflow: hidden; /* Previne overflow */
+    position: relative;
+}
+
+/* Header dos gráficos com filtros */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Filtros de período */
+.period-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.period-btn {
+    background: #404552;
+    color: #8b9dc3;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.period-btn:hover {
+    background: #ff8c42;
+    color: white;
+}
+
+.period-btn.active {
+    background: #ff8c42;
+    color: white;
+}
+
+/* Títulos dos gráficos */
+.chart-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Canvas dos gráficos de linha */
+.chart-canvas {
+    width: 100% !important;
+    height: 320px !important;
+    max-width: 100% !important;
+    max-height: 320px !important;
+    position: relative;
+}
+
+/* Garante que o canvas não ultrapasse os limites */
+.chart-container canvas {
+    max-width: calc(100% - 20px) !important;
+    max-height: calc(100% - 80px) !important;
+    margin: 10px;
+}
+
+/* Grid de métricas atuais */
+.current-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+/* Cards das métricas */
+.metric-card {
+    background: #2a2f3e;
+    border: 1px solid #3a3f4e;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    color: #8b9dc3;
+    font-size: 0.9rem;
+}
+
+.metric-change {
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+/* Classes de estado para mudanças */
+.positive { 
+    color: #4caf50; 
+}
+
+.negative { 
+    color: #ff4757; 
+}
+
+.neutral { 
+    color: #8b9dc3; 
+}
+
+/* Container específico para gráficos de distribuição (rosca) */
+.distribution-chart-container {
+    height: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.distribution-chart-container canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Grid para os gráficos de distribuição lado a lado */
+.distribution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+/* FORÇA alinhamento das labels - ambos centralizados */
+.chart-container canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* FORÇA legendas centralizadas para ambos os gráficos */
+.chart-container .chartjs-legend,
+.chart-container ul {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+
+/* Forçar cor das labels dos gráficos de distribuição */
+.chart-container .chartjs-legend-item,
+.chart-container .chartjs-legend-item span,
+.chart-container canvas + div,
+.chart-container canvas ~ div {
+    color: #8b9dc3 !important;
+}
+
+/* RESPONSIVE - MOBILE */
+@media (max-width: 768px) {
+    /* Containers principais no mobile */
+    .chart-container {
+        height: 420px !important; /* Altura maior no mobile */
+        padding: 20px 15px 25px 15px; /* Padding maior embaixo */
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+    
+    /* Canvas dos gráficos de linha no mobile */
+    .chart-canvas {
+        width: 100% !important;
+        height: 320px !important; /* Altura maior para dar mais espaço */
+        max-height: 320px !important;
+    }
+    
+    /* Canvas específico no mobile com margem maior embaixo */
+    .chart-container canvas {
+        max-width: calc(100% - 10px) !important;
+        max-height: calc(100% - 80px) !important; /* Margem maior embaixo */
+        margin: 5px 5px 20px 5px; /* Margem específica embaixo */
+        touch-action: none;
+        pointer-events: auto;
+    }
+    
+    /* Grid de métricas em coluna única */
+    .current-metrics {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Header dos gráficos em coluna no mobile */
+    .chart-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Grid de distribuição em coluna única */
+    .distribution-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    /* Filtros de período centralizados */
+    .period-filters {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .period-btn {
+        min-width: 60px;
+        padding: 8px 12px;
+    }
+    
+    /* Containers de distribuição no mobile */
+    .distribution-chart-container {
+        height: 250px;
+        padding: 15px;
+    }
+    
+    /* Títulos menores no mobile */
+    .chart-title {
+        font-size: 1rem;
+    }
+    
+    /* Métricas menores no mobile */
+    .metric-value {
+        font-size: 1.6rem;
+    }
+    
+    .metric-label {
+        font-size: 0.8rem;
+    }
+    
+    .metric-change {
+        font-size: 0.7rem;
+    }
+}
+
+/* RESPONSIVE - MOBILE MUITO PEQUENO */
+@media (max-width: 480px) {
+    .chart-container {
+        height: 380px !important;
+        padding: 15px 10px 20px 10px;
+        margin-bottom: 25px;
+    }
+    
+    .chart-canvas {
+        height: 280px !important;
+        max-height: 280px !important;
+    }
+    
+    .chart-container canvas {
+        max-height: calc(100% - 70px) !important;
+        margin: 5px 2px 15px 2px;
+    }
+    
+    .distribution-chart-container {
+        height: 220px;
+        padding: 10px;
+    }
+    
+    .current-metrics {
+        gap: 15px;
+    }
+    
+    .metric-card {
+        padding: 15px;
+    }
+    
+    .metric-value {
+        font-size: 1.4rem;
+    }
+    
+    .period-btn {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .chart-title {
+        font-size: 0.9rem;
+    }
+}
+
+/* Forças específicas para Chart.js */
+.chart-container .chartjs-render-monitor {
+    animation: none !important;
+}
+
+/* Previne problemas de rendering */
+.chart-container canvas {
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+/* Tooltips customizados se necessário */
+.chartjs-tooltip {
+    background: #2a2f3e !important;
+    border: 1px solid #3a3f4e !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+}
+
+/* Estilos para estados de loading/erro se necessário */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #8b9dc3;
+    font-style: italic;
+}
+
+.chart-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #ff4757;
+    font-style: italic;
+}
