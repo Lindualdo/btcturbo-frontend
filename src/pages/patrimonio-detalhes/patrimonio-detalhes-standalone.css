@@ -1,0 +1,456 @@
+/* 
+patrimonio-detalhes-standalone.css
+CSS COMPLETO E INDEPENDENTE para página patrimônio-detalhes
+SUBSTITUI todos os outros CSS - sem conflitos
+*/
+
+/* ========================================
+   RESET E BASE
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1a1d29;
+    color: #ffffff;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ========================================
+   HEADER E NAVEGAÇÃO
+   ======================================== */
+.back-button {
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
+}
+
+.breadcrumb {
+    color: #8b9dc3;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.breadcrumb a {
+    color: #ff8c42;
+    text-decoration: none;
+}
+
+/* ========================================
+   CONTAINERS BASE DOS GRÁFICOS
+   ======================================== */
+.chart-container {
+    background: #2a2f3e;
+    border: 1px solid #3a3f4e;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.chart-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ========================================
+   FILTROS DE PERÍODO
+   ======================================== */
+.period-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.period-btn {
+    background: #404552;
+    color: #8b9dc3;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.period-btn:hover {
+    background: #ff8c42;
+    color: white;
+}
+
+.period-btn.active {
+    background: #ff8c42;
+    color: white;
+}
+
+/* ========================================
+   MÉTRICAS ATUAIS
+   ======================================== */
+.current-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.metric-card {
+    background: #2a2f3e;
+    border: 1px solid #3a3f4e;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    color: #8b9dc3;
+    font-size: 0.9rem;
+}
+
+.metric-change {
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.positive { 
+    color: #4caf50; 
+}
+
+.negative { 
+    color: #ff4757; 
+}
+
+.neutral { 
+    color: #8b9dc3; 
+}
+
+/* ========================================
+   GRÁFICOS DE LINHA
+   ======================================== */
+.line-chart-container {
+    height: 400px;
+}
+
+.chart-canvas {
+    width: 100% !important;
+    height: 320px !important;
+    max-width: 100% !important;
+    max-height: 320px !important;
+    position: relative;
+}
+
+.line-chart-container canvas {
+    max-width: calc(100% - 20px) !important;
+    max-height: calc(100% - 80px) !important;
+    margin: 10px;
+}
+
+#chart-patrimonio-usd,
+#chart-patrimonio-btc {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* ========================================
+   GRÁFICOS DE DISTRIBUIÇÃO (ROSCA)
+   ======================================== */
+.distribution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.distribution-chart-container {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.distribution-chart-container canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 auto !important;
+    /* Remove qualquer distorção */
+    transform: none !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
+    transform-style: flat !important;
+    image-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+}
+
+#chart-btc-distribution,
+#chart-usd-distribution {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+/* Legendas dos gráficos de distribuição */
+.distribution-chart-container .chartjs-legend,
+.distribution-chart-container .chartjs-legend ul {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    margin-top: 10px !important;
+}
+
+.distribution-chart-container .chartjs-legend-item {
+    margin: 2px 8px !important;
+    font-size: 11px !important;
+    color: #8b9dc3 !important;
+}
+
+/* Remove renderização problemática */
+.distribution-chart-container .chartjs-render-monitor {
+    animation: none !important;
+    position: relative !important;
+    transform: none !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
+    transform-style: flat !important;
+}
+
+/* ========================================
+   CHART.JS - CONFIGURAÇÕES GERAIS
+   ======================================== */
+.chart-container .chartjs-render-monitor {
+    animation: none !important;
+}
+
+.chart-container canvas {
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+.chartjs-tooltip {
+    background: #2a2f3e !important;
+    border: 1px solid #3a3f4e !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+}
+
+/* ========================================
+   ESTADOS DE LOADING/ERRO
+   ======================================== */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #8b9dc3;
+    font-style: italic;
+}
+
+.chart-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #ff4757;
+    font-style: italic;
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE
+   ======================================== */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    /* Métricas em coluna única */
+    .current-metrics {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Headers em coluna */
+    .chart-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    /* Filtros centralizados */
+    .period-filters {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .period-btn {
+        min-width: 60px;
+        padding: 8px 12px;
+    }
+    
+    /* Grid de distribuição em coluna única */
+    .distribution-grid {
+        grid-template-columns: 1fr !important;
+        gap: 25px !important;
+        margin-bottom: 30px !important;
+    }
+    
+    /* Gráficos de linha mobile */
+    .line-chart-container {
+        height: 420px !important;
+        padding: 20px 15px 25px 15px;
+        margin-bottom: 30px;
+    }
+    
+    .chart-canvas {
+        width: 100% !important;
+        height: 320px !important;
+        max-height: 320px !important;
+    }
+    
+    .line-chart-container canvas {
+        max-width: calc(100% - 10px) !important;
+        max-height: calc(100% - 80px) !important;
+        margin: 5px 5px 20px 5px;
+        touch-action: none;
+        pointer-events: auto;
+    }
+    
+    /* Gráficos de distribuição mobile */
+    .distribution-chart-container {
+        height: 350px !important;
+        padding: 15px !important;
+        overflow: hidden !important;
+    }
+    
+    .distribution-chart-container canvas {
+        max-width: calc(100% - 10px) !important;
+        max-height: calc(100% - 60px) !important;
+        margin: 5px auto 10px auto !important;
+    }
+    
+    .distribution-chart-container .chartjs-legend-item {
+        margin: 1px 4px !important;
+        font-size: 10px !important;
+    }
+    
+    /* Títulos e métricas menores */
+    .chart-title {
+        font-size: 1rem;
+    }
+    
+    .metric-value {
+        font-size: 1.6rem;
+    }
+    
+    .metric-label {
+        font-size: 0.8rem;
+    }
+    
+    .metric-change {
+        font-size: 0.7rem;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE MUITO PEQUENO
+   ======================================== */
+@media (max-width: 480px) {
+    .line-chart-container {
+        height: 380px !important;
+        padding: 15px 10px 20px 10px;
+        margin-bottom: 25px;
+    }
+    
+    .chart-canvas {
+        height: 280px !important;
+        max-height: 280px !important;
+    }
+    
+    .line-chart-container canvas {
+        max-height: calc(100% - 70px) !important;
+        margin: 5px 2px 15px 2px;
+    }
+    
+    .distribution-chart-container {
+        height: 320px !important;
+        padding: 10px !important;
+    }
+    
+    .distribution-chart-container canvas {
+        max-width: calc(100% - 5px) !important;
+        max-height: calc(100% - 40px) !important;
+        margin: 2px auto 8px auto !important;
+    }
+    
+    .current-metrics {
+        gap: 15px;
+    }
+    
+    .metric-card {
+        padding: 15px;
+    }
+    
+    .metric-value {
+        font-size: 1.4rem;
+    }
+    
+    .period-btn {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .chart-title {
+        font-size: 0.9rem;
+    }
+}
