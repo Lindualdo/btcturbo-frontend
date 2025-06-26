@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/usd-distribution/UsdDistributionChart.js
-Componente de Gráfico de Rosca - Distribuição USD - RESPONSIVO
+Componente de Gráfico de Rosca - Distribuição USD - CÓPIA EXATA DO BTC
 */
 
 import Chart from 'chart.js/auto';
@@ -17,11 +17,10 @@ export class UsdDistributionChart {
 
     initChart() {
         const ctx = this.canvas.getContext('2d');
-        const isMobile = window.innerWidth <= 768;
         
-        // NÃO definir tamanho fixo - deixar responsivo
-        // this.canvas.width = 300;
-        // this.canvas.height = 230;
+        // CÓPIA EXATA DO BTC
+        this.canvas.width = 300;
+        this.canvas.height = 230;
         
         this.chart = new Chart(ctx, {
             type: 'doughnut',
@@ -31,14 +30,14 @@ export class UsdDistributionChart {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: !isMobile, // Só manter aspecto no desktop
-                aspectRatio: isMobile ? 1.2 : 1.3, // Aspecto diferente mobile/desktop
+                maintainAspectRatio: true,
+                aspectRatio: 1.3,
                 layout: {
                     padding: {
-                        top: isMobile ? 5 : 10,
-                        bottom: isMobile ? 10 : 10,
-                        left: isMobile ? 5 : 10,
-                        right: isMobile ? 5 : 10
+                        top: 10,
+                        bottom: 10,
+                        left: 10,
+                        right: 10
                     }
                 },
                 plugins: {
@@ -47,8 +46,8 @@ export class UsdDistributionChart {
                         position: 'bottom',
                         labels: {
                             color: '#8b9dc3',
-                            font: { size: isMobile ? 10 : 12 },
-                            padding: isMobile ? 10 : 15,
+                            font: { size: 12 },
+                            padding: 15,
                             usePointStyle: true,
                             generateLabels: function(chart) {
                                 const data = chart.data;
@@ -64,7 +63,6 @@ export class UsdDistributionChart {
                         }
                     },
                     tooltip: {
-                        enabled: !isMobile, // Desabilita tooltip no mobile
                         backgroundColor: '#2a2f3e',
                         titleColor: '#ffffff',
                         bodyColor: '#8b9dc3',
@@ -80,21 +78,12 @@ export class UsdDistributionChart {
                         }
                     }
                 },
-                cutout: isMobile ? '45%' : '50%', // Cutout menor no mobile
+                cutout: '50%',
                 elements: {
                     arc: {
                         borderWidth: 0
                     }
-                },
-                // Configurações específicas para mobile
-                ...(isMobile && {
-                    animation: {
-                        duration: 0 // Sem animação no mobile
-                    },
-                    interaction: {
-                        mode: 'none' // Sem interação no mobile
-                    }
-                })
+                }
             }
         });
     }
