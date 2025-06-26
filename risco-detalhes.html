@@ -1,6 +1,6 @@
 <!-- 
 Arquivo: risco-detalhes.html
-Dashboard Detalhado - Análise de Risco
+Dashboard Detalhado - Análise de Risco - CARDS RESPONSIVOS
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -102,6 +102,46 @@ Dashboard Detalhado - Análise de Risco
             margin-top: 5px;
         }
         
+        /* Mobile: Card único compacto */
+        .current-metrics-mobile {
+            display: none;
+            background: #2a2f3e;
+            border: 1px solid #3a3f4e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .metrics-compact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .metric-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .metric-compact-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .metric-compact-label {
+            font-size: 0.7rem;
+            color: #8b9dc3;
+            line-height: 1.2;
+        }
+
+        .metric-compact-change {
+            font-size: 0.65rem;
+            margin-top: 2px;
+        }
+        
         .positive { color: #4caf50; }
         .negative { color: #ff4757; }
         .neutral { color: #8b9dc3; }
@@ -117,7 +157,11 @@ Dashboard Detalhado - Análise de Risco
             }
             
             .current-metrics {
-                grid-template-columns: 1fr;
+                display: none;
+            }
+            
+            .current-metrics-mobile {
+                display: block !important;
             }
             
             .chart-header {
@@ -144,17 +188,17 @@ Dashboard Detalhado - Análise de Risco
             <div class="last-update" id="last-update-risco">Última: --:--</div>
         </div>
 
-        <!-- Métricas Atuais -->
+        <!-- Métricas Atuais - PC (3 cards) -->
         <div class="current-metrics">
             <div class="metric-card">
                 <div class="metric-value" id="current-health-factor">0.00</div>
-                <div class="metric-label">Health Factor Atual</div>
+                <div class="metric-label">Health Factor</div>
                 <div class="metric-change" id="hf-change">--</div>
             </div>
             
             <div class="metric-card">
                 <div class="metric-value" id="current-liquidation">0.0%</div>
-                <div class="metric-label">Distância Liquidação</div>
+                <div class="metric-label">Dist. Liquidação</div>
                 <div class="metric-change" id="liq-change">--</div>
             </div>
             
@@ -162,6 +206,29 @@ Dashboard Detalhado - Análise de Risco
                 <div class="metric-value" id="current-score">0</div>
                 <div class="metric-label">Score de Risco</div>
                 <div class="metric-change" id="score-change">--</div>
+            </div>
+        </div>
+
+        <!-- Métricas Atuais - Mobile (card único compacto) -->
+        <div class="current-metrics-mobile">
+            <div class="metrics-compact-grid">
+                <div class="metric-compact">
+                    <div class="metric-compact-value" id="current-health-factor-mobile">0.00</div>
+                    <div class="metric-compact-label">Health Factor</div>
+                    <div class="metric-compact-change positive" id="hf-change-mobile">--</div>
+                </div>
+                
+                <div class="metric-compact">
+                    <div class="metric-compact-value" id="current-liquidation-mobile">0.0%</div>
+                    <div class="metric-compact-label">Dist. Liquidação</div>
+                    <div class="metric-compact-change positive" id="liq-change-mobile">--</div>
+                </div>
+                
+                <div class="metric-compact">
+                    <div class="metric-compact-value" id="current-score-mobile">0</div>
+                    <div class="metric-compact-label">Score Risco</div>
+                    <div class="metric-compact-change positive" id="score-change-mobile">--</div>
+                </div>
             </div>
         </div>
 
