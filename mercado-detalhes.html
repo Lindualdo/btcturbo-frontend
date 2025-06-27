@@ -1,6 +1,6 @@
 <!-- 
 Arquivo: mercado-detalhes.html
-Dashboard Detalhado - Score de Mercado
+Dashboard Detalhado - Score de Mercado - LABELS ATUALIZADOS
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -122,7 +122,7 @@ Dashboard Detalhado - Score de Mercado
             border-radius: 4px;
         }
         
-            @media (max-width: 768px) {
+        @media (max-width: 768px) {
             .bloco-grid {
                 grid-template-columns: 1fr;
             }
@@ -147,86 +147,6 @@ Dashboard Detalhado - Score de Mercado
                 text-align: center;
             }
         }
-
-        /* 
-        ADICIONAR ao <style> do patrimonio-detalhes.html - CORREÇÕES DE LAYOUT
-        */
-
-        /* Corrige overflow dos gráficos */
-        .chart-container {
-            background: #2a2f3e;
-            border: 1px solid #3a3f4e;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-            height: 400px;
-            overflow: hidden; /* Previne overflow */
-            position: relative;
-        }
-
-        /* Garante que o canvas não ultrapasse os limites */
-        .chart-canvas {
-            width: 100% !important;
-            height: 320px !important;
-            max-width: 100% !important;
-            max-height: 320px !important;
-            position: relative;
-        }
-
-        /* Container específico para os gráficos de linha */
-        .chart-container canvas {
-            max-width: calc(100% - 20px) !important;
-            max-height: calc(100% - 80px) !important;
-            margin: 10px;
-        }
-
-        /* MOBILE - correções específicas */
-        @media (max-width: 768px) {
-            .chart-container {
-                height: 380px !important;
-                padding: 15px;
-                margin-bottom: 25px;
-                overflow: hidden;
-            }
-            
-            .chart-canvas {
-                width: 100% !important;
-                height: 300px !important;
-                max-height: 300px !important;
-            }
-            
-            .chart-container canvas {
-                max-width: calc(100% - 10px) !important;
-                max-height: calc(100% - 60px) !important;
-                margin: 5px;
-            }
-            
-            /* Remove interações táteis problemáticas */
-            .chart-container canvas {
-                touch-action: none;
-                pointer-events: auto;
-            }
-        }
-
-        /* Força dimensões dos containers de distribuição */
-        .distribution-chart-container {
-            height: 270px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .distribution-chart-container canvas {
-            max-width: 100% !important;
-            max-height: 100% !important;
-            width: auto !important;
-            height: auto !important;
-        }
-
-
     </style>
 </head>
 <body>
@@ -240,7 +160,7 @@ Dashboard Detalhado - Score de Mercado
             <a href="/">Home</a> > Análise de Mercado
         </div>
 
-        <!-- NOVO: Status com timestamp -->
+        <!-- Status com timestamp -->
         <div style="text-align: center; margin-bottom: 15px;">
             <div class="last-update" id="last-update-mercado">Última: --:--</div>
         </div>
@@ -272,7 +192,7 @@ Dashboard Detalhado - Score de Mercado
                     <div class="bloco-indicadores">
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">MVRV</span>
+                                <span class="indicador-nome">MVRV Z-Score</span>
                                 <span class="indicador-valor" id="mvrv-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -292,7 +212,7 @@ Dashboard Detalhado - Score de Mercado
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Puell Multiple</span>
+                                <span class="indicador-nome">Reserve Risk</span>
                                 <span class="indicador-valor" id="puell-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -302,7 +222,7 @@ Dashboard Detalhado - Score de Mercado
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Realized Price Ratio</span>
+                                <span class="indicador-nome">Realized Ratio</span>
                                 <span class="indicador-valor" id="realized-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -360,7 +280,7 @@ Dashboard Detalhado - Score de Mercado
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">L/S Ratio</span>
+                                <span class="indicador-nome">Long/Short Ratio</span>
                                 <span class="indicador-valor" id="longshort-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -385,10 +305,10 @@ Dashboard Detalhado - Score de Mercado
                         </div>
                     </div>
                     
-                    <div class="bloco-indicadores" width="200" height="200">
+                    <div class="bloco-indicadores">
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Tempo gráfico - Diário</span>
+                                <span class="indicador-nome">Score Diário</span>
                                 <span class="indicador-valor" id="diario-score-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -396,19 +316,19 @@ Dashboard Detalhado - Score de Mercado
                             </div>
                         </div>
                         
-                        <!--<div class="indicador-item">
+                        <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Posição Preço: Diária</span>
+                                <span class="indicador-nome">Alinhamento Diário</span>
                                 <span class="indicador-valor" id="diario-posicao-valor">-</span>
                             </div>
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="diario-posicao-barra"></div>
                             </div>
-                        </div>-->
+                        </div>
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Tempo gráfico - Semanal</span>
+                                <span class="indicador-nome">Score Semanal</span>
                                 <span class="indicador-valor" id="semanal-score-valor">-</span>
                             </div>
                             <div class="indicador-barra">
@@ -416,15 +336,15 @@ Dashboard Detalhado - Score de Mercado
                             </div>
                         </div>
                         
-                        <!--<div class="indicador-item">
+                        <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">Posição Preço: Semanal</span>
+                                <span class="indicador-nome">Alinhamento Semanal</span>
                                 <span class="indicador-valor" id="semanal-posicao-valor">-</span>
                             </div>
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="semanal-posicao-barra"></div>
                             </div>
-                        </div>-->
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/components/ciclo/ciclo-data.js
-Formatação de dados do Bloco Ciclo
+Formatação de dados do Bloco Ciclo - CORRIGIDO para nova estrutura JSON
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -16,24 +16,24 @@ export class CicloData {
         }
 
         return {
-            score: (cicloData.score || 0) * 10,
-            classification: cicloData.classificacao || 'neutro',
+            score: cicloData.score_consolidado || 0,
+            classification: cicloData.classificacao_consolidada || 'neutro',
             indicadores: {
                 mvrv: {
-                    score: (cicloData.indicadores?.mvrv?.score || 0) * 10,
-                    valor: formatters.decimal(cicloData.indicadores?.mvrv?.valor)
+                    score: cicloData.indicadores?.MVRV_Z?.score || 0,
+                    valor: formatters.decimal(cicloData.indicadores?.MVRV_Z?.valor)
                 },
                 nupl: {
-                    score: (cicloData.indicadores?.nupl?.score || 0) * 10,
-                    valor: formatters.decimal3(cicloData.indicadores?.nupl?.valor)
+                    score: cicloData.indicadores?.NUPL?.score || 0,
+                    valor: formatters.decimal3(cicloData.indicadores?.NUPL?.valor)
                 },
                 puell_multiple: {
-                    score: (cicloData.indicadores?.puell_multiple?.score || 0) * 10,
-                    valor: formatters.decimal(cicloData.indicadores?.puell_multiple?.valor)
+                    score: cicloData.indicadores?.Reserve_Risk?.score || 0,
+                    valor: formatters.decimal3(cicloData.indicadores?.Reserve_Risk?.valor)
                 },
                 realized_price_ratio: {
-                    score: (cicloData.indicadores?.realized_price_ratio?.score || 0) * 10,
-                    valor: formatters.decimal(cicloData.indicadores?.realized_price_ratio?.valor)
+                    score: cicloData.indicadores?.Realized_Ratio?.score || 0,
+                    valor: formatters.decimal(cicloData.indicadores?.Realized_Ratio?.valor)
                 }
             }
         };

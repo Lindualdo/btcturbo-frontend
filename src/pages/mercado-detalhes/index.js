@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/index.js
-Orquestrador da página Mercado Detalhes - COM TIMESTAMP
+Orquestrador da página Mercado Detalhes - CORRIGIDO para nova estrutura JSON
 */
 
 import ApiClient from '../../shared/api.js';
@@ -64,19 +64,19 @@ class MercadoDetalhes {
             // Fetch do endpoint dash-mercado
             const response = await this.api.fetchData('dash-mercado');
             
-            if (response.status === 'success' && response.blocos) {
-                const { score_consolidado, classificacao, blocos } = response;
+            if (response.status === 'success') {
+                const { score_consolidado, classificacao, ciclo, momentum, tecnico } = response;
                 
                 // Atualizar score consolidado
                 this.updateConsolidatedScore(score_consolidado, classificacao);
                 
-                // NOVO: Atualizar timestamp (está na raiz, não em metadata)
+                // Atualizar timestamp
                 this.updateTimestamp(response.timestamp);
                 
                 // Distribuir dados para cada componente
-                this.components.ciclo.render(this.dataHandlers.ciclo.formatCicloData(blocos.ciclo));
-                this.components.momentum.render(this.dataHandlers.momentum.formatMomentumData(blocos.momentum));
-                this.components.tecnico.render(this.dataHandlers.tecnico.formatTecnicoData(blocos.tecnico));
+                this.components.ciclo.render(this.dataHandlers.ciclo.formatCicloData(ciclo));
+                this.components.momentum.render(this.dataHandlers.momentum.formatMomentumData(momentum));
+                this.components.tecnico.render(this.dataHandlers.tecnico.formatTecnicoData(tecnico));
                 
                 console.log('✅ Mercado Detalhes atualizado!');
                 this.retryCount = 0;
@@ -97,12 +97,11 @@ class MercadoDetalhes {
         const classElement = document.getElementById('classificacao-consolidada');
 
         if (scoreElement) {
-            const scoreFormatado = score * 10;
-            scoreElement.textContent = scoreFormatado.toFixed(1);
+            scoreElement.textContent = score?.toFixed(1) || '0.0';
         }
 
         if (classElement) {
-            classElement.textContent = classificacao.toUpperCase() || 'erro';
+            classElement.textContent = classificacao?.toUpperCase() || 'ERRO';
         }
     }
 
