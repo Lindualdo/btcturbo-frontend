@@ -1,7 +1,9 @@
 /* 
 Arquivo: src/pages/home/components/risco/Risco.js
-Componente UI do Score de Risco - COM NAVEGAÇÃO
+Componente UI do Score de Risco - COM SISTEMA DE CORES 5 NÍVEIS
 */
+
+import formatters from '../../../../shared/formatters.js';
 
 export class Risco {
     constructor() {
@@ -13,7 +15,7 @@ export class Risco {
             liqValue: document.getElementById('liq-value')
         };
 
-        // NOVA FUNCIONALIDADE: Setup da navegação
+        // Setup da navegação
         this.setupNavigation();
     }
 
@@ -67,14 +69,8 @@ export class Risco {
             barElement.textContent = '';
             barElement.style.width = `${score}%`;
             
-            // Cores dinâmicas baseadas no score (risco = inverso)
-            if (score < 40) {
-                barElement.style.background = 'linear-gradient(90deg, #ff4757, #ff6b6b)';
-            } else if (score < 70) {
-                barElement.style.background = 'linear-gradient(90deg, #ffa726, #ffb74d)';
-            } else {
-                barElement.style.background = 'linear-gradient(90deg, #4caf50, #66bb6a)';
-            }
+            // 🎨 NOVO: Aplicar sistema de cores 5 níveis
+            formatters.applyScoreColor(barElement, score);
         }
     }
 

@@ -1,7 +1,9 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/components/ciclo/Ciclo.js
-Componente UI do Bloco Ciclo
+Componente UI do Bloco Ciclo - COM SISTEMA DE CORES 5 NÍVEIS
 */
+
+import formatters from '../../../../shared/formatters.js';
 
 export class Ciclo {
     constructor() {
@@ -33,7 +35,7 @@ export class Ciclo {
         // Atualizar gauge central
         this.updateGauge(data.score, data.classification);
         
-        // Atualizar indicadores
+        // Atualizar indicadores com novo sistema de cores
         this.updateIndicator('mvrv', data.indicadores.mvrv);
         this.updateIndicator('nupl', data.indicadores.nupl);
         this.updateIndicator('puell', data.indicadores.puell_multiple);
@@ -69,14 +71,9 @@ export class Ciclo {
         this.ctx.arc(centerX, centerY, radius, startAngle, scoreAngle);
         this.ctx.lineWidth = 15;
         
-        // Cores baseadas no score
-        if (score < 40) {
-            this.ctx.strokeStyle = '#ff4757';
-        } else if (score < 70) {
-            this.ctx.strokeStyle = '#ffa726';
-        } else {
-            this.ctx.strokeStyle = '#4caf50';
-        }
+        // 🎨 NOVO: Usar sistema de cores 5 níveis
+        const colors = formatters.getScoreColor(score);
+        this.ctx.strokeStyle = colors.solid;
         
         this.ctx.stroke();
 
@@ -102,14 +99,8 @@ export class Ciclo {
             const percentage = indicadorData.score;
             barraElement.style.width = `${Math.min(percentage, 100)}%`;
             
-            // Cores baseadas no score
-            if (indicadorData.score < 40) {
-                barraElement.style.background = 'linear-gradient(90deg, #ff4757, #ff6b6b)';
-            } else if (indicadorData.score < 70) {
-                barraElement.style.background = 'linear-gradient(90deg, #ffa726, #ffb74d)';
-            } else {
-                barraElement.style.background = 'linear-gradient(90deg, #4caf50, #66bb6a)';
-            }
+            // 🎨 NOVO: Aplicar sistema de cores 5 níveis
+            formatters.applyScoreColor(barraElement, percentage);
         }
     }
 
