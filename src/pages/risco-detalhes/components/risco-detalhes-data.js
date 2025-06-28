@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/risco-detalhes/components/risco-detalhes-data.js
-Formatação de dados do Risco Detalhes
+Formatação de dados do Risco Detalhes - CORRIGIDO para nova estrutura JSON
 */
 
 import formatters from '../../../shared/formatters.js';
@@ -16,25 +16,29 @@ export class RiscoDetalhesData {
         }
 
         const dados = response.dados;
-        const indicador = response.indicador;
+        const metricas = response.Metricas; // NOVO: Usar métricas da API
         
-        // Calcular métricas atuais e variações
-        const currentValue = dados[0].valor;
+        // Valores atuais das métricas (vêm diretamente da API)
+        const currentHealthFactor = metricas?.health_factor || dados[0]?.valor || 0;
+        const currentAlavancagem = metricas?.alavancagem_atual || 0;
+        const currentScoreRisco = metricas?.score_risco || 0;
+        
+        // Para variações, comparar com valor anterior dos dados históricos
         const previousValue = dados[1]?.valor;
-        const change = previousValue ? ((currentValue - previousValue) / previousValue) * 100 : 0;
+        const change = previousValue ? ((currentHealthFactor - previousValue) / previousValue) * 100 : 0;
 
-        // Preparar dados para gráficos
-        const chartData = this.prepareChartData(dados, indicador);
+        // Preparar dados para gráficos (histórico)
+        const chartData = this.prepareChartData(dados, response.indicador);
         
         return {
             current: {
-                healthFactor: formatters.decimal(currentValue),
-                liquidation: this.calculateLiquidationDistance(currentValue),
-                score: this.calculateRiskScore(currentValue),
+                healthFactor: formatters.decimal(currentHealthFactor),
+                liquidation: this.calculateLiquidationDistance(currentHealthFactor),
+                score: Math.round(currentScoreRisco), // Usar score da API
                 changes: {
                     healthFactor: change,
-                    liquidation: this.calculateLiquidationChange(currentValue, previousValue),
-                    score: this.calculateScoreChange(currentValue, previousValue)
+                    liquidation: this.calculateLiquidationChange(currentHealthFactor, previousValue),
+                    score: this.calculateScoreChange(currentHealthFactor, previousValue)
                 }
             },
             healthFactor: chartData,
@@ -42,7 +46,8 @@ export class RiscoDetalhesData {
             metadata: {
                 periodo: response.periodo,
                 indicador: response.indicador,
-                totalPoints: dados.length
+                totalPoints: dados.length,
+                alavancagemAtual: formatters.leverage(currentAlavancagem) // NOVO: Incluir alavancagem
             }
         };
     }
