@@ -27,13 +27,17 @@ export class CicloData {
                     score: cicloData.indicadores?.NUPL?.score || 0,
                     valor: formatters.decimal3(cicloData.indicadores?.NUPL?.valor)
                 },
-                puell: {
-                    score: cicloData.indicadores?.puell_multiple?.score || 0,
-                    valor: formatters.decimal(cicloData.indicadores?.puell_multiple?.valor)
+                reserve: {
+                    score: cicloData.indicadores?.Reserve_Risk?.score || 0,
+                    valor: formatters.decimal3(cicloData.indicadores?.Reserve_Risk?.valor)
                 },
                 realized: {
                     score: cicloData.indicadores?.Realized_Ratio?.score || 0,
                     valor: formatters.decimal(cicloData.indicadores?.Realized_Ratio?.valor)
+                },
+                puell: {
+                    score: cicloData.indicadores?.puell_multiple?.score || 0,
+                    valor: formatters.decimal(cicloData.indicadores?.puell_multiple?.valor)
                 }
             }
         };

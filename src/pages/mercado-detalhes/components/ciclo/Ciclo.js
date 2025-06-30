@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/components/ciclo/Ciclo.js
-Componente UI do Bloco Ciclo - COM SISTEMA DE CORES 5 NÍVEIS
+Componente UI do Bloco Ciclo - COM 5 INDICADORES
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -17,10 +17,12 @@ export class Ciclo {
             mvrvBarra: document.getElementById('mvrv-barra'),
             nuplValor: document.getElementById('nupl-valor'),
             nuplBarra: document.getElementById('nupl-barra'),
-            puellValor: document.getElementById('puell-valor'),
-            puellBarra: document.getElementById('puell-barra'),
+            reserveValor: document.getElementById('reserve-valor'),
+            reserveBarra: document.getElementById('reserve-barra'),
             realizedValor: document.getElementById('realized-valor'),
-            realizedBarra: document.getElementById('realized-barra')
+            realizedBarra: document.getElementById('realized-barra'),
+            puellValor: document.getElementById('puell-valor'),
+            puellBarra: document.getElementById('puell-barra')
         };
     }
 
@@ -35,11 +37,12 @@ export class Ciclo {
         // Atualizar gauge central
         this.updateGauge(data.score, data.classification);
         
-        // Atualizar indicadores com novo sistema de cores
+        // Atualizar os 5 indicadores com novo sistema de cores
         this.updateIndicator('mvrv', data.indicadores.mvrv);
         this.updateIndicator('nupl', data.indicadores.nupl);
-        this.updateIndicator('puell', data.indicadores.puell_multiple);
-        this.updateIndicator('realized', data.indicadores.realized_price_ratio);
+        this.updateIndicator('reserve', data.indicadores.reserve);
+        this.updateIndicator('realized', data.indicadores.realized);
+        this.updateIndicator('puell', data.indicadores.puell);
 
         this.clearLoading();
     }
