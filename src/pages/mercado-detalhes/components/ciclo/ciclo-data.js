@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/components/ciclo/ciclo-data.js
-Formatação de dados do Bloco Ciclo - CORRIGIDO para nova estrutura JSON
+Formatação de dados do Bloco Ciclo - CORRIGIDO com puell_multiple
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -27,11 +27,11 @@ export class CicloData {
                     score: cicloData.indicadores?.NUPL?.score || 0,
                     valor: formatters.decimal3(cicloData.indicadores?.NUPL?.valor)
                 },
-                puell_multiple: {
-                    score: cicloData.indicadores?.Reserve_Risk?.score || 0,
-                    valor: formatters.decimal3(cicloData.indicadores?.Reserve_Risk?.valor)
+                puell: {
+                    score: cicloData.indicadores?.puell_multiple?.score || 0,
+                    valor: formatters.decimal(cicloData.indicadores?.puell_multiple?.valor)
                 },
-                realized_price_ratio: {
+                realized: {
                     score: cicloData.indicadores?.Realized_Ratio?.score || 0,
                     valor: formatters.decimal(cicloData.indicadores?.Realized_Ratio?.valor)
                 }
