@@ -1,7 +1,7 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/components/tecnico/tecnico-data.js
-Formatação de dados do Bloco Técnico - CORRIGIDO para EMAs
-EMAs Expansão (Day/Week) e EMAs Alinhamento (Day/Week)
+Formatação de dados do Bloco Técnico - ATUALIZADO para JSON v3
+Apenas Alinhamento Diário e Semanal
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -20,21 +20,13 @@ export class TecnicoData {
             score: tecnicoData.score_consolidado || 0,
             classification: tecnicoData.classificacao_consolidada || 'neutro',
             indicadores: {
-                diario_score: {
-                    score: tecnicoData.score_diario?.score_expansao || 0,
-                    valor: formatters.decimal(tecnicoData.score_diario?.score_expansao || 0)
+                diario_alinhamento: {
+                    score: tecnicoData.score_consolidado_1d || 0,
+                    valor: formatters.decimal(tecnicoData.score_consolidado_1d || 0)
                 },
-                diario_posicao: {
-                    score: tecnicoData.score_diario?.score_alinhamento || 0,
-                    valor: formatters.decimal(tecnicoData.score_diario?.score_alinhamento || 0)
-                },
-                semanal_score: {
-                    score: tecnicoData.score_semanal?.score_expansao || 0,
-                    valor: formatters.decimal(tecnicoData.score_semanal?.score_expansao || 0)
-                },
-                semanal_posicao: {
-                    score: tecnicoData.score_semanal?.score_alinhamento || 0,
-                    valor: formatters.decimal(tecnicoData.score_semanal?.score_alinhamento || 0)
+                semanal_alinhamento: {
+                    score: tecnicoData.score_consolidado_1w || 0,
+                    valor: formatters.decimal(tecnicoData.score_consolidado_1w || 0)
                 }
             }
         };

@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/mercado-detalhes/components/tecnico/Tecnico.js
-Componente UI do Bloco Técnico - COM SISTEMA DE CORES 5 NÍVEIS
+Componente UI do Bloco Técnico - ATUALIZADO para apenas Alinhamento
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -13,14 +13,10 @@ export class Tecnico {
         this.elements = {
             score: document.getElementById('score-tecnico'),
             classification: document.getElementById('class-tecnico'),
-            diarioScoreValor: document.getElementById('diario-score-valor'),
-            diarioScoreBarra: document.getElementById('diario-score-barra'),
-            diarioPosicaoValor: document.getElementById('diario-posicao-valor'),
-            diarioPosicaoBarra: document.getElementById('diario-posicao-barra'),
-            semanalScoreValor: document.getElementById('semanal-score-valor'),
-            semanalScoreBarra: document.getElementById('semanal-score-barra'),
-            semanalPosicaoValor: document.getElementById('semanal-posicao-valor'),
-            semanalPosicaoBarra: document.getElementById('semanal-posicao-barra')
+            diarioAlinhamentoValor: document.getElementById('diario-alinhamento-valor'),
+            diarioAlinhamentoBarra: document.getElementById('diario-alinhamento-barra'),
+            semanalAlinhamentoValor: document.getElementById('semanal-alinhamento-valor'),
+            semanalAlinhamentoBarra: document.getElementById('semanal-alinhamento-barra')
         };
     }
 
@@ -36,10 +32,8 @@ export class Tecnico {
         this.updateGauge(data.score, data.classification);
         
         // Atualizar indicadores com novo sistema de cores
-        this.updateIndicator('diarioScore', data.indicadores.diario_score);
-        this.updateIndicator('diarioPosicao', data.indicadores.diario_posicao);
-        this.updateIndicator('semanalScore', data.indicadores.semanal_score);
-        this.updateIndicator('semanalPosicao', data.indicadores.semanal_posicao);
+        this.updateIndicator('diarioAlinhamento', data.indicadores.diario_alinhamento);
+        this.updateIndicator('semanalAlinhamento', data.indicadores.semanal_alinhamento);
 
         this.clearLoading();
     }
@@ -71,7 +65,7 @@ export class Tecnico {
         this.ctx.arc(centerX, centerY, radius, startAngle, scoreAngle);
         this.ctx.lineWidth = 15;
         
-        // 🎨 NOVO: Usar sistema de cores 5 níveis
+        // 🎨 Usar sistema de cores 5 níveis
         const colors = formatters.getScoreColor(score);
         this.ctx.strokeStyle = colors.solid;
         
@@ -99,7 +93,7 @@ export class Tecnico {
             const percentage = indicadorData.score;
             barraElement.style.width = `${Math.min(percentage, 100)}%`;
             
-            // 🎨 NOVO: Aplicar sistema de cores 5 níveis
+            // 🎨 Aplicar sistema de cores 5 níveis
             formatters.applyScoreColor(barraElement, percentage);
         }
     }
