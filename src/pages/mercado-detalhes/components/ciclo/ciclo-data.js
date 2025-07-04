@@ -20,7 +20,7 @@ export class CicloData {
             classification: cicloData.classificacao_consolidada || 'neutro',
             indicadores: {
                 mvrv: {
-                    score: cicloData.indicadores?.MVRV_Z?.score || 0,
+                    score: cicloData.indicadores?.mvrv_score?.score || 0,
                     valor: formatters.decimal(cicloData.indicadores?.MVRV_Z?.valor)
                 },
                 nupl: {
