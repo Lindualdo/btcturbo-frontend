@@ -21,7 +21,7 @@ export class CicloData {
             indicadores: {
                 mvrv: {
                     score: cicloData.indicadores?.mvrv_score?.score || 0,
-                    valor: formatters.decimal(cicloData.indicadores?.MVRV_Z?.valor)
+                    valor: formatters.decimal(cicloData.indicadores?.mvrv_score?.valor)
                 },
                 nupl: {
                     score: cicloData.indicadores?.NUPL?.score || 0,
