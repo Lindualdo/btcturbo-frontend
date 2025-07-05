@@ -24,13 +24,14 @@ export class Header {
     setupNavigation() {
 
          // Logo navegação
+         /*
         if (this.elements.btcturbo-logo-btn) {
             this.elements.btcturbo-logo-btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log('🔄 Navegando para btcturbo...');
                 window.location.href = '/btcturbo.html';
             });
-        }
+        }*/
 
         if (this.elements.financeBtn) {
             this.elements.financeBtn.addEventListener('click', (e) => {
