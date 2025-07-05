@@ -20,6 +20,10 @@ export class Tendencia {
             ema20Distance: document.getElementById('ema-20-distance'),
             ema50Price: document.getElementById('ema-50-valor'),
             ema50Distance: document.getElementById('ema-50-distance'),
+            ema100Price: document.getElementById('ema-100-valor'),
+            ema100Distance: document.getElementById('ema-100-distance'),
+            ema200Price: document.getElementById('ema-200-valor'),
+            ema200Distance: document.getElementById('ema-200-distance'),
             btcPriceValor: document.getElementById('btc-price-valor')
         };
     }
@@ -39,6 +43,8 @@ export class Tendencia {
         this.updateEmaDistance('ema10', data.emas.ema10);
         this.updateEmaDistance('ema20', data.emas.ema20);
         this.updateEmaDistance('ema50', data.emas.ema50);
+        this.updateEmaDistance('ema100', data.emas.ema100);
+        this.updateEmaDistance('ema200', data.emas.ema200);
         this.updateEmaDistance('btcPrice', data.emas.btcPrice);
 
         this.clearLoading();
@@ -111,16 +117,18 @@ export class Tendencia {
     showLoading() {
         // Loading nos elementos de texto
         Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && !key.includes('Barra')) {
+            if (element && !key.includes('Distance')) {
                 element.textContent = 'Carregando...';
                 element.classList.add('loading');
             }
         });
 
-        // Reset das barras
-        Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && key.includes('Barra')) {
-                element.style.width = '0%';
+        // Reset das distâncias
+        ['ema10Distance', 'ema20Distance', 'ema50Distance', 'ema100Distance', 'ema200Distance'].forEach(key => {
+            const element = this.elements[key];
+            if (element) {
+                element.textContent = '--';
+                element.classList.remove('positive', 'negative');
             }
         });
 
@@ -132,18 +140,19 @@ export class Tendencia {
 
     showError() {
         Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && !key.includes('Barra')) {
+            if (element && !key.includes('Distance')) {
                 element.textContent = 'Erro';
                 element.classList.add('error');
                 element.classList.remove('loading');
             }
         });
 
-        // Reset das barras
-        Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && key.includes('Barra')) {
-                element.style.width = '0%';
-                element.style.background = '#666';
+        // Reset das distâncias
+        ['ema10Distance', 'ema20Distance', 'ema50Distance', 'ema100Distance', 'ema200Distance'].forEach(key => {
+            const element = this.elements[key];
+            if (element) {
+                element.textContent = 'Erro';
+                element.classList.remove('positive', 'negative');
             }
         });
     }

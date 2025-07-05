@@ -38,6 +38,16 @@ export class TendenciaData {
                     distance: this.calculateDistance(btcPrice, emas.ema_50_1w),
                     distanceText: this.formatDistance(btcPrice, emas.ema_50_1w)
                 },
+                ema100: {
+                    price: formatters.currency(emas.ema_100_1w),
+                    distance: this.calculateDistance(btcPrice, emas.ema_100_1w),
+                    distanceText: this.formatDistance(btcPrice, emas.ema_100_1w)
+                },
+                ema200: {
+                    price: formatters.currency(emas.ema_200_1w),
+                    distance: this.calculateDistance(btcPrice, emas.ema_200_1w),
+                    distanceText: this.formatDistance(btcPrice, emas.ema_200_1w)
+                },
                 btcPrice: {
                     price: formatters.currency(btcPrice),
                     distance: 0,
