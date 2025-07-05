@@ -1,7 +1,7 @@
 /* 
 Arquivo: api.js
 Caminho: src/shared/api.js
-API Client centralizado para todas as páginas
+API Client centralizado - ATUALIZADO COM ESTRATÉGIA DETALHES
 */
 
 export class ApiClient {
@@ -33,6 +33,7 @@ export class ApiClient {
     async getHealthFactor(periodo = '30d') { return this.fetchData(`dash-finance/health-factor?periodo=${periodo}`); } // Risco Detalhes
     async getPatrimonio(periodo = '30d') { return this.fetchData(`dash-finance/patrimonio?periodo=${periodo}`); }
     async getDecisaoEstrategica() { return this.fetchData('decisao-estrategica'); } // Decisão Estratégica
+    async getEstrategiaDetalhes() { return this.fetchData('decisao-estrategica-detalhe'); } // Estratégia Detalhes
 }
 
 export default ApiClient;
