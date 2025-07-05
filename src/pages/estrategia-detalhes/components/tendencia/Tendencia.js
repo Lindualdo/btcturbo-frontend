@@ -94,25 +94,33 @@ export class Tendencia {
     }
 
     updateEmaDistance(name, emaData) {
-        const priceElement = this.elements[`${name}Price`];
-        const distanceElement = this.elements[`${name}Distance`];
-
+    if (name === 'btcPrice') {
+        // Caso especial para preço atual
+        const priceElement = this.elements.btcPriceValor;
         if (priceElement) {
             priceElement.textContent = emaData.price;
         }
-
-        if (distanceElement && name !== 'btcPrice') {
-            distanceElement.textContent = emaData.distanceText;
-            
-            // Aplicar cores baseadas na distância
-            distanceElement.classList.remove('positive', 'negative');
-            if (emaData.distance >= 0) {
-                distanceElement.classList.add('positive');
-            } else {
-                distanceElement.classList.add('negative');
-            }
+        return;
+    }
+    
+    // Lógica normal para EMAs
+    const priceElement = this.elements[`${name}Price`];
+    const distanceElement = this.elements[`${name}Distance`];
+    
+    if (priceElement) {
+        priceElement.textContent = emaData.price;
+    }
+    
+    if (distanceElement) {
+        distanceElement.textContent = emaData.distanceText;
+        distanceElement.classList.remove('positive', 'negative');
+        if (emaData.distance >= 0) {
+            distanceElement.classList.add('positive');
+        } else {
+            distanceElement.classList.add('negative');
         }
     }
+}
 
     showLoading() {
         // Loading nos elementos de texto
