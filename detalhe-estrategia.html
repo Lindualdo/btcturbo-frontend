@@ -76,19 +76,22 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
             text-transform: uppercase;
         }
 
-        /* LABELS DOS GAUGES - POSICIONAMENTO CORRETO */
+        /* LABELS DOS GAUGES - EXTREMIDADES DO ARCO */
         .gauge-labels {
             position: absolute;
-            bottom: 5px;
+            top: 50%;
             left: 0;
             right: 0;
+            height: 0;
             display: flex;
             justify-content: space-between;
-            padding: 0 25px;
+            align-items: center;
+            padding: 0 10px;
             font-size: 0.75rem;
             color: #8b9dc3;
             font-weight: 500;
             z-index: 20;
+            transform: translateY(20px);
         }
 
         .gauge-label-left {
