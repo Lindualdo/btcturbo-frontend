@@ -74,6 +74,27 @@ Dashboard Detalhado - Análise Estratégica - LAYOUT CORRIGIDO
             color: #8b9dc3;
             text-transform: uppercase;
         }
+
+        /* LABELS DOS GAUGES - NOVO */
+        .gauge-labels {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #8b9dc3;
+            font-weight: 500;
+        }
+
+        .gauge-label-left {
+            text-align: left;
+        }
+
+        .gauge-label-right {
+            text-align: right;
+        }
         
         .bloco-indicadores {
             display: flex;
@@ -278,6 +299,11 @@ Dashboard Detalhado - Análise Estratégica - LAYOUT CORRIGIDO
                             <div class="gauge-center">
                                 <div class="gauge-score" id="score-tendencia">100</div>
                             </div>
+                            <!-- LABELS BEAR/BULL -->
+                            <div class="gauge-labels">
+                                <span class="gauge-label-left">Bear</span>
+                                <span class="gauge-label-right">Bull</span>
+                            </div>
                         </div>
                     </div>
                     
@@ -334,6 +360,11 @@ Dashboard Detalhado - Análise Estratégica - LAYOUT CORRIGIDO
                             <canvas id="gauge-ciclo" width="200" height="200"></canvas>
                             <div class="gauge-center">
                                 <div class="gauge-score" id="score-ciclo">0</div>
+                            </div>
+                            <!-- LABELS CARO/BARATO -->
+                            <div class="gauge-labels">
+                                <span class="gauge-label-left">Caro</span>
+                                <span class="gauge-label-right">Barato</span>
                             </div>
                         </div>
                     </div>
