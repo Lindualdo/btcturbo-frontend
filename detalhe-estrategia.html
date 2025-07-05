@@ -1,7 +1,7 @@
 <!-- 
 Arquivo: detalhe-estrategia.html
 Caminho: detalhe-estrategia.html (raiz do projeto)
-Dashboard Detalhado - Análise Estratégica - LAYOUT CORRIGIDO
+Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -76,17 +76,19 @@ Dashboard Detalhado - Análise Estratégica - LAYOUT CORRIGIDO
             text-transform: uppercase;
         }
 
-        /* LABELS DOS GAUGES - NOVO */
+        /* LABELS DOS GAUGES - POSICIONAMENTO CORRETO */
         .gauge-labels {
             position: absolute;
-            bottom: -10px;
+            bottom: 15px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
+            padding: 0 20px;
+            font-size: 0.75rem;
             color: #8b9dc3;
             font-weight: 500;
+            z-index: 20;
         }
 
         .gauge-label-left {
