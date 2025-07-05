@@ -1,6 +1,7 @@
 <!-- 
 Arquivo: index.html
-Dashboard BTC Turbo V2 - CSS Inline Removido
+Caminho: index.html (raiz do projeto)
+Dashboard BTC Turbo V3 - Decisão Estratégica + Tática
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -51,29 +52,84 @@ Dashboard BTC Turbo V2 - CSS Inline Removido
             </div>
         </div>
 
-        <!-- SCORES PRINCIPAIS -->
+        <!-- BLOCOS PRINCIPAIS -->
         <div class="scores-grid">
-            <!-- Score de Mercado -->
+            <!-- Decisão Estratégica -->
             <div class="score-card">
-                <div><span>Devo estar posicionado?</span></div>
+                <div><span>O que fazer agora?</span></div>
                 <div class="score-header">
-                    <span class="score-title"><i class="bi bi-bank"></i> Score de Mercado</span>
+                    <span class="score-title"><i class="bi bi-bullseye"></i> Decisão Estratégica</span>
                 </div>
 
-                <div class="score-display">
-                    <div class="score-number loading" id="score-mercado-number">58</div>
-                    <div class="score-bar">
-                        <div class="score-bar-fill" id="score-mercado-bar"></div>
+                <div class="strategy-display">
+                    <div class="strategy-phase" id="fase-operacional">Bull Exaustão</div>
+                    <div class="strategy-action" id="acao-primaria">Ação: Preparar RPs</div>
+                    
+                    <div class="strategy-bars">
+                        <div class="strategy-bar-item">
+                            <div class="strategy-bar-label">Tendência:</div>
+                            <div class="strategy-bar-labels">
+                                <span>Bear</span>
+                                <span id="tendencia-score">100</span>
+                                <span>Bull</span>
+                            </div>
+                            <div class="strategy-bar">
+                                <div class="strategy-bar-fill" id="tendencia-bar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="strategy-bar-item">
+                            <div class="strategy-bar-label">Preço:</div>
+                            <div class="strategy-bar-labels">
+                                <span>Bolha</span>
+                                <span id="ciclo-score">54</span>
+                                <span>Ext.Barato</span>
+                            </div>
+                            <div class="strategy-bar">
+                                <div class="strategy-bar-fill" id="ciclo-bar"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="score-classification loading" id="score-mercado-class">NEUTRO</div>
-                </div>
-                
-                <div class="score-metrics-center">
-                    <a href="#" class="btn-detail-minimal">Ver Detalhes →</a>
+                    
+                    <div class="strategy-footer">
+                        <span id="alavancagem-max">Alav.Máx: 1.0x</span> | <span id="satelite-percent">Sat: 80%</span>
+                    </div>
                 </div>
             </div>
 
+            <!-- Decisão Tática (Mockado) -->
             <div class="score-card">
+                <div><span>Como executar?</span></div>
+                <div class="score-header">
+                    <span class="score-title"><i class="bi bi-lightning"></i> Decisão Tática</span>
+                </div>
+
+                <div class="tactical-display">
+                    <div class="tactical-setup">🔄 ACUMULAR</div>
+                    <div class="tactical-detail">Setup: Golden Cross 4H</div>
+                    
+                    <div class="tactical-levels">
+                        <div class="tactical-level">
+                            <span class="level-label">Entrada:</span>
+                            <span class="level-value">$64,200</span>
+                        </div>
+                        <div class="tactical-level">
+                            <span class="level-label">Stop:</span>
+                            <span class="level-value">$62,800</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tactical-action">
+                        <button class="btn-execute">Executar →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAINÉIS INFERIORES -->
+        <div class="bottom-panels">
+            <!-- SCORE DE RISCO -->
+            <div class="panel">
                 <div><span>Minha posição está segura?</span></div>
                 <div class="score-header">
                     <span class="score-title"><i class="bi bi-shield"></i> Score de Risco</span>
@@ -96,10 +152,7 @@ Dashboard BTC Turbo V2 - CSS Inline Removido
                     <a href="#" class="btn-detail-minimal">Ver Detalhes →</a>
                 </div>
             </div>
-        </div>
 
-        <!-- PAINÉIS INFERIORES -->
-        <div class="bottom-panels">
             <!-- GESTÃO DE ALAVANCAGEM -->
             <div class="panel">
                 <div><span>Quanto posso alavancar?</span></div>
@@ -117,44 +170,6 @@ Dashboard BTC Turbo V2 - CSS Inline Removido
                 <div class="leverage-info">
                     <span>Disponível: <span id="capital-liquido">$0</span></span>
                     <span><span id="alavancagem-status"></span></span>
-                </div>
-            </div>
-
-            <!-- DECISÃO ESTRATÉGICA -->
-            <div class="panel">
-                <div><span>O que devo fazer agora?</span></div>
-                <div class="score-header">
-                    <span class="score-title"><i class="bi bi-bullseye"></i> Decisão Estratégica</span>
-                </div>
-
-                <!-- Bloco Unificado: Ciclo + Ação -->
-                <div class="strategy-action">
-                    <div class="strategy-main-action">
-                        <div class="strategy-action-text">
-                            <span id="ciclo-value" class="loading">BULL MADURO</span> - <span id="acao-principal">HOLD</span>
-                        </div>
-                    </div>
-                    <div class="strategy-justification">
-                        <span id="justificativa-valor">Carregando...</span>
-                    </div>
-                </div>
-
-                <!-- Métricas da Decisão -->
-                <div class="strategy-metrics">
-                    <div class="strategy-metric">
-                        <div class="strategy-metric-label">Setup</div>
-                        <div class="strategy-metric-value" id="setup-valor">Carregando...</div>
-                    </div>
-                    
-                    <div class="strategy-metric">
-                        <div class="strategy-metric-label">RSI (4h)</div>
-                        <div class="strategy-metric-value" id="rsi-diario-valor">Carregando...</div>
-                    </div>
-                    
-                    <div class="strategy-metric">
-                        <div class="strategy-metric-label">Dist. EMA 144 (4h)</div>
-                        <div class="strategy-metric-value" id="ema-distance-valor">Carregando...</div>
-                    </div>
                 </div>
             </div>
         </div>

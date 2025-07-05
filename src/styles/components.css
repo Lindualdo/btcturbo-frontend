@@ -1,6 +1,7 @@
 /* 
-Arquivo: src/styles/components.css
-Estilos específicos dos componentes modulares - CORRIGIDO
+Arquivo: components.css
+Caminho: src/styles/components.css
+Estilos específicos dos componentes modulares - COM DECISÃO ESTRATÉGICA/TÁTICA
 */
 
 /* =========================
@@ -180,6 +181,158 @@ Estilos específicos dos componentes modulares - CORRIGIDO
 }
 
 /* =========================
+   DECISÃO ESTRATÉGICA E TÁTICA - NOVOS COMPONENTES
+   ========================= */
+
+/* Decisão Estratégica */
+.strategy-display {
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.strategy-phase {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.strategy-action {
+    font-size: 0.9rem;
+    color: #8b9dc3;
+    margin-bottom: 20px;
+}
+
+.strategy-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.strategy-bar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.strategy-bar-label {
+    font-size: 0.8rem;
+    color: #8b9dc3;
+    text-align: left;
+    margin-bottom: 2px;
+}
+
+.strategy-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #8b9dc3;
+    margin-bottom: 3px;
+}
+
+.strategy-bar-labels span:nth-child(2) {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.strategy-bar {
+    background: #404552;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.strategy-bar-fill {
+    height: 100%;
+    transition: width 0.8s ease;
+    border-radius: 4px;
+}
+
+.strategy-footer {
+    font-size: 0.75rem;
+    color: #8b9dc3;
+    margin-top: 15px;
+}
+
+.strategy-footer span {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Decisão Tática */
+.tactical-display {
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.tactical-setup {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ff8c42;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.tactical-detail {
+    font-size: 0.9rem;
+    color: #8b9dc3;
+    margin-bottom: 20px;
+}
+
+.tactical-levels {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.tactical-level {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #323746;
+    border-radius: 6px;
+}
+
+.level-label {
+    font-size: 0.8rem;
+    color: #8b9dc3;
+}
+
+.level-value {
+    font-size: 0.9rem;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.tactical-action {
+    margin-top: 15px;
+}
+
+.btn-execute {
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-execute:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 140, 66, 0.4);
+}
+
+/* =========================
    LEVERAGE BARS
    ========================= */
 .leverage-bar-container {
@@ -215,75 +368,6 @@ Estilos específicos dos componentes modulares - CORRIGIDO
 }
 
 /* =========================
-   STRATEGY COMPONENT - REFATORADO
-   ========================= */
-.strategy-action {
-    margin-bottom: 25px;
-}
-
-.strategy-main-action {
-    padding: 15px 20px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.strategy-main-action.comprar {
-    background: #4caf50;
-}
-
-.strategy-main-action.vender {
-    background: #ff4757;
-}
-
-.strategy-main-action.hold {
-    background: #ff8c42;
-}
-
-.strategy-action-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: white;
-    text-transform: uppercase;
-}
-
-.strategy-justification {
-    color: #8b9dc3;
-    font-size: 0.85rem;
-    text-align: center;
-    padding: 15px;
-    background: #323746;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.strategy-metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-}
-
-.strategy-metric {
-    text-align: center;
-    padding: 15px;
-    background: #323746;
-    border-radius: 8px;
-}
-
-.strategy-metric-label {
-    color: #8b9dc3;
-    font-size: 0.8rem;
-    margin-bottom: 5px;
-}
-
-.strategy-metric-value {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-/* =========================
    LOADING E ESTADOS
    ========================= */
 .loading {
@@ -307,7 +391,7 @@ Estilos específicos dos componentes modulares - CORRIGIDO
 }
 
 /* =========================
-   GRID INFERIOR - ALAVANCAGEM E ESTRATÉGIAS
+   GRID INFERIOR - ALAVANCAGEM E RISCO
    ========================= */
 .bottom-panels {
     display: grid;
@@ -369,6 +453,34 @@ Estilos específicos dos componentes modulares - CORRIGIDO
 .leverage-info span span {
     color: #ffffff;
     font-weight: 600;
+}
+
+/* =========================
+   RESPONSIVE - DECISÕES
+   ========================= */
+@media (max-width: 768px) {
+    .strategy-phase,
+    .tactical-setup {
+        font-size: 1.1rem;
+    }
+    
+    .strategy-action,
+    .tactical-detail {
+        font-size: 0.8rem;
+    }
+    
+    .strategy-bars {
+        gap: 12px;
+    }
+    
+    .tactical-level {
+        padding: 6px 10px;
+    }
+    
+    .level-label,
+    .level-value {
+        font-size: 0.8rem;
+    }
 }
 
 /* =========================

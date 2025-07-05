@@ -1,6 +1,7 @@
 /* 
-Arquivo: src/pages/home/index.js
-Orquestrador da página Home - Dashboard BTC Turbo V2 - CORRIGIDO
+Arquivo: index.js
+Caminho: src/pages/home/index.js
+Orquestrador da página Home - Dashboard BTC Turbo V3 - COM DECISÃO ESTRATÉGICA
 */
 
 import ApiClient from '../../shared/api.js';
@@ -8,17 +9,15 @@ import { API_CONFIG } from '../../shared/constants.js';
 
 // Componentes UI
 import Header from './components/header/Header.js';
-import Mercado from './components/mercado/Mercado.js';
+import DecisaoEstrategica from './components/decisao-estrategica/DecisaoEstrategica.js';
 import Risco from './components/risco/Risco.js';
 import Alavancagem from './components/alavancagem/Alavancagem.js';
-import Estrategia from './components/estrategia/Estrategia.js';
 
 // Data Handlers
 import HeaderData from './components/header/header-data.js';
-import MercadoData from './components/mercado/mercado-data.js';
+import DecisaoEstrategicaData from './components/decisao-estrategica/decisao-estrategica-data.js';
 import RiscoData from './components/risco/risco-data.js';
 import AlavancagemData from './components/alavancagem/alavancagem-data.js';
-import EstrategiaData from './components/estrategia/estrategia-data.js';
 
 class HomeDashboard {
     constructor() {
@@ -27,19 +26,17 @@ class HomeDashboard {
         // Inicializar componentes UI
         this.components = {
             header: new Header(),
-            mercado: new Mercado(),
+            decisaoEstrategica: new DecisaoEstrategica(),
             risco: new Risco(),
-            alavancagem: new Alavancagem(),
-            estrategia: new Estrategia()
+            alavancagem: new Alavancagem()
         };
 
         // Inicializar data handlers (só formatação)
         this.dataHandlers = {
             header: new HeaderData(),
-            mercado: new MercadoData(),
+            decisaoEstrategica: new DecisaoEstrategicaData(),
             risco: new RiscoData(),
-            alavancagem: new AlavancagemData(),
-            estrategia: new EstrategiaData()
+            alavancagem: new AlavancagemData()
         };
 
         this.isLoading = false;
@@ -48,7 +45,7 @@ class HomeDashboard {
     }
 
     async init() {
-        console.log('🚀 Inicializando BTC Turbo Dashboard V2...');
+        console.log('🚀 Inicializando BTC Turbo Dashboard V3...');
         
         await this.loadAllData();
         this.startAutoRefresh();
@@ -69,23 +66,31 @@ class HomeDashboard {
             
             console.log('🔄 Carregando dados da API...');
 
-            // Fetch único da API dashboard-home
-            const response = await this.api.getDashboardHome();
+            // Fetch dos endpoints
+            const [homeResponse, decisaoResponse] = await Promise.all([
+                this.api.getDashboardHome(),
+                this.api.getDecisaoEstrategica()
+            ]);
             
-            if (response.status === 'success' && response.data) {
-                const { header, risco, mercado, estrategia, alavancagem, tecnicos} = response.data;
-                const metadata = response.metadata; // CORRIGIDO: extrair metadata
+            if (homeResponse.status === 'success' && homeResponse.data) {
+                const { header, risco, alavancagem } = homeResponse.data;
+                const metadata = homeResponse.metadata;
                 
                 // Distribuir dados formatados para cada componente
-                this.components.header.render(this.dataHandlers.header.formatHeaderData(response.data, response.status, metadata));
-                this.components.mercado.render(this.dataHandlers.mercado.formatMercadoData(mercado));
+                this.components.header.render(this.dataHandlers.header.formatHeaderData(homeResponse.data, homeResponse.status, metadata));
                 this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
                 this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
-                this.components.estrategia.render(this.dataHandlers.estrategia.formatEstrategiaData(estrategia, tecnicos));
                 
-                console.log('✅ Dashboard atualizado com sucesso!');
+                console.log('✅ Dashboard básico carregado!');
                 this.retryCount = 0;
-            } else {
+            }
+            
+            if (decisaoResponse.status === 'success') {
+                this.components.decisaoEstrategica.render(this.dataHandlers.decisaoEstrategica.formatDecisaoEstrategicaData(decisaoResponse));
+                console.log('✅ Decisão estratégica carregada!');
+            }
+            
+            if (!homeResponse.data && !decisaoResponse.status) {
                 throw new Error('Estrutura de dados inválida');
             }
 
@@ -211,4 +216,4 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboard.init();
 });
 
-console.log('🎯 BTC Turbo Dashboard V2 - Home carregado!');
+console.log('🎯 BTC Turbo Dashboard V3 - Home carregado!');
