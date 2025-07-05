@@ -27,6 +27,7 @@ export class Header {
         if (this.elements.btcturbo-logo-btn) {
             this.elements.btcturbo-logo-btn.addEventListener('click', (e) => {
                 e.preventDefault();
+                console.log('🔄 Navegando para btcturbo...');
                 window.location.href = '/btcturbo.html';
             });
         }
