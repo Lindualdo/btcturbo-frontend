@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/risco/Risco.js
-Componente UI do Score de Risco - COM SISTEMA DE CORES 5 NÍVEIS
+Componente UI do Score de Risco - NAVEGAÇÃO CORRIGIDA
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -20,9 +20,9 @@ export class Risco {
     }
 
     setupNavigation() {
-        // Encontrar o botão "Ver Detalhes" no card de risco
-        const riscoCard = document.getElementById('score-risco-number')?.closest('.score-card');
-        const detailButton = riscoCard?.querySelector('.btn-detail-minimal');
+        // CORRIGIDO: Buscar no panel, não no score-card
+        const riscoPanel = document.getElementById('score-risco-number')?.closest('.panel');
+        const detailButton = riscoPanel?.querySelector('.btn-detail-minimal');
         
         if (detailButton) {
             detailButton.addEventListener('click', (e) => {
@@ -33,7 +33,7 @@ export class Risco {
             
             console.log('✅ Navegação configurada para risco detalhes');
         } else {
-            console.log('⚠️ Botão de detalhes não encontrado no card de risco');
+            console.log('⚠️ Botão de detalhes não encontrado no panel de risco');
         }
     }
 
