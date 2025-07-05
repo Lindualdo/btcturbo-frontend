@@ -240,48 +240,51 @@ Dashboard Detalhado - Análise Estratégica
                             <canvas id="gauge-tendencia" width="200" height="200"></canvas>
                             <div class="gauge-center">
                                 <div class="gauge-score" id="score-tendencia">100</div>
-                                <div class="gauge-label" id="class-tendencia">Bull Aceleração</div>
+                                <!--<div class="gauge-label" id="class-tendencia">Bull Aceleração</div>-->
                             </div>
                         </div>
                     </div>
                     
                     <div class="bloco-indicadores">
                         <div class="ema-distances-grid">
+
+                            <div class="ema-distance-item current-price">
+                                <div class="ema-name">Preço Atual</div>
+                                <div class="ema-price" id="btc-price-valor">$0</div>
+                                <div class="ema-distance reference">Referência</div>
+                            </div>
+
+
                             <div class="ema-distance-item">
                                 <div class="ema-name">EMA 10</div>
-                                <div class="ema-price" id="ema-10-valor">$103,460</div>
-                                <div class="ema-distance positive" id="ema-10-distance">+5.3%</div>
+                                <div class="ema-price" id="ema-10-valor">$0</div>
+                                <div class="ema-distance positive" id="ema-10-distance">+0%</div>
                             </div>
                             
                             <div class="ema-distance-item">
                                 <div class="ema-name">EMA 20</div>
                                 <div class="ema-price" id="ema-20-valor">$98,835</div>
-                                <div class="ema-distance positive" id="ema-20-distance">+10.2%</div>
+                                <div class="ema-distance positive" id="ema-20-distance">+0%</div>
                             </div>
                             
                             <div class="ema-distance-item">
                                 <div class="ema-name">EMA 50</div>
                                 <div class="ema-price" id="ema-50-valor">$87,438</div>
-                                <div class="ema-distance positive" id="ema-50-distance">+24.6%</div>
+                                <div class="ema-distance positive" id="ema-50-distance">+0%</div>
                             </div>
                             
                             <div class="ema-distance-item">
                                 <div class="ema-name">EMA 100</div>
-                                <div class="ema-price" id="ema-100-valor">$72,760</div>
-                                <div class="ema-distance positive" id="ema-100-distance">+49.7%</div>
+                                <div class="ema-price" id="ema-100-valor">$0</div>
+                                <div class="ema-distance positive" id="ema-100-distance">+0%</div>
                             </div>
                             
                             <div class="ema-distance-item">
                                 <div class="ema-name">EMA 200</div>
-                                <div class="ema-price" id="ema-200-valor">$56,176</div>
-                                <div class="ema-distance positive" id="ema-200-distance">+93.9%</div>
+                                <div class="ema-price" id="ema-200-valor">$0</div>
+                                <div class="ema-distance positive" id="ema-200-distance">+0%</div>
                             </div>
-                            
-                            <div class="ema-distance-item current-price">
-                                <div class="ema-name">Preço Atual</div>
-                                <div class="ema-price" id="btc-price-valor">$108,920</div>
-                                <div class="ema-distance reference">Referência</div>
-                            </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -295,17 +298,28 @@ Dashboard Detalhado - Análise Estratégica
                         <div class="gauge">
                             <canvas id="gauge-ciclo" width="200" height="200"></canvas>
                             <div class="gauge-center">
-                                <div class="gauge-score" id="score-ciclo">54</div>
-                                <div class="gauge-label" id="class-ciclo">neutro</div>
+                                <div class="gauge-score" id="score-ciclo">0</div>
                             </div>
+                             <div class="gauge-label" id="class-ciclo">Carregando...</div>
                         </div>
                     </div>
                     
                     <div class="bloco-indicadores">
+                         <div class="indicador-item">
+                            <div class="indicador-header">
+                                <span class="indicador-nome">MVRV Z-Score</span>
+                                <span class="indicador-valor" id="mvrv-valor">0</span>
+                            </div>
+                            <div class="indicador-barra">
+                                <div class="indicador-barra-fill" id="mvrv-barra"></div>
+                            </div>
+                        </div>
+                        
+                        
                         <div class="indicador-item">
                             <div class="indicador-header">
                                 <span class="indicador-nome">NUPL</span>
-                                <span class="indicador-valor" id="nupl-valor">0.540</span>
+                                <span class="indicador-valor" id="nupl-valor">0</span>
                             </div>
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="nupl-barra"></div>
@@ -314,18 +328,8 @@ Dashboard Detalhado - Análise Estratégica
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
-                                <span class="indicador-nome">MVRV Z-Score</span>
-                                <span class="indicador-valor" id="mvrv-valor">2.404</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="mvrv-barra"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="indicador-item">
-                            <div class="indicador-header">
                                 <span class="indicador-nome">Reserve Risk</span>
-                                <span class="indicador-valor" id="reserve-valor">0.002</span>
+                                <span class="indicador-valor" id="reserve-valor">0</span>
                             </div>
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="reserve-barra"></div>
@@ -335,7 +339,7 @@ Dashboard Detalhado - Análise Estratégica
                         <div class="indicador-item">
                             <div class="indicador-header">
                                 <span class="indicador-nome">Puell Multiple</span>
-                                <span class="indicador-valor" id="puell-valor">1.267</span>
+                                <span class="indicador-valor" id="puell-valor">0</span>
                             </div>
                             <div class="indicador-barra">
                                 <div class="indicador-barra-fill" id="puell-barra"></div>
