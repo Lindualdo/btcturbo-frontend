@@ -16,6 +16,27 @@ export class DecisaoEstrategica {
             alavancagemMax: document.getElementById('alavancagem-max'),
             satelitePercent: document.getElementById('satelite-percent')
         };
+
+        // Setup da navegação
+        this.setupNavigation();
+    }
+
+    setupNavigation() {
+        // Encontrar o botão "Ver Detalhes" no card de decisão estratégica
+        const estrategiaCard = document.getElementById('fase-operacional')?.closest('.score-card');
+        const detailButton = estrategiaCard?.querySelector('.btn-detail-minimal');
+        
+        if (detailButton) {
+            detailButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🔄 Navegando para detalhes da estratégia...');
+                window.location.href = '/detalhe-estrategia.html';
+            });
+            
+            console.log('✅ Navegação configurada para estratégia detalhes');
+        } else {
+            console.log('⚠️ Botão de detalhes não encontrado no card de estratégia');
+        }
     }
 
     render(data) {
