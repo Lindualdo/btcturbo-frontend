@@ -16,6 +16,7 @@ export default defineConfig({
         riscoDetalhes: resolve(__dirname, 'risco-detalhes.html'),
         patrimonioDetalhes: resolve(__dirname, 'patrimonio-detalhes.html'),
         estrategiaDetalhes: resolve(__dirname, 'detalhe-estrategia.html'),
+        btcturbo: resolve(__dirname, 'btcturbo.html'),
       }
     }
   },
