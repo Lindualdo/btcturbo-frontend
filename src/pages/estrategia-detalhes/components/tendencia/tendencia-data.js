@@ -24,38 +24,38 @@ export class TendenciaData {
             classification: emasData.classificacao_emas || 'neutro',
             emas: {
                 ema10: {
-                    score: this.calculateEmaScore(emas.ema_10_1w, btcPrice),
-                    valor: formatters.currency(emas.ema_10_1w)
+                    price: formatters.currency(emas.ema_10_1w),
+                    distance: this.calculateDistance(btcPrice, emas.ema_10_1w),
+                    distanceText: this.formatDistance(btcPrice, emas.ema_10_1w)
                 },
                 ema20: {
-                    score: this.calculateEmaScore(emas.ema_20_1w, btcPrice),
-                    valor: formatters.currency(emas.ema_20_1w)
+                    price: formatters.currency(emas.ema_20_1w),
+                    distance: this.calculateDistance(btcPrice, emas.ema_20_1w),
+                    distanceText: this.formatDistance(btcPrice, emas.ema_20_1w)
                 },
                 ema50: {
-                    score: this.calculateEmaScore(emas.ema_50_1w, btcPrice),
-                    valor: formatters.currency(emas.ema_50_1w)
+                    price: formatters.currency(emas.ema_50_1w),
+                    distance: this.calculateDistance(btcPrice, emas.ema_50_1w),
+                    distanceText: this.formatDistance(btcPrice, emas.ema_50_1w)
                 },
                 btcPrice: {
-                    score: 100, // Preço atual sempre 100%
-                    valor: formatters.currency(btcPrice)
+                    price: formatters.currency(btcPrice),
+                    distance: 0,
+                    distanceText: 'Referência'
                 }
             }
         };
     }
 
-    calculateEmaScore(emaValue, btcPrice) {
-        // Score baseado na distância relativa do preço atual
-        // Quanto maior a EMA comparada ao preço, menor o score
-        if (!emaValue || !btcPrice) return 0;
-        
-        const ratio = emaValue / btcPrice;
-        
-        if (ratio >= 1.0) return 0; // EMA acima do preço = score baixo
-        if (ratio >= 0.95) return 20;
-        if (ratio >= 0.90) return 40;
-        if (ratio >= 0.85) return 60;
-        if (ratio >= 0.80) return 80;
-        return 100; // EMA muito abaixo do preço = score alto
+    calculateDistance(currentPrice, emaValue) {
+        if (!emaValue || !currentPrice) return 0;
+        return ((currentPrice - emaValue) / emaValue) * 100;
+    }
+
+    formatDistance(currentPrice, emaValue) {
+        const distance = this.calculateDistance(currentPrice, emaValue);
+        const sign = distance >= 0 ? '+' : '';
+        return `${sign}${distance.toFixed(1)}%`;
     }
 }
 

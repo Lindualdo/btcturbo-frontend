@@ -123,7 +123,61 @@ Dashboard Detalhado - Análise Estratégica
             border-radius: 4px;
         }
         
-        @media (max-width: 768px) {
+        .ema-distances-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 100%;
+            min-height: 200px;
+            justify-content: center;
+        }
+        
+        .ema-distance-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            padding: 12px 15px;
+            background: #323746;
+            border-radius: 8px;
+            border-left: 4px solid #404552;
+        }
+        
+        .ema-distance-item.current-price {
+            border-left-color: #ff8c42;
+            background: #3a2f2a;
+        }
+        
+        .ema-name {
+            color: #8b9dc3;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .ema-price {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .ema-distance {
+            text-align: right;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .ema-distance.positive {
+            color: #4caf50;
+        }
+        
+        .ema-distance.negative {
+            color: #ff4757;
+        }
+        
+        .ema-distance.reference {
+            color: #ff8c42;
+            font-size: 0.8rem;
+        }
             .bloco-grid {
                 grid-template-columns: 1fr;
             }
@@ -192,43 +246,29 @@ Dashboard Detalhado - Análise Estratégica
                     </div>
                     
                     <div class="bloco-indicadores">
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">EMA 10 Semanal</span>
-                                <span class="indicador-valor" id="ema-10-valor">$103,460</span>
+                        <div class="ema-distances-grid">
+                            <div class="ema-distance-item">
+                                <div class="ema-name">EMA 10</div>
+                                <div class="ema-price" id="ema-10-valor">$103,460</div>
+                                <div class="ema-distance positive" id="ema-10-distance">+5.3%</div>
                             </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="ema-10-barra"></div>
+                            
+                            <div class="ema-distance-item">
+                                <div class="ema-name">EMA 20</div>
+                                <div class="ema-price" id="ema-20-valor">$98,835</div>
+                                <div class="ema-distance positive" id="ema-20-distance">+10.2%</div>
                             </div>
-                        </div>
-                        
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">EMA 20 Semanal</span>
-                                <span class="indicador-valor" id="ema-20-valor">$98,835</span>
+                            
+                            <div class="ema-distance-item">
+                                <div class="ema-name">EMA 50</div>
+                                <div class="ema-price" id="ema-50-valor">$87,438</div>
+                                <div class="ema-distance positive" id="ema-50-distance">+24.6%</div>
                             </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="ema-20-barra"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">EMA 50 Semanal</span>
-                                <span class="indicador-valor" id="ema-50-valor">$87,438</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="ema-50-barra"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="indicador-item">
-                            <div class="indicador-header">
-                                <span class="indicador-nome">Preço Atual</span>
-                                <span class="indicador-valor" id="btc-price-valor">$108,920</span>
-                            </div>
-                            <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="btc-price-barra"></div>
+                            
+                            <div class="ema-distance-item current-price">
+                                <div class="ema-name">Preço Atual</div>
+                                <div class="ema-price" id="btc-price-valor">$108,920</div>
+                                <div class="ema-distance reference">Referência</div>
                             </div>
                         </div>
                     </div>

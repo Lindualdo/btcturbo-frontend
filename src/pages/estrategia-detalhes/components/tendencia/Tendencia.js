@@ -14,14 +14,13 @@ export class Tendencia {
         this.elements = {
             score: document.getElementById('score-tendencia'),
             classification: document.getElementById('class-tendencia'),
-            ema10Valor: document.getElementById('ema-10-valor'),
-            ema10Barra: document.getElementById('ema-10-barra'),
-            ema20Valor: document.getElementById('ema-20-valor'),
-            ema20Barra: document.getElementById('ema-20-barra'),
-            ema50Valor: document.getElementById('ema-50-valor'),
-            ema50Barra: document.getElementById('ema-50-barra'),
-            btcPriceValor: document.getElementById('btc-price-valor'),
-            btcPriceBarra: document.getElementById('btc-price-barra')
+            ema10Price: document.getElementById('ema-10-valor'),
+            ema10Distance: document.getElementById('ema-10-distance'),
+            ema20Price: document.getElementById('ema-20-valor'),
+            ema20Distance: document.getElementById('ema-20-distance'),
+            ema50Price: document.getElementById('ema-50-valor'),
+            ema50Distance: document.getElementById('ema-50-distance'),
+            btcPriceValor: document.getElementById('btc-price-valor')
         };
     }
 
@@ -36,11 +35,11 @@ export class Tendencia {
         // Atualizar gauge central
         this.updateGauge(data.score, data.classification);
         
-        // Atualizar indicadores EMAs
-        this.updateIndicator('ema10', data.emas.ema10);
-        this.updateIndicator('ema20', data.emas.ema20);
-        this.updateIndicator('ema50', data.emas.ema50);
-        this.updateIndicator('btcPrice', data.emas.btcPrice);
+        // Atualizar indicadores EMAs com distâncias
+        this.updateEmaDistance('ema10', data.emas.ema10);
+        this.updateEmaDistance('ema20', data.emas.ema20);
+        this.updateEmaDistance('ema50', data.emas.ema50);
+        this.updateEmaDistance('btcPrice', data.emas.btcPrice);
 
         this.clearLoading();
     }
@@ -88,20 +87,24 @@ export class Tendencia {
         }
     }
 
-    updateIndicator(name, indicadorData) {
-        const valorElement = this.elements[`${name}Valor`];
-        const barraElement = this.elements[`${name}Barra`];
+    updateEmaDistance(name, emaData) {
+        const priceElement = this.elements[`${name}Price`];
+        const distanceElement = this.elements[`${name}Distance`];
 
-        if (valorElement) {
-            valorElement.textContent = indicadorData.valor;
+        if (priceElement) {
+            priceElement.textContent = emaData.price;
         }
 
-        if (barraElement) {
-            const percentage = indicadorData.score;
-            barraElement.style.width = `${Math.min(percentage, 100)}%`;
+        if (distanceElement && name !== 'btcPrice') {
+            distanceElement.textContent = emaData.distanceText;
             
-            // Aplicar sistema de cores 5 níveis
-            formatters.applyScoreColor(barraElement, percentage);
+            // Aplicar cores baseadas na distância
+            distanceElement.classList.remove('positive', 'negative');
+            if (emaData.distance >= 0) {
+                distanceElement.classList.add('positive');
+            } else {
+                distanceElement.classList.add('negative');
+            }
         }
     }
 
