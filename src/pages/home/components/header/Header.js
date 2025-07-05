@@ -14,7 +14,8 @@ export class Header {
             leverageValue: document.getElementById('leverage-current-value-header'),
             apiStatus: document.getElementById('api-status'),
             lastUpdate: document.getElementById('last-update'),
-            financeBtn: document.getElementById('finance-detalhe-btn')
+            financeBtn: document.getElementById('finance-detalhe-btn'),
+            logoBtn: document.getElementById('btcturbo-logo-btn')
         };
 
         // Setup da navegação para finanças
@@ -24,14 +25,14 @@ export class Header {
     setupNavigation() {
 
          // Logo navegação
-         /*
-        if (this.elements.btcturbo-logo-btn) {
-            this.elements.btcturbo-logo-btn.addEventListener('click', (e) => {
+         
+        if (this.elements.logoBtn) {
+            this.elements.logoBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log('🔄 Navegando para btcturbo...');
                 window.location.href = '/btcturbo.html';
             });
-        }*/
+        }
 
         if (this.elements.financeBtn) {
             this.elements.financeBtn.addEventListener('click', (e) => {
