@@ -1,7 +1,7 @@
 <!-- 
 Arquivo: detalhe-estrategia.html
 Caminho: detalhe-estrategia.html (raiz do projeto)
-Dashboard Detalhado - Análise Estratégica
+Dashboard Detalhado - Análise Estratégica - LAYOUT CORRIGIDO
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -12,10 +12,10 @@ Dashboard Detalhado - Análise Estratégica
     <link rel="stylesheet" href="/src/styles/shared.css">
     <link rel="stylesheet" href="/src/styles/components.css">
     <style>
-        /* Layout dos blocos */
+        /* Layout dos blocos - CORRIGIDO */
         .bloco-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: 1fr 1fr; /* Força 2 colunas no PC */
             gap: 25px;
             margin-bottom: 25px;
         }
@@ -82,6 +82,22 @@ Dashboard Detalhado - Análise Estratégica
             gap: 15px;
             max-width: 100%;
             min-height: 200px;
+        }
+
+        /* CLASSIFICAÇÃO CENTRALIZADA - NOVO */
+        .classification-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #404552;
+        }
+
+        .classification-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff8c42;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .indicador-item {
@@ -178,8 +194,11 @@ Dashboard Detalhado - Análise Estratégica
             color: #ff8c42;
             font-size: 0.8rem;
         }
+
+        /* RESPONSIVE - MOBILE EM COLUNA */
+        @media (max-width: 768px) {
             .bloco-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important; /* Força 1 coluna no mobile */
             }
             
             .bloco-content {
@@ -190,6 +209,7 @@ Dashboard Detalhado - Análise Estratégica
             
             .gauge-container {
                 min-height: auto;
+                margin-bottom: 20px;
             }
             
             .bloco-indicadores {
@@ -200,6 +220,23 @@ Dashboard Detalhado - Análise Estratégica
             .bloco-card .panel-title {
                 margin-bottom: 40px;
                 text-align: center;
+            }
+
+            .classification-header {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+            }
+
+            .classification-text {
+                font-size: 1rem;
+            }
+        }
+
+        /* TABLET - 2 COLUNAS ATÉ 1024px */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .bloco-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
             }
         }
     </style>
@@ -253,7 +290,6 @@ Dashboard Detalhado - Análise Estratégica
                                 <div class="ema-distance reference">Referência</div>
                             </div>
 
-
                             <div class="ema-distance-item">
                                 <div class="ema-name">EMA 10</div>
                                 <div class="ema-price" id="ema-10-valor">$0</div>
@@ -289,7 +325,7 @@ Dashboard Detalhado - Análise Estratégica
                 </div>
             </div>
 
-            <!-- Bloco Ciclo -->
+            <!-- Bloco Ciclo - CLASSIFICAÇÃO CENTRALIZADA -->
             <div class="bloco-card">
                 <div class="panel-title">🔄 Análise de Ciclo</div>
                 <div class="bloco-content">
@@ -303,9 +339,9 @@ Dashboard Detalhado - Análise Estratégica
                     </div>
                     
                     <div class="bloco-indicadores">
-
-                        <div class="indicador-header">
-                            <div style="text-align: center;"  class="gauge-label" id="class-ciclo">Carregando...</div>
+                        <!-- CLASSIFICAÇÃO CENTRALIZADA - NOVO POSICIONAMENTO -->
+                        <div class="classification-header">
+                            <div class="classification-text" id="class-ciclo">Carregando...</div>
                         </div>
 
                          <div class="indicador-item">
@@ -317,7 +353,6 @@ Dashboard Detalhado - Análise Estratégica
                                 <div class="indicador-barra-fill" id="mvrv-barra"></div>
                             </div>
                         </div>
-                        
                         
                         <div class="indicador-item">
                             <div class="indicador-header">
