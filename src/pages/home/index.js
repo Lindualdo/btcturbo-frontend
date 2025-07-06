@@ -99,9 +99,10 @@ class HomeDashboard {
                 const alavancagemResponse = await this.api.getAlavancagem();
                 console.log('📊 Resposta alavancagem completa:', alavancagemResponse);
                 
-                if (alavancagemResponse.status === 'success' && alavancagemResponse.data) {
-                    console.log('📊 Dados alavancagem extraídos:', alavancagemResponse.data);
-                    const formattedData = this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.data);
+                // CORRIGIDO: Acessar .alavancagem ao invés de .data
+                if (alavancagemResponse && alavancagemResponse.alavancagem) {
+                    console.log('📊 Dados alavancagem extraídos:', alavancagemResponse.alavancagem);
+                    const formattedData = this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.alavancagem);
                     console.log('📊 Dados alavancagem formatados:', formattedData);
                     this.components.alavancagem.render(formattedData);
                     console.log('✅ Alavancagem atualizada do endpoint específico!');
