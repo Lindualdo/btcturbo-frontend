@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/alavancagem/Alavancagem.js
-Componente UI de Gestão de Alavancagem - CORRIGIDO
+Componente UI de Gestão de Alavancagem - SEM VALORES FIXOS
 */
 
 export class Alavancagem {
@@ -19,21 +19,24 @@ export class Alavancagem {
 
     render(data) {
         if (!data) {
-            this.showError();
+            console.warn('⚠️ Dados de alavancagem ausentes - zerado');
+            this.showZeroedData();
             return;
         }
 
-        console.log('📈 Renderizando alavancagem:', data);
+        console.log('📈 Renderizando alavancagem com dados:', data);
 
-        this.updateElement('currentValue', data.labelText);
-        this.updateElement('allowedValue', data.allowedLeverage);
-        this.updateElement('margemMoney', data.margemMoney);
-        this.updateElement('alavancagemStatus', data.status);
+        // Garantir que nunca mostre valores fixos
+        this.updateElement('currentValue', data.labelText || '0.00x / 0.00x');
+        this.updateElement('allowedValue', data.allowedLeverage || '0.00x');
+        this.updateElement('margemMoney', data.margemMoney || '$0');
+        this.updateElement('alavancagemStatus', data.status || 'ERRO');
 
-        // Destacar valor negativo em vermelho
-        this.updateCapitalLiquido(data.capitalLiquido, data.capitalLiquido.includes('-'));
+        // Capital líquido com destaque para negativo
+        this.updateCapitalLiquido(data.capitalLiquido || '$0', (data.capitalLiquido || '').includes('-'));
 
-        this.updateLeverageBars(data.usagePercent, data.isOverLimit);
+        // Atualizar barras
+        this.updateLeverageBars(data.usagePercent || 0, data.isOverLimit || false);
         this.clearLoading();
     }
 
@@ -95,6 +98,18 @@ export class Alavancagem {
 
         // Reset da barra
         if (this.elements.currentBar) this.elements.currentBar.style.width = '0%';
+    }
+
+    showZeroedData() {
+        console.log('📈 Mostrando dados zerados para alavancagem');
+        
+        this.updateElement('currentValue', '0.00x / 0.00x');
+        this.updateElement('allowedValue', '0.00x');
+        this.updateElement('margemMoney', '$0');
+        this.updateElement('alavancagemStatus', 'SEM DADOS');
+        this.updateCapitalLiquido('$0', false);
+        this.updateLeverageBars(0, false);
+        this.clearLoading();
     }
 
     showError() {
