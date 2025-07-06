@@ -1,7 +1,7 @@
 /* 
 Arquivo: index.js
 Caminho: src/pages/home/index.js
-Orquestrador da página Home - Dashboard BTC Turbo V3 - COM DECISÃO ESTRATÉGICA
+Orquestrador da página Home - ALAVANCAGEM COM ENDPOINT SEPARADO
 */
 
 import ApiClient from '../../shared/api.js';
@@ -66,23 +66,29 @@ class HomeDashboard {
             
             console.log('🔄 Carregando dados da API...');
 
-            // Fetch dos endpoints
-            const [homeResponse, decisaoResponse] = await Promise.all([
+            // Fetch dos endpoints - ALAVANCAGEM SEPARADA
+            const [homeResponse, decisaoResponse, alavancagemResponse] = await Promise.all([
                 this.api.getDashboardHome(),
-                this.api.getDecisaoEstrategica()
+                this.api.getDecisaoEstrategica(),
+                this.api.getAlavancagem() // NOVO: Chamada separada
             ]);
             
             if (homeResponse.status === 'success' && homeResponse.data) {
-                const { header, risco, alavancagem } = homeResponse.data;
+                const { header, risco } = homeResponse.data; // Removido alavancagem
                 const metadata = homeResponse.metadata;
                 
                 // Distribuir dados formatados para cada componente
                 this.components.header.render(this.dataHandlers.header.formatHeaderData(homeResponse.data, homeResponse.status, metadata));
                 this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
-                this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
                 
                 console.log('✅ Dashboard básico carregado!');
                 this.retryCount = 0;
+            }
+
+            // NOVO: Processar alavancagem separadamente
+            if (alavancagemResponse.status === 'success' && alavancagemResponse.data) {
+                this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.data));
+                console.log('✅ Alavancagem carregada!');
             }
             
             if (decisaoResponse.status === 'success') {
@@ -90,7 +96,7 @@ class HomeDashboard {
                 console.log('✅ Decisão estratégica carregada!');
             }
             
-            if (!homeResponse.data && !decisaoResponse.status) {
+            if (!homeResponse.data && !decisaoResponse.status && !alavancagemResponse.data) {
                 throw new Error('Estrutura de dados inválida');
             }
 
@@ -114,7 +120,15 @@ class HomeDashboard {
 
             console.log(`📡 Carregando ${componentName}...`);
             
-            const data = await dataHandler.fetchData();
+            // NOVO: Tratar alavancagem com endpoint específico
+            let data;
+            if (componentName === 'alavancagem') {
+                const response = await this.api.getAlavancagem();
+                data = dataHandler.formatAlavancagemData(response.data);
+            } else {
+                data = await dataHandler.fetchData();
+            }
+            
             component.render(data);
             
             console.log(`✅ ${componentName} carregado com sucesso`);
