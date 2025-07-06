@@ -28,9 +28,9 @@ export class ApiClient {
     }
 
     async getScoreRisco() { return this.fetchData('financeiro/score-risco'); }
-    async getDashboardHome() { return this.fetchData('dash-main'); } // Home (sem alavancagem)
+    //async getDashboardHome() { return this.fetchData('dash-main'); } // Home (sem alavancagem)
     async getAlavancagem() { return this.fetchData('financeiro/alavancagem'); } // NOVO: Alavancagem separada
-    async getDashMercado() { return this.fetchData('dash-mercado'); } // Detalhes Mercado
+    //async getDashMercado() { return this.fetchData('dash-mercado'); } // Detalhes Mercado
     async getHealthFactor(periodo = '30d') { return this.fetchData(`dash-finance/health-factor?periodo=${periodo}`); } // Risco Detalhes
     async getPatrimonio(periodo = '30d') { return this.fetchData(`dash-finance/patrimonio?periodo=${periodo}`); }
     async getDecisaoEstrategica() { return this.fetchData('decisao-estrategica'); } // Decisão Estratégica
