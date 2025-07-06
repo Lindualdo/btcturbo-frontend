@@ -25,6 +25,8 @@ export class AlavancagemData {
         const dividaTotal = data.divida_total || 0;
         const status = data.status || 'erro';
 
+        valorDisponivel = 1000;
+
         // Calcular valor disponível real (pode ser negativo)
         const valorDisponivelReal = valorDisponivel - valorAReduzir;
         
