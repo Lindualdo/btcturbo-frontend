@@ -66,29 +66,43 @@ class HomeDashboard {
             
             console.log('🔄 Carregando dados da API...');
 
-            // Fetch dos endpoints - ALAVANCAGEM SEPARADA
-            const [homeResponse, decisaoResponse, alavancagemResponse] = await Promise.all([
+            // Primeiro carrega home e decisão
+            const [homeResponse, decisaoResponse] = await Promise.all([
                 this.api.getDashboardHome(),
-                this.api.getDecisaoEstrategica(),
-                this.api.getAlavancagem() // NOVO: Chamada separada
+                this.api.getDecisaoEstrategica()
             ]);
             
             if (homeResponse.status === 'success' && homeResponse.data) {
-                const { header, risco } = homeResponse.data; // Removido alavancagem
+                const { header, risco, alavancagem } = homeResponse.data;
                 const metadata = homeResponse.metadata;
                 
                 // Distribuir dados formatados para cada componente
                 this.components.header.render(this.dataHandlers.header.formatHeaderData(homeResponse.data, homeResponse.status, metadata));
                 this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
                 
+                // Fallback: usar alavancagem do dash-main se existir
+                if (alavancagem) {
+                    this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
+                    console.log('✅ Alavancagem carregada do dash-main!');
+                }
+                
                 console.log('✅ Dashboard básico carregado!');
                 this.retryCount = 0;
             }
 
-            // NOVO: Processar alavancagem separadamente
-            if (alavancagemResponse.status === 'success' && alavancagemResponse.data) {
-                this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.data));
-                console.log('✅ Alavancagem carregada!');
+            // Tentar carregar alavancagem do endpoint específico
+            try {
+                console.log('🔄 Tentando carregar alavancagem do endpoint específico...');
+                const alavancagemResponse = await this.api.getAlavancagem();
+                console.log('📊 Resposta alavancagem:', alavancagemResponse);
+                
+                if (alavancagemResponse.status === 'success' && alavancagemResponse.data) {
+                    this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.data));
+                    console.log('✅ Alavancagem atualizada do endpoint específico!');
+                }
+            } catch (alavancagemError) {
+                console.warn('⚠️ Endpoint /alavancagem não disponível, usando fallback:', alavancagemError.message);
+                // Já tem fallback acima
             }
             
             if (decisaoResponse.status === 'success') {
