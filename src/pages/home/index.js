@@ -46,7 +46,7 @@ class HomeDashboard {
     }
 
     async init() {
-        console.log('🚀 Inicializando BTC Turbo Dashboard V3...');
+        console.log('🚀 Inicializando BTC Turbo Dashboard V3 (APIs específicas apenas)...');
         
         await this.loadAllData();
         this.startAutoRefresh();
@@ -67,54 +67,23 @@ class HomeDashboard {
             
             console.log('🔄 Carregando dados da API...');
 
-            // Fetch dos endpoints - ALAVANCAGEM E RISCO SEPARADOS
-            const [homeResponse, decisaoResponse] = await Promise.all([
-                this.api.getDashboardHome(),
-                this.api.getDecisaoEstrategica()
-            ]);
+            // NOVO: Carregar apenas das APIs específicas (dash-main desativado)
+            const decisaoResponse = await this.api.getDecisaoEstrategica();
             
-            if (homeResponse.status === 'success' && homeResponse.data) {
-                const { header, risco, alavancagem } = homeResponse.data;
-                const metadata = homeResponse.metadata;
-                
-                // Armazenar dados básicos para o header (sem alavancagem/risco ainda)
-                this.headerBaseData = {
-                    dashboardData: homeResponse.data,
-                    status: homeResponse.status,
-                    metadata: metadata
-                };
-                
-                // Fallback: usar risco do dash-main se existir
-                if (risco) {
-                    this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
-                    console.log('✅ Risco carregado do dash-main!');
-                } else {
-                    console.warn('⚠️ Sem dados de risco no dash-main, aguardando endpoint específico...');
-                    this.components.risco.showError();
-                }
-                
-                // Fallback: usar alavancagem do dash-main se existir
-                if (alavancagem) {
-                    this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
-                    console.log('✅ Alavancagem carregada do dash-main!');
-                } else {
-                    console.warn('⚠️ Sem dados de alavancagem no dash-main, aguardando endpoint específico...');
-                    this.components.alavancagem.showZeroedData();
-                }
-                
-                // Renderizar header inicial (será atualizado depois)
-                this.updateHeaderWithFinancialData(null, alavancagem);
-                
-                console.log('✅ Dashboard básico carregado!');
-                this.retryCount = 0;
-            }
+            // Inicializar dados base do header vazio
+            this.headerBaseData = {
+                dashboardData: {},
+                status: 'success',
+                metadata: { timestamp: new Date().toISOString() }
+            };
+            
+            console.log('✅ Inicialização básica concluída (sem dash-main)!');
 
-            // Tentar carregar risco do endpoint específico
+            // Carregar risco do endpoint específico (OBRIGATÓRIO)
             let riscoData = null;
             try {
-                console.log('🔄 Tentando carregar risco do endpoint específico...');
+                console.log('🔄 Carregando risco do endpoint específico...');
                 
-                // Verificar se método existe (debug)
                 if (!this.api.getScoreRisco) {
                     throw new Error('Método getScoreRisco não existe na API');
                 }
@@ -128,51 +97,61 @@ class HomeDashboard {
                     console.log('📊 Dados risco formatados:', formattedData);
                     this.components.risco.render(formattedData);
                     riscoData = riscoResponse;
-                    console.log('✅ Risco atualizado do endpoint específico!');
+                    console.log('✅ Risco carregado!');
                 } else {
                     console.warn('⚠️ Resposta da API de risco inválida:', riscoResponse);
                     this.components.risco.showError();
                 }
             } catch (riscoError) {
-                console.warn('⚠️ Endpoint /financeiro/score-risco falhiu:', riscoError);
+                console.error('❌ Falha crítica no carregamento do risco:', riscoError);
                 console.log('📊 Métodos disponíveis na API:', Object.getOwnPropertyNames(this.api.__proto__));
                 this.components.risco.showError();
             }
 
-            // Tentar carregar alavancagem do endpoint específico
+            // Carregar alavancagem do endpoint específico (OBRIGATÓRIO)
             let alavancagemData = null;
             try {
-                console.log('🔄 Tentando carregar alavancagem do endpoint específico...');
+                console.log('🔄 Carregando alavancagem do endpoint específico...');
                 const alavancagemResponse = await this.api.getAlavancagem();
                 console.log('📊 Resposta alavancagem completa:', alavancagemResponse);
                 
-                // CORRIGIDO: Acessar .alavancagem ao invés de .data
                 if (alavancagemResponse && alavancagemResponse.alavancagem) {
                     console.log('📊 Dados alavancagem extraídos:', alavancagemResponse.alavancagem);
                     const formattedData = this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.alavancagem);
                     console.log('📊 Dados alavancagem formatados:', formattedData);
                     this.components.alavancagem.render(formattedData);
                     alavancagemData = alavancagemResponse.alavancagem;
-                    console.log('✅ Alavancagem atualizada do endpoint específico!');
+                    console.log('✅ Alavancagem carregada!');
                 } else {
                     console.warn('⚠️ Resposta da API de alavancagem inválida:', alavancagemResponse);
                     this.components.alavancagem.showZeroedData();
                 }
             } catch (alavancagemError) {
-                console.warn('⚠️ Endpoint /alavancagem falhiu:', alavancagemError);
+                console.error('❌ Falha crítica no carregamento da alavancagem:', alavancagemError);
                 this.components.alavancagem.showZeroedData();
             }
 
-            // NOVO: Atualizar header com dados financeiros das duas APIs
+            // Atualizar header com dados financeiros das APIs específicas
             this.updateHeaderWithFinancialData(riscoData, alavancagemData);
             
-            if (decisaoResponse.status === 'success') {
-                this.components.decisaoEstrategica.render(this.dataHandlers.decisaoEstrategica.formatDecisaoEstrategicaData(decisaoResponse));
-                console.log('✅ Decisão estratégica carregada!');
+            // Carregar decisão estratégica (verificar se API está ativa)
+            try {
+                console.log('🔄 Carregando decisão estratégica...');
+                
+                if (decisaoResponse.status === 'success') {
+                    this.components.decisaoEstrategica.render(this.dataHandlers.decisaoEstrategica.formatDecisaoEstrategicaData(decisaoResponse));
+                    console.log('✅ Decisão estratégica carregada!');
+                } else {
+                    console.warn('⚠️ Decisão estratégica indisponível');
+                    this.components.decisaoEstrategica.showError();
+                }
+            } catch (decisaoError) {
+                console.warn('⚠️ Erro na decisão estratégica:', decisaoError);
+                this.components.decisaoEstrategica.showError();
             }
             
-            if (!homeResponse.data && !decisaoResponse.status) {
-                throw new Error('Estrutura de dados inválida');
+            if (!riscoData && !alavancagemData) {
+                throw new Error('Falha crítica: nenhuma API específica disponível');
             }
 
         } catch (error) {

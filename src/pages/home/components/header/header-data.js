@@ -9,16 +9,13 @@ export class HeaderData {
     constructor() {}
 
     formatHeaderData(dashboardData, apiStatus, metadata) {
-        console.log('🔄 Header: Formatando dados:', dashboardData);
+        console.log('🔄 Header: Formatando dados (apenas APIs específicas):', dashboardData);
 
-        // NOVO: Priorizar dados da API financeiro/score-risco se disponível
+        // Dados da API financeiro/score-risco
         const riscoApiData = dashboardData.risco;
-        const isNewRiscoApi = riscoApiData && riscoApiData.btc_price && riscoApiData.posicao_total;
-
-        // Extrair dados financeiros (prioridade: nova API > dash-main)
-        const btcPrice = isNewRiscoApi ? riscoApiData.btc_price : (dashboardData.header?.btc_price || 0);
-        const positionUsd = isNewRiscoApi ? riscoApiData.posicao_total : (dashboardData.header?.position_usd || 0);
-        const dividaTotal = isNewRiscoApi ? riscoApiData.divida_total : (dashboardData.alavancagem?.divida_total || 0);
+        const btcPrice = riscoApiData?.btc_price || 0;
+        const positionUsd = riscoApiData?.posicao_total || 0;
+        const dividaTotal = riscoApiData?.divida_total || 0;
 
         // Cálculos
         const saldoLiquidoUsd = positionUsd - dividaTotal;
@@ -28,8 +25,8 @@ export class HeaderData {
         const alavancagemAtual = dashboardData.alavancagem?.atual || 0;
         const alavancagemPermitida = dashboardData.alavancagem?.permitida || 0;
         
-        // Formatar timestamp do metadata
-        const lastUpdate = this.formatTimestamp(metadata?.timestamp);
+        // Formatar timestamp do metadata ou usar atual
+        const lastUpdate = this.formatTimestamp(metadata?.timestamp || new Date().toISOString());
 
         const result = {
             btcPrice: formatters.currency(btcPrice),
@@ -42,8 +39,11 @@ export class HeaderData {
             lastUpdate: lastUpdate
         };
 
-        console.log('✅ Header formatado:', result);
-        console.log('📊 Fonte dos dados financeiros:', isNewRiscoApi ? 'API score-risco' : 'dash-main');
+        console.log('✅ Header formatado (apenas APIs específicas):', result);
+        console.log('📊 Fontes dos dados:', {
+            financeiros: riscoApiData ? 'API score-risco' : 'ausente',
+            alavancagem: dashboardData.alavancagem ? 'API alavancagem' : 'ausente'
+        });
         return result;
     }
 
