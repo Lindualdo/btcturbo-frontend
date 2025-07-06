@@ -84,6 +84,9 @@ class HomeDashboard {
                 if (alavancagem) {
                     this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
                     console.log('✅ Alavancagem carregada do dash-main!');
+                } else {
+                    console.warn('⚠️ Sem dados de alavancagem no dash-main, aguardando endpoint específico...');
+                    this.components.alavancagem.showZeroedData();
                 }
                 
                 console.log('✅ Dashboard básico carregado!');
@@ -94,15 +97,21 @@ class HomeDashboard {
             try {
                 console.log('🔄 Tentando carregar alavancagem do endpoint específico...');
                 const alavancagemResponse = await this.api.getAlavancagem();
-                console.log('📊 Resposta alavancagem:', alavancagemResponse);
+                console.log('📊 Resposta alavancagem completa:', alavancagemResponse);
                 
                 if (alavancagemResponse.status === 'success' && alavancagemResponse.data) {
-                    this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.data));
+                    console.log('📊 Dados alavancagem extraídos:', alavancagemResponse.data);
+                    const formattedData = this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.data);
+                    console.log('📊 Dados alavancagem formatados:', formattedData);
+                    this.components.alavancagem.render(formattedData);
                     console.log('✅ Alavancagem atualizada do endpoint específico!');
+                } else {
+                    console.warn('⚠️ Resposta da API de alavancagem inválida:', alavancagemResponse);
+                    this.components.alavancagem.showZeroedData();
                 }
             } catch (alavancagemError) {
-                console.warn('⚠️ Endpoint /alavancagem não disponível, usando fallback:', alavancagemError.message);
-                // Já tem fallback acima
+                console.warn('⚠️ Endpoint /alavancagem falhiu:', alavancagemError);
+                this.components.alavancagem.showZeroedData();
             }
             
             if (decisaoResponse.status === 'success') {
@@ -110,7 +119,7 @@ class HomeDashboard {
                 console.log('✅ Decisão estratégica carregada!');
             }
             
-            if (!homeResponse.data && !decisaoResponse.status && !alavancagemResponse.data) {
+            if (!homeResponse.data && !decisaoResponse.status) {
                 throw new Error('Estrutura de dados inválida');
             }
 

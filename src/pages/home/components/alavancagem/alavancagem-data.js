@@ -17,7 +17,7 @@ export class AlavancagemData {
             return this.getZeroedData();
         }
 
-        // Usar dados diretos da API
+        // Usar dados diretos da API conforme estrutura fornecida
         const atual = data.atual || 0;
         const permitida = data.permitida || 0;
         const valorDisponivel = data.valor_disponivel || 0;
@@ -25,7 +25,9 @@ export class AlavancagemData {
         const dividaTotal = data.divida_total || 0;
         const status = data.status || 'erro';
 
-        valorDisponivel = 1000;
+        console.log('📊 Dados extraídos:', {
+            atual, permitida, valorDisponivel, valorAReduzir, dividaTotal, status
+        });
 
         // Calcular valor disponível real (pode ser negativo)
         const valorDisponivelReal = valorDisponivel - valorAReduzir;
@@ -47,7 +49,7 @@ export class AlavancagemData {
             isOverLimit: atual > permitida
         };
 
-        console.log('✅ Alavancagem formatada:', result);
+        console.log('✅ Alavancagem formatada FINAL:', result);
         return result;
     }
 

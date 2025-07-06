@@ -1,20 +1,25 @@
 /* 
 Arquivo: src/pages/home/components/alavancagem/Alavancagem.js
-Componente UI de Gestão de Alavancagem - SEM VALORES FIXOS
+Componente UI de Gestão de Alavancagem - IDs CORRETOS DO HTML
 */
 
 export class Alavancagem {
     constructor() {
         this.elements = {
+            // ✅ IDs que EXISTEM no index.html
             currentBar: document.getElementById('leverage-current-bar'),
-            allowedBar: document.getElementById('leverage-allowed-bar'),
             currentValue: document.getElementById('leverage-current-value'),
-            allowedValue: document.getElementById('leverage-allowed-value'),
             capitalLiquido: document.getElementById('capital-liquido'),
-            margemPercent: document.getElementById('margem-percent'),
-            margemMoney: document.getElementById('margem-money'),
             alavancagemStatus: document.getElementById('alavancagem-status')
         };
+
+        // Debug: verificar se elementos foram encontrados
+        console.log('🔍 Elementos encontrados:', {
+            currentBar: !!this.elements.currentBar,
+            currentValue: !!this.elements.currentValue,
+            capitalLiquido: !!this.elements.capitalLiquido,
+            alavancagemStatus: !!this.elements.alavancagemStatus
+        });
     }
 
     render(data) {
@@ -26,16 +31,12 @@ export class Alavancagem {
 
         console.log('📈 Renderizando alavancagem com dados:', data);
 
-        // Garantir que nunca mostre valores fixos
+        // Atualizar apenas elementos que existem
         this.updateElement('currentValue', data.labelText || '0.00x / 0.00x');
-        this.updateElement('allowedValue', data.allowedLeverage || '0.00x');
-        this.updateElement('margemMoney', data.margemMoney || '$0');
         this.updateElement('alavancagemStatus', data.status || 'ERRO');
-
-        // Capital líquido com destaque para negativo
         this.updateCapitalLiquido(data.capitalLiquido || '$0', (data.capitalLiquido || '').includes('-'));
 
-        // Atualizar barras
+        // Atualizar barra
         this.updateLeverageBars(data.usagePercent || 0, data.isOverLimit || false);
         this.clearLoading();
     }
@@ -52,6 +53,8 @@ export class Alavancagem {
             } else {
                 element.style.color = '#ffffff';
             }
+        } else {
+            console.warn('❌ Elemento capital-liquido não encontrado');
         }
     }
 
@@ -60,6 +63,9 @@ export class Alavancagem {
         if (element) {
             element.textContent = value;
             element.classList.remove('loading');
+            console.log(`✅ ${key} atualizado para: ${value}`);
+        } else {
+            console.warn(`❌ Elemento ${key} não encontrado no DOM`);
         }
     }
 
@@ -79,14 +85,16 @@ export class Alavancagem {
             } else {
                 currentBar.style.background = '#4caf50'; // Verde - seguro
             }
+            
+            console.log(`✅ Barra atualizada: ${barWidth}% (${usagePercent}% real)`);
+        } else {
+            console.warn('❌ Elemento leverage-current-bar não encontrado');
         }
     }
 
     showLoading() {
-        const loadingElements = [
-            'currentValue', 'allowedValue', 'capitalLiquido', 
-            'margemPercent', 'margemMoney', 'alavancagemStatus'
-        ];
+        // Loading apenas nos elementos que existem
+        const loadingElements = ['currentValue', 'capitalLiquido', 'alavancagemStatus'];
 
         loadingElements.forEach(key => {
             const element = this.elements[key];
@@ -104,8 +112,6 @@ export class Alavancagem {
         console.log('📈 Mostrando dados zerados para alavancagem');
         
         this.updateElement('currentValue', '0.00x / 0.00x');
-        this.updateElement('allowedValue', '0.00x');
-        this.updateElement('margemMoney', '$0');
         this.updateElement('alavancagemStatus', 'SEM DADOS');
         this.updateCapitalLiquido('$0', false);
         this.updateLeverageBars(0, false);
@@ -113,22 +119,13 @@ export class Alavancagem {
     }
 
     showError() {
-        const errorElements = [
-            'currentValue', 'allowedValue', 'capitalLiquido', 
-            'margemPercent', 'margemMoney', 'alavancagemStatus'
-        ];
-
-        errorElements.forEach(key => {
-            const element = this.elements[key];
-            if (element) {
-                element.textContent = 'Erro';
-                element.classList.add('error');
-                element.classList.remove('loading');
-            }
-        });
-
-        // Reset da barra
-        if (this.elements.currentBar) this.elements.currentBar.style.width = '0%';
+        console.log('❌ Mostrando erro para alavancagem');
+        
+        this.updateElement('currentValue', 'Erro');
+        this.updateElement('alavancagemStatus', 'ERRO');
+        this.updateCapitalLiquido('Erro', false);
+        this.updateLeverageBars(0, false);
+        this.clearLoading();
     }
 
     clearLoading() {
