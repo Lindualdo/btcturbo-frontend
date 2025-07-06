@@ -42,7 +42,7 @@ class HomeDashboard {
         this.isLoading = false;
         this.retryCount = 0;
         this.maxRetries = 3;
-        this.headerBaseData = null; // NOVO: Armazenar dados base do header
+        this.headerBaseData = null; // Armazenar dados base do header
     }
 
     async init() {
@@ -67,7 +67,7 @@ class HomeDashboard {
             
             console.log('🔄 Carregando dados da API...');
 
-            // Primeiro carrega home e decisão
+            // Fetch dos endpoints - ALAVANCAGEM E RISCO SEPARADOS
             const [homeResponse, decisaoResponse] = await Promise.all([
                 this.api.getDashboardHome(),
                 this.api.getDecisaoEstrategica()
@@ -77,34 +77,63 @@ class HomeDashboard {
                 const { header, risco, alavancagem } = homeResponse.data;
                 const metadata = homeResponse.metadata;
                 
-                // Armazenar dados básicos para o header (sem alavancagem ainda)
+                // Armazenar dados básicos para o header (sem alavancagem/risco ainda)
                 this.headerBaseData = {
                     dashboardData: homeResponse.data,
                     status: homeResponse.status,
                     metadata: metadata
                 };
                 
-                // Renderizar componentes básicos
-                this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
+                // Fallback: usar risco do dash-main se existir
+                if (risco) {
+                    this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
+                    console.log('✅ Risco carregado do dash-main!');
+                } else {
+                    console.warn('⚠️ Sem dados de risco no dash-main, aguardando endpoint específico...');
+                    this.components.risco.showError();
+                }
                 
                 // Fallback: usar alavancagem do dash-main se existir
                 if (alavancagem) {
                     this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
-                    // Atualizar header com dados do dash-main
-                    this.updateHeaderWithLeverage(alavancagem);
                     console.log('✅ Alavancagem carregada do dash-main!');
                 } else {
                     console.warn('⚠️ Sem dados de alavancagem no dash-main, aguardando endpoint específico...');
                     this.components.alavancagem.showZeroedData();
-                    // Atualizar header sem alavancagem
-                    this.updateHeaderWithLeverage(null);
                 }
+                
+                // Renderizar header inicial (será atualizado depois)
+                this.updateHeaderWithFinancialData(null, alavancagem);
                 
                 console.log('✅ Dashboard básico carregado!');
                 this.retryCount = 0;
             }
 
+            // Tentar carregar risco do endpoint específico
+            let riscoData = null;
+            try {
+                console.log('🔄 Tentando carregar risco do endpoint específico...');
+                const riscoResponse = await this.api.getScoreRisco();
+                console.log('📊 Resposta risco completa:', riscoResponse);
+                
+                if (riscoResponse && riscoResponse.status === 'success') {
+                    console.log('📊 Dados risco extraídos:', riscoResponse);
+                    const formattedData = this.dataHandlers.risco.formatRiscoData(riscoResponse);
+                    console.log('📊 Dados risco formatados:', formattedData);
+                    this.components.risco.render(formattedData);
+                    riscoData = riscoResponse;
+                    console.log('✅ Risco atualizado do endpoint específico!');
+                } else {
+                    console.warn('⚠️ Resposta da API de risco inválida:', riscoResponse);
+                    this.components.risco.showError();
+                }
+            } catch (riscoError) {
+                console.warn('⚠️ Endpoint /financeiro/score-risco falhiu:', riscoError);
+                this.components.risco.showError();
+            }
+
             // Tentar carregar alavancagem do endpoint específico
+            let alavancagemData = null;
             try {
                 console.log('🔄 Tentando carregar alavancagem do endpoint específico...');
                 const alavancagemResponse = await this.api.getAlavancagem();
@@ -116,21 +145,19 @@ class HomeDashboard {
                     const formattedData = this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.alavancagem);
                     console.log('📊 Dados alavancagem formatados:', formattedData);
                     this.components.alavancagem.render(formattedData);
-                    
-                    // NOVO: Atualizar header com dados da API específica
-                    this.updateHeaderWithLeverage(alavancagemResponse.alavancagem);
-                    
+                    alavancagemData = alavancagemResponse.alavancagem;
                     console.log('✅ Alavancagem atualizada do endpoint específico!');
                 } else {
                     console.warn('⚠️ Resposta da API de alavancagem inválida:', alavancagemResponse);
                     this.components.alavancagem.showZeroedData();
-                    this.updateHeaderWithLeverage(null);
                 }
             } catch (alavancagemError) {
                 console.warn('⚠️ Endpoint /alavancagem falhiu:', alavancagemError);
                 this.components.alavancagem.showZeroedData();
-                this.updateHeaderWithLeverage(null);
             }
+
+            // NOVO: Atualizar header com dados financeiros das duas APIs
+            this.updateHeaderWithFinancialData(riscoData, alavancagemData);
             
             if (decisaoResponse.status === 'success') {
                 this.components.decisaoEstrategica.render(this.dataHandlers.decisaoEstrategica.formatDecisaoEstrategicaData(decisaoResponse));
@@ -161,17 +188,27 @@ class HomeDashboard {
 
             console.log(`📡 Carregando ${componentName}...`);
             
-            // NOVO: Tratar alavancagem com endpoint específico
+            // Tratar endpoints específicos
             let data;
             if (componentName === 'alavancagem') {
                 const response = await this.api.getAlavancagem();
                 if (response && response.alavancagem) {
                     data = dataHandler.formatAlavancagemData(response.alavancagem);
                     // Atualizar header também
-                    this.updateHeaderWithLeverage(response.alavancagem);
+                    this.updateHeaderWithFinancialData(null, response.alavancagem);
                 } else {
                     data = dataHandler.getZeroedData();
-                    this.updateHeaderWithLeverage(null);
+                    this.updateHeaderWithFinancialData(null, null);
+                }
+            } else if (componentName === 'risco') {
+                const response = await this.api.getScoreRisco();
+                if (response && response.status === 'success') {
+                    data = dataHandler.formatRiscoData(response);
+                    // Atualizar header também
+                    this.updateHeaderWithFinancialData(response, null);
+                } else {
+                    data = null;
+                    this.updateHeaderWithFinancialData(null, null);
                 }
             } else {
                 data = await dataHandler.fetchData();
@@ -225,27 +262,31 @@ class HomeDashboard {
         });
     }
 
-    updateHeaderWithLeverage(alavancagemData) {
+    updateHeaderWithFinancialData(riscoData, alavancagemData) {
         if (!this.headerBaseData) {
             console.warn('⚠️ Dados base do header não disponíveis');
             return;
         }
 
-        // Criar cópia dos dados do dashboard e atualizar alavancagem
-        const dashboardDataWithLeverage = {
+        // Criar cópia dos dados do dashboard e atualizar dados financeiros
+        const dashboardDataWithFinancials = {
             ...this.headerBaseData.dashboardData,
-            alavancagem: alavancagemData
+            alavancagem: alavancagemData,
+            risco: riscoData
         };
 
         // Renderizar header com dados atualizados
         const headerData = this.dataHandlers.header.formatHeaderData(
-            dashboardDataWithLeverage,
+            dashboardDataWithFinancials,
             this.headerBaseData.status,
             this.headerBaseData.metadata
         );
 
         this.components.header.render(headerData);
-        console.log('✅ Header atualizado com dados de alavancagem:', alavancagemData ? 'API específica' : 'zerado');
+        console.log('✅ Header atualizado com dados financeiros:', {
+            risco: riscoData ? 'API específica' : 'dash-main/zerado',
+            alavancagem: alavancagemData ? 'API específica' : 'dash-main/zerado'
+        });
     }
 
     startAutoRefresh() {

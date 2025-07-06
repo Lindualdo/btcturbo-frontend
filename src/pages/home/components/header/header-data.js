@@ -11,16 +11,20 @@ export class HeaderData {
     formatHeaderData(dashboardData, apiStatus, metadata) {
         console.log('🔄 Header: Formatando dados:', dashboardData);
 
-        // Extrair dados dos objetos corretos
-        const btcPrice = dashboardData.header?.btc_price || 0;
-        const positionUsd = dashboardData.header?.position_usd || 0;
-        const dividaTotal = dashboardData.alavancagem?.divida_total || 0;
+        // NOVO: Priorizar dados da API financeiro/score-risco se disponível
+        const riscoApiData = dashboardData.risco;
+        const isNewRiscoApi = riscoApiData && riscoApiData.btc_price && riscoApiData.posicao_total;
+
+        // Extrair dados financeiros (prioridade: nova API > dash-main)
+        const btcPrice = isNewRiscoApi ? riscoApiData.btc_price : (dashboardData.header?.btc_price || 0);
+        const positionUsd = isNewRiscoApi ? riscoApiData.posicao_total : (dashboardData.header?.position_usd || 0);
+        const dividaTotal = isNewRiscoApi ? riscoApiData.divida_total : (dashboardData.alavancagem?.divida_total || 0);
 
         // Cálculos
         const saldoLiquidoUsd = positionUsd - dividaTotal;
         const saldoLiquidoBtc = btcPrice > 0 ? saldoLiquidoUsd / btcPrice : 0;
 
-        // CORRIGIDO: Alavancagem da nova API
+        // Alavancagem da API específica
         const alavancagemAtual = dashboardData.alavancagem?.atual || 0;
         const alavancagemPermitida = dashboardData.alavancagem?.permitida || 0;
         
@@ -39,6 +43,7 @@ export class HeaderData {
         };
 
         console.log('✅ Header formatado:', result);
+        console.log('📊 Fonte dos dados financeiros:', isNewRiscoApi ? 'API score-risco' : 'dash-main');
         return result;
     }
 
