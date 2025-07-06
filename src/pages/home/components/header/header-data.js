@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/home/components/header/header-data.js
-Lógica de dados do Header - Atualizada com timestamp
+Lógica de dados do Header - CORRIGIDO para nova API de alavancagem
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -20,19 +20,26 @@ export class HeaderData {
         const saldoLiquidoUsd = positionUsd - dividaTotal;
         const saldoLiquidoBtc = btcPrice > 0 ? saldoLiquidoUsd / btcPrice : 0;
 
+        // CORRIGIDO: Alavancagem da nova API
+        const alavancagemAtual = dashboardData.alavancagem?.atual || 0;
+        const alavancagemPermitida = dashboardData.alavancagem?.permitida || 0;
+        
         // Formatar timestamp do metadata
         const lastUpdate = this.formatTimestamp(metadata?.timestamp);
 
-        return {
+        const result = {
             btcPrice: formatters.currency(btcPrice),
             positionUsd: formatters.currency(positionUsd),
             dividaTotal: formatters.currency(dividaTotal),
             saldoLiquidoUsd: formatters.currency(saldoLiquidoUsd),
             saldoLiquidoBtc: formatters.btc(saldoLiquidoBtc),
-            leverageValue: `${dashboardData.alavancagem?.atual?.toFixed(2) || 0} / ${dashboardData.alavancagem?.permitida?.toFixed(2) || 0}`,
+            leverageValue: `${alavancagemAtual.toFixed(2)}x / ${alavancagemPermitida.toFixed(2)}x`,
             apiStatus: apiStatus || 'error',
             lastUpdate: lastUpdate
         };
+
+        console.log('✅ Header formatado:', result);
+        return result;
     }
 
     formatTimestamp(timestamp) {

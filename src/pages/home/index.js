@@ -42,6 +42,7 @@ class HomeDashboard {
         this.isLoading = false;
         this.retryCount = 0;
         this.maxRetries = 3;
+        this.headerBaseData = null; // NOVO: Armazenar dados base do header
     }
 
     async init() {
@@ -76,17 +77,27 @@ class HomeDashboard {
                 const { header, risco, alavancagem } = homeResponse.data;
                 const metadata = homeResponse.metadata;
                 
-                // Distribuir dados formatados para cada componente
-                this.components.header.render(this.dataHandlers.header.formatHeaderData(homeResponse.data, homeResponse.status, metadata));
+                // Armazenar dados básicos para o header (sem alavancagem ainda)
+                this.headerBaseData = {
+                    dashboardData: homeResponse.data,
+                    status: homeResponse.status,
+                    metadata: metadata
+                };
+                
+                // Renderizar componentes básicos
                 this.components.risco.render(this.dataHandlers.risco.formatRiscoData(risco));
                 
                 // Fallback: usar alavancagem do dash-main se existir
                 if (alavancagem) {
                     this.components.alavancagem.render(this.dataHandlers.alavancagem.formatAlavancagemData(alavancagem));
+                    // Atualizar header com dados do dash-main
+                    this.updateHeaderWithLeverage(alavancagem);
                     console.log('✅ Alavancagem carregada do dash-main!');
                 } else {
                     console.warn('⚠️ Sem dados de alavancagem no dash-main, aguardando endpoint específico...');
                     this.components.alavancagem.showZeroedData();
+                    // Atualizar header sem alavancagem
+                    this.updateHeaderWithLeverage(null);
                 }
                 
                 console.log('✅ Dashboard básico carregado!');
@@ -105,14 +116,20 @@ class HomeDashboard {
                     const formattedData = this.dataHandlers.alavancagem.formatAlavancagemData(alavancagemResponse.alavancagem);
                     console.log('📊 Dados alavancagem formatados:', formattedData);
                     this.components.alavancagem.render(formattedData);
+                    
+                    // NOVO: Atualizar header com dados da API específica
+                    this.updateHeaderWithLeverage(alavancagemResponse.alavancagem);
+                    
                     console.log('✅ Alavancagem atualizada do endpoint específico!');
                 } else {
                     console.warn('⚠️ Resposta da API de alavancagem inválida:', alavancagemResponse);
                     this.components.alavancagem.showZeroedData();
+                    this.updateHeaderWithLeverage(null);
                 }
             } catch (alavancagemError) {
                 console.warn('⚠️ Endpoint /alavancagem falhiu:', alavancagemError);
                 this.components.alavancagem.showZeroedData();
+                this.updateHeaderWithLeverage(null);
             }
             
             if (decisaoResponse.status === 'success') {
@@ -148,7 +165,14 @@ class HomeDashboard {
             let data;
             if (componentName === 'alavancagem') {
                 const response = await this.api.getAlavancagem();
-                data = dataHandler.formatAlavancagemData(response.data);
+                if (response && response.alavancagem) {
+                    data = dataHandler.formatAlavancagemData(response.alavancagem);
+                    // Atualizar header também
+                    this.updateHeaderWithLeverage(response.alavancagem);
+                } else {
+                    data = dataHandler.getZeroedData();
+                    this.updateHeaderWithLeverage(null);
+                }
             } else {
                 data = await dataHandler.fetchData();
             }
@@ -199,6 +223,29 @@ class HomeDashboard {
         Object.values(this.components).forEach(component => {
             component.showError?.();
         });
+    }
+
+    updateHeaderWithLeverage(alavancagemData) {
+        if (!this.headerBaseData) {
+            console.warn('⚠️ Dados base do header não disponíveis');
+            return;
+        }
+
+        // Criar cópia dos dados do dashboard e atualizar alavancagem
+        const dashboardDataWithLeverage = {
+            ...this.headerBaseData.dashboardData,
+            alavancagem: alavancagemData
+        };
+
+        // Renderizar header com dados atualizados
+        const headerData = this.dataHandlers.header.formatHeaderData(
+            dashboardDataWithLeverage,
+            this.headerBaseData.status,
+            this.headerBaseData.metadata
+        );
+
+        this.components.header.render(headerData);
+        console.log('✅ Header atualizado com dados de alavancagem:', alavancagemData ? 'API específica' : 'zerado');
     }
 
     startAutoRefresh() {
