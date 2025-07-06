@@ -12,31 +12,35 @@ import Header from './components/header/Header.js';
 import DecisaoEstrategica from './components/decisao-estrategica/DecisaoEstrategica.js';
 import Risco from './components/risco/Risco.js';
 import Alavancagem from './components/alavancagem/Alavancagem.js';
+// ❌ REMOVIDO: import Mercado (dash-mercado desativado)
 
 // Data Handlers
 import HeaderData from './components/header/header-data.js';
 import DecisaoEstrategicaData from './components/decisao-estrategica/decisao-estrategica-data.js';
 import RiscoData from './components/risco/risco-data.js';
 import AlavancagemData from './components/alavancagem/alavancagem-data.js';
+// ❌ REMOVIDO: import MercadoData (dash-mercado desativado)
 
 class HomeDashboard {
     constructor() {
         this.api = new ApiClient();
         
-        // Inicializar componentes UI
+        // Inicializar componentes UI (sem Mercado - API desativada)
         this.components = {
             header: new Header(),
             decisaoEstrategica: new DecisaoEstrategica(),
             risco: new Risco(),
             alavancagem: new Alavancagem()
+            // ❌ REMOVIDO: mercado (dash-mercado desativado)
         };
 
-        // Inicializar data handlers (só formatação)
+        // Inicializar data handlers (sem Mercado - API desativada)
         this.dataHandlers = {
             header: new HeaderData(),
             decisaoEstrategica: new DecisaoEstrategicaData(),
             risco: new RiscoData(),
             alavancagem: new AlavancagemData()
+            // ❌ REMOVIDO: mercado (dash-mercado desativado)
         };
 
         this.isLoading = false;
@@ -333,4 +337,4 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboard.init();
 });
 
-console.log('🎯 BTC Turbo Dashboard V3 - Home carregado!');
+console.log('🎯 BTC Turbo Dashboard V3 - Home carregado (sem mercado-detalhes)!');
