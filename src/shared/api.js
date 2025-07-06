@@ -27,7 +27,7 @@ export class ApiClient {
         }
     }
 
-    // Endpoints específicos
+    async getScoreRisco() { return this.fetchData('financeiro/score-risco'); }
     async getDashboardHome() { return this.fetchData('dash-main'); } // Home (sem alavancagem)
     async getAlavancagem() { return this.fetchData('financeiro/alavancagem'); } // NOVO: Alavancagem separada
     async getDashMercado() { return this.fetchData('dash-mercado'); } // Detalhes Mercado

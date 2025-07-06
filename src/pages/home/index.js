@@ -113,6 +113,12 @@ class HomeDashboard {
             let riscoData = null;
             try {
                 console.log('🔄 Tentando carregar risco do endpoint específico...');
+                
+                // Verificar se método existe (debug)
+                if (!this.api.getScoreRisco) {
+                    throw new Error('Método getScoreRisco não existe na API');
+                }
+                
                 const riscoResponse = await this.api.getScoreRisco();
                 console.log('📊 Resposta risco completa:', riscoResponse);
                 
@@ -129,6 +135,7 @@ class HomeDashboard {
                 }
             } catch (riscoError) {
                 console.warn('⚠️ Endpoint /financeiro/score-risco falhiu:', riscoError);
+                console.log('📊 Métodos disponíveis na API:', Object.getOwnPropertyNames(this.api.__proto__));
                 this.components.risco.showError();
             }
 
@@ -201,6 +208,11 @@ class HomeDashboard {
                     this.updateHeaderWithFinancialData(null, null);
                 }
             } else if (componentName === 'risco') {
+                // Verificar se método existe
+                if (!this.api.getScoreRisco) {
+                    throw new Error('Método getScoreRisco não existe na API');
+                }
+                
                 const response = await this.api.getScoreRisco();
                 if (response && response.status === 'success') {
                     data = dataHandler.formatRiscoData(response);
