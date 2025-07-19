@@ -73,6 +73,10 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
+        .gauge-score.disabled {
+            color: #666;
+        }
+
         /* Labels laterais do gauge */
         .gauge-labels {
             position: absolute;
@@ -288,7 +292,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                         <div class="modern-gauge">
                             <canvas id="gauge-tendencia" width="240" height="140"></canvas>
                             <div class="gauge-center">
-                                <div class="gauge-score" id="score-tendencia">100</div>
+                                <div class="gauge-score disabled" id="score-tendencia">--</div>
                             </div>
                             <div class="gauge-labels">
                                 <span>Bear</span>
@@ -352,7 +356,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                         <div class="modern-gauge">
                             <canvas id="gauge-ciclo" width="240" height="140"></canvas>
                             <div class="gauge-center">
-                                <div class="gauge-score" id="score-ciclo">0</div>
+                                <div class="gauge-score disabled" id="score-ciclo">--</div>
                             </div>
                             <div class="gauge-labels">
                                 <span>Caro</span>
@@ -426,6 +430,17 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
             
             // Limpar canvas
             ctx.clearRect(0, 0, 240, 140);
+            
+            // Se não há score válido, desenhar gauge desativado
+            if (score === null || score === undefined || isNaN(score)) {
+                // Arco cinza desativado
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+                ctx.lineWidth = lineWidth;
+                ctx.strokeStyle = '#404552';
+                ctx.stroke();
+                return; // Não desenhar indicador
+            }
             
             // Criar gradiente para o arco COMPLETO
             const gradient = ctx.createLinearGradient(centerX - radius, centerY, centerX + radius, centerY);
@@ -504,6 +519,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                 // Atualizar textos
                 if (this.elements.score) {
                     this.elements.score.textContent = data.score.toFixed(0);
+                    this.elements.score.classList.remove('disabled');
                 }
 
                 if (this.elements.updateTime) {
@@ -552,14 +568,29 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                 }
             }
 
-            showError() {
-                if (this.elements.score) this.elements.score.textContent = '--';
-                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
-            }
-
             clearLoading() {
                 // Remove loading states
                 console.log('✅ Tendência moderna carregada');
+            }
+
+            showLoading() {
+                if (this.elements.score) {
+                    this.elements.score.textContent = '--';
+                    this.elements.score.classList.add('disabled');
+                }
+                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+                // Desenhar gauge desativado
+                drawModernGauge('gauge-tendencia', null);
+            }
+
+            showError() {
+                if (this.elements.score) {
+                    this.elements.score.textContent = '--';
+                    this.elements.score.classList.add('disabled');
+                }
+                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+                // Desenhar gauge desativado
+                drawModernGauge('gauge-tendencia', null);
             }
         }
 
@@ -594,6 +625,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                 // Atualizar textos
                 if (this.elements.score) {
                     this.elements.score.textContent = data.score.toFixed(0);
+                    this.elements.score.classList.remove('disabled');
                 }
 
                 if (this.elements.updateTime) {
@@ -640,13 +672,28 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                 }
             }
 
-            showError() {
-                if (this.elements.score) this.elements.score.textContent = '--';
-                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
-            }
-
             clearLoading() {
                 console.log('✅ Ciclo moderno carregado');
+            }
+
+            showLoading() {
+                if (this.elements.score) {
+                    this.elements.score.textContent = '--';
+                    this.elements.score.classList.add('disabled');
+                }
+                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+                // Desenhar gauge desativado
+                drawModernGauge('gauge-ciclo', null);
+            }
+
+            showError() {
+                if (this.elements.score) {
+                    this.elements.score.textContent = '--';
+                    this.elements.score.classList.add('disabled');
+                }
+                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+                // Desenhar gauge desativado
+                drawModernGauge('gauge-ciclo', null);
             }
         }
 
@@ -654,34 +701,11 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
         const tendenciaModerna = new TendenciaModerna();
         const cicloModerno = new CicloModerno();
 
-        // Dados de exemplo para teste
-        setTimeout(() => {
-            // Exemplo Tendência (Score 75 = Verde claro)
-            tendenciaModerna.render({
-                score: 75,
-                classification: 'bull',
-                emas: {
-                    btcPrice: { price: '$102,450' },
-                    ema10: { price: '$101,200', distance: 1.2, distanceText: '+1.2%' },
-                    ema20: { price: '$98,835', distance: 3.7, distanceText: '+3.7%' },
-                    ema50: { price: '$87,438', distance: 17.2, distanceText: '+17.2%' },
-                    ema100: { price: '$75,320', distance: 36.0, distanceText: '+36.0%' },
-                    ema200: { price: '$65,890', distance: 55.5, distanceText: '+55.5%' }
-                }
-            });
-
-            // Exemplo Ciclo (Score 35 = Laranja)
-            cicloModerno.render({
-                score: 35,
-                classification: 'expensive',
-                indicadores: {
-                    nupl: { score: 30, valor: '0.25' },
-                    mvrv: { score: 35, valor: '1.8' },
-                    reserve: { score: 40, valor: '0.008' },
-                    puell: { score: 35, valor: '1.4' }
-                }
-            });
-        }, 1000);
+        // Desenhar gauges desativados inicialmente
+        drawModernGauge('gauge-tendencia', null);
+        drawModernGauge('gauge-ciclo', null);
+        
+        console.log('🎯 Componentes inicializados - aguardando dados da API...');
 
         // Integrar com sistema existente se disponível
         if (window.estrategiaDetalhes) {
