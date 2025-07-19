@@ -1,7 +1,7 @@
 /* 
 Arquivo: Ciclo.js
 Caminho: src/pages/estrategia-detalhes/components/ciclo/Ciclo.js
-Componente UI do Bloco Ciclo - GAUGE MODERNO COM COR DINÂMICA
+Componente UI do Bloco Ciclo - GAUGE MODERNO COM COR DINÂMICA + BARRAS COM GRADIENTE E INDICADORES
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -15,13 +15,13 @@ export class Ciclo {
             score: document.getElementById('score-ciclo'),
             updateTime: document.getElementById('update-ciclo'),
             nuplValor: document.getElementById('nupl-valor'),
-            nuplBarra: document.getElementById('nupl-barra'),
+            nuplIndicator: document.getElementById('nupl-indicator'),
             mvrvValor: document.getElementById('mvrv-valor'),
-            mvrvBarra: document.getElementById('mvrv-barra'),
+            mvrvIndicator: document.getElementById('mvrv-indicator'),
             reserveValor: document.getElementById('reserve-valor'),
-            reserveBarra: document.getElementById('reserve-barra'),
+            reserveIndicator: document.getElementById('reserve-indicator'),
             puellValor: document.getElementById('puell-valor'),
-            puellBarra: document.getElementById('puell-barra')
+            puellIndicator: document.getElementById('puell-indicator')
         };
     }
 
@@ -31,7 +31,7 @@ export class Ciclo {
             return;
         }
 
-        console.log('🔄 Renderizando Ciclo Moderno (COR DINÂMICA):', data);
+        console.log('🔄 Renderizando Ciclo Moderno (COR DINÂMICA + BARRAS COM GRADIENTE):', data);
 
         // Atualizar gauge moderno
         this.updateModernGauge(data.score, data.classification);
@@ -40,7 +40,7 @@ export class Ciclo {
         this.updateElement('score', data.score.toFixed(0));
         this.updateCurrentTime();
         
-        // Atualizar indicadores de ciclo
+        // Atualizar indicadores de ciclo com novo sistema
         this.updateIndicator('nupl', data.indicadores.nupl);
         this.updateIndicator('mvrv', data.indicadores.mvrv);
         this.updateIndicator('reserve', data.indicadores.reserve);
@@ -127,44 +127,53 @@ export class Ciclo {
 
     updateIndicator(name, indicadorData) {
         const valorElement = this.elements[`${name}Valor`];
-        const barraElement = this.elements[`${name}Barra`];
+        const indicatorElement = this.elements[`${name}Indicator`];
 
         if (valorElement) {
             valorElement.textContent = indicadorData.valor;
         }
 
-        if (barraElement) {
-            const percentage = indicadorData.score;
-            barraElement.style.width = `${Math.min(percentage, 100)}%`;
+        if (indicatorElement) {
+            const percentage = Math.min(Math.max(indicadorData.score, 0), 100);
             
-            // 🎨 Aplicar sistema de cores baseado no score
-            if (percentage >= 80) {
-                barraElement.style.background = '#4caf50'; // Verde forte
-            } else if (percentage >= 60) {
-                barraElement.style.background = '#8bc34a'; // Verde claro
-            } else if (percentage >= 40) {
-                barraElement.style.background = '#ffc107'; // Amarelo
-            } else if (percentage >= 20) {
-                barraElement.style.background = '#ff9800'; // Laranja
+            // Posicionar indicador na barra (0% = esquerda, 100% = direita)
+            indicatorElement.style.left = `${percentage}%`;
+            
+            // Cor do indicador baseada no score (mesmo sistema dos gauges)
+            let indicatorColor;
+            if (percentage <= 20) {
+                indicatorColor = '#ff4757';      // Vermelho
+            } else if (percentage <= 40) {
+                indicatorColor = '#ff6b35';      // Laranja
+            } else if (percentage <= 60) {
+                indicatorColor = '#ffa726';      // Amarelo
+            } else if (percentage <= 80) {
+                indicatorColor = '#8bc34a';      // Verde claro
             } else {
-                barraElement.style.background = '#f44336'; // Vermelho
+                indicatorColor = '#4caf50';      // Verde forte
             }
+            
+            indicatorElement.style.backgroundColor = indicatorColor;
+            
+            console.log(`🎯 ${name}: ${percentage}% → ${indicatorColor}`);
         }
     }
 
     showLoading() {
         // Loading nos elementos de texto
         Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && !key.includes('Barra') && !key.includes('updateTime')) {
+            if (element && !key.includes('Indicator') && !key.includes('updateTime')) {
                 element.textContent = 'Carregando...';
                 element.classList.add('loading');
             }
         });
 
-        // Reset das barras
-        Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && key.includes('Barra')) {
-                element.style.width = '0%';
+        // Reset dos indicadores
+        ['nupl', 'mvrv', 'reserve', 'puell'].forEach(name => {
+            const indicatorElement = this.elements[`${name}Indicator`];
+            if (indicatorElement) {
+                indicatorElement.style.left = '0%';
+                indicatorElement.style.backgroundColor = '#666';
             }
         });
 
@@ -180,18 +189,19 @@ export class Ciclo {
 
     showError() {
         Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && !key.includes('Barra')) {
+            if (element && !key.includes('Indicator')) {
                 element.textContent = 'Erro';
                 element.classList.add('error');
                 element.classList.remove('loading');
             }
         });
 
-        // Reset das barras
-        Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && key.includes('Barra')) {
-                element.style.width = '0%';
-                element.style.background = '#666';
+        // Reset dos indicadores
+        ['nupl', 'mvrv', 'reserve', 'puell'].forEach(name => {
+            const indicatorElement = this.elements[`${name}Indicator`];
+            if (indicatorElement) {
+                indicatorElement.style.left = '0%';
+                indicatorElement.style.backgroundColor = '#ff4757';
             }
         });
 

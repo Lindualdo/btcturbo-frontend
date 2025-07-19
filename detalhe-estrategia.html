@@ -1,6 +1,6 @@
 <!-- 
 Arquivo: detalhe-estrategia.html
-Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
+Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO + BARRAS COM GRADIENTE
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -149,17 +149,38 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
         }
         
         .indicador-barra {
-            background: #404552;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
+            position: relative;
+            height: 12px;
+            border-radius: 6px;
+            overflow: visible;
             width: 100%;
+            background: linear-gradient(90deg, #ff4757 0%, #ff6b35 25%, #ffa726 50%, #8bc34a 75%, #4caf50 100%);
         }
         
-        .indicador-barra-fill {
-            height: 100%;
-            transition: width 0.8s ease;
-            border-radius: 4px;
+        .indicador-barra-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #1a1d29;
+            transition: left 0.8s ease;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Mobile: indicadores menores */
+        @media (max-width: 768px) {
+            .indicador-barra-indicator {
+                width: 14px;
+                height: 14px;
+                border-width: 1.5px;
+            }
+            
+            .indicador-barra {
+                height: 10px;
+            }
         }
         
         .ema-distances-grid {
@@ -375,7 +396,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                                 <span class="indicador-valor" id="mvrv-valor">0</span>
                             </div>
                             <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="mvrv-barra"></div>
+                                <div class="indicador-barra-indicator" id="mvrv-indicator"></div>
                             </div>
                         </div>
                         
@@ -385,7 +406,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                                 <span class="indicador-valor" id="nupl-valor">0</span>
                             </div>
                             <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="nupl-barra"></div>
+                                <div class="indicador-barra-indicator" id="nupl-indicator"></div>
                             </div>
                         </div>
                         
@@ -395,7 +416,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                                 <span class="indicador-valor" id="reserve-valor">0</span>
                             </div>
                             <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="reserve-barra"></div>
+                                <div class="indicador-barra-indicator" id="reserve-indicator"></div>
                             </div>
                         </div>
                         
@@ -405,7 +426,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                                 <span class="indicador-valor" id="puell-valor">0</span>
                             </div>
                             <div class="indicador-barra">
-                                <div class="indicador-barra-fill" id="puell-barra"></div>
+                                <div class="indicador-barra-indicator" id="puell-indicator"></div>
                             </div>
                         </div>
                     </div>
@@ -599,13 +620,13 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                     score: document.getElementById('score-ciclo'),
                     updateTime: document.getElementById('update-ciclo'),
                     nuplValor: document.getElementById('nupl-valor'),
-                    nuplBarra: document.getElementById('nupl-barra'),
+                    nuplIndicator: document.getElementById('nupl-indicator'),
                     mvrvValor: document.getElementById('mvrv-valor'),
-                    mvrvBarra: document.getElementById('mvrv-barra'),
+                    mvrvIndicator: document.getElementById('mvrv-indicator'),
                     reserveValor: document.getElementById('reserve-valor'),
-                    reserveBarra: document.getElementById('reserve-barra'),
+                    reserveIndicator: document.getElementById('reserve-indicator'),
                     puellValor: document.getElementById('puell-valor'),
-                    puellBarra: document.getElementById('puell-barra')
+                    puellIndicator: document.getElementById('puell-indicator')
                 };
             }
 
@@ -645,28 +666,33 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
 
             updateIndicator(name, indicadorData) {
                 const valorElement = this.elements[`${name}Valor`];
-                const barraElement = this.elements[`${name}Barra`];
+                const indicatorElement = this.elements[`${name}Indicator`];
 
                 if (valorElement) {
                     valorElement.textContent = indicadorData.valor;
                 }
 
-                if (barraElement) {
-                    const percentage = indicadorData.score;
-                    barraElement.style.width = `${Math.min(percentage, 100)}%`;
+                if (indicatorElement) {
+                    const percentage = Math.min(Math.max(indicadorData.score, 0), 100);
                     
-                    // Cores baseadas no score
-                    if (percentage >= 80) {
-                        barraElement.style.background = '#4caf50';
-                    } else if (percentage >= 60) {
-                        barraElement.style.background = '#8bc34a';
-                    } else if (percentage >= 40) {
-                        barraElement.style.background = '#ffc107';
-                    } else if (percentage >= 20) {
-                        barraElement.style.background = '#ff9800';
+                    // Posicionar indicador na barra (0% = esquerda, 100% = direita)
+                    indicatorElement.style.left = `${percentage}%`;
+                    
+                    // Cor do indicador baseada no score (mesmo sistema dos gauges)
+                    let indicatorColor;
+                    if (percentage <= 20) {
+                        indicatorColor = '#ff4757';      // Vermelho
+                    } else if (percentage <= 40) {
+                        indicatorColor = '#ff6b35';      // Laranja
+                    } else if (percentage <= 60) {
+                        indicatorColor = '#ffa726';      // Amarelo
+                    } else if (percentage <= 80) {
+                        indicatorColor = '#8bc34a';      // Verde claro
                     } else {
-                        barraElement.style.background = '#f44336';
+                        indicatorColor = '#4caf50';      // Verde forte
                     }
+                    
+                    indicatorElement.style.backgroundColor = indicatorColor;
                 }
             }
 
@@ -680,6 +706,16 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                     this.elements.score.classList.add('disabled');
                 }
                 if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+                
+                // Reset indicadores para posição 0
+                ['nupl', 'mvrv', 'reserve', 'puell'].forEach(name => {
+                    const indicatorElement = this.elements[`${name}Indicator`];
+                    if (indicatorElement) {
+                        indicatorElement.style.left = '0%';
+                        indicatorElement.style.backgroundColor = '#666';
+                    }
+                });
+                
                 // Desenhar gauge desativado
                 drawModernGauge('gauge-ciclo', null);
             }
@@ -690,6 +726,16 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                     this.elements.score.classList.add('disabled');
                 }
                 if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+                
+                // Reset indicadores para posição 0
+                ['nupl', 'mvrv', 'reserve', 'puell'].forEach(name => {
+                    const indicatorElement = this.elements[`${name}Indicator`];
+                    if (indicatorElement) {
+                        indicatorElement.style.left = '0%';
+                        indicatorElement.style.backgroundColor = '#ff4757';
+                    }
+                });
+                
                 // Desenhar gauge desativado
                 drawModernGauge('gauge-ciclo', null);
             }
@@ -702,6 +748,15 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
         // Desenhar gauges desativados inicialmente
         drawModernGauge('gauge-tendencia', null);
         drawModernGauge('gauge-ciclo', null);
+        
+        // Inicializar indicadores das barras em posição 0
+        ['nupl', 'mvrv', 'reserve', 'puell'].forEach(name => {
+            const indicatorElement = document.getElementById(`${name}-indicator`);
+            if (indicatorElement) {
+                indicatorElement.style.left = '0%';
+                indicatorElement.style.backgroundColor = '#666';
+            }
+        });
         
         console.log('🎯 Componentes inicializados - aguardando dados da API...');
 
