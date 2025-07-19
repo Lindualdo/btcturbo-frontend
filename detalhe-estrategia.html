@@ -1,7 +1,6 @@
 <!-- 
 Arquivo: detalhe-estrategia.html
-Caminho: detalhe-estrategia.html (raiz do projeto)
-Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
+Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -13,10 +12,10 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
     <link rel="stylesheet" href="/src/styles/components.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        /* Layout dos blocos - CORRIGIDO */
+        /* Layout dos blocos */
         .bloco-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Força 2 colunas no PC */
+            grid-template-columns: 1fr 1fr;
             gap: 25px;
             margin-bottom: 25px;
         }
@@ -31,33 +30,36 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
         
         .bloco-content {
             display: grid;
-            grid-template-columns: 220px 1fr;
+            grid-template-columns: 280px 1fr;
             gap: 25px;
             align-items: start;
         }
         
+        /* GAUGE MODERNO - SEMICÍRCULO */
         .gauge-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 300px;
-            padding: 20px 0;
+            padding: 20px;
         }
         
-        .gauge {
-            width: 200px;
-            height: 200px;
+        .modern-gauge {
             position: relative;
+            width: 240px;
+            height: 140px; /* Semicírculo */
+            margin-bottom: 20px;
         }
         
-        .gauge canvas {
+        .modern-gauge canvas {
             width: 100%;
             height: 100%;
         }
         
         .gauge-center {
             position: absolute;
-            top: 50%;
+            top: 70%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
@@ -65,42 +67,41 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
         }
         
         .gauge-score {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 3rem;
+            font-weight: 700;
             color: #ffffff;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         
-        .gauge-label {
-            font-size: 0.8rem;
+        .gauge-classification {
+            font-size: 1rem;
             color: #8b9dc3;
             text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
-        /* LABELS DOS GAUGES - EXTREMIDADES DO ARCO */
+        /* Labels laterais do gauge */
         .gauge-labels {
             position: absolute;
-            top: 50%;
+            top: 85%;
             left: 0;
             right: 0;
-            height: 0;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 0 10px;
+            padding: 0 20px;
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Última atualização abaixo do gauge */
+        .gauge-update {
             font-size: 0.75rem;
             color: #8b9dc3;
-            font-weight: 500;
-            z-index: 20;
-            transform: translateY(20px);
-        }
-
-        .gauge-label-left {
-            text-align: left;
-        }
-
-        .gauge-label-right {
-            text-align: right;
+            text-align: center;
+            margin-top: 10px;
         }
         
         .bloco-indicadores {
@@ -112,7 +113,6 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
             min-height: 200px;
         }
 
-        /* CLASSIFICAÇÃO CENTRALIZADA - NOVO */
         .classification-header {
             text-align: center;
             margin-bottom: 20px;
@@ -223,10 +223,10 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
             font-size: 0.8rem;
         }
 
-        /* RESPONSIVE - MOBILE EM COLUNA */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
             .bloco-grid {
-                grid-template-columns: 1fr !important; /* Força 1 coluna no mobile */
+                grid-template-columns: 1fr !important;
             }
             
             .bloco-content {
@@ -240,27 +240,21 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
                 margin-bottom: 20px;
             }
             
+            .modern-gauge {
+                width: 200px;
+                height: 120px;
+            }
+            
+            .gauge-score {
+                font-size: 2.5rem;
+            }
+            
             .bloco-indicadores {
                 min-height: auto;
                 justify-content: flex-start;
             }
-            
-            .bloco-card .panel-title {
-                margin-bottom: 40px;
-                text-align: center;
-            }
-
-            .classification-header {
-                margin-bottom: 15px;
-                padding-bottom: 10px;
-            }
-
-            .classification-text {
-                font-size: 1rem;
-            }
         }
 
-        /* TABLET - 2 COLUNAS ATÉ 1024px */
         @media (max-width: 1024px) and (min-width: 769px) {
             .bloco-grid {
                 grid-template-columns: 1fr 1fr;
@@ -289,7 +283,6 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
         <div class="score-summary">
             <div class="score-main" id="fase-operacional-consolidada">Bull Exaustão</div>
             <div class="score-details">
-                <!--Tendência: <span id="tendencia-consolidada">BULL</span> | -->
                 Ação: <span id="acao-consolidada">Preparar RPs</span>
             </div>
         </div>
@@ -301,27 +294,26 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
                 <div class="panel-title"><i class="bi bi-graph-up"></i> Score Trend</div>
                 <div class="bloco-content">
                     <div class="gauge-container">
-                        <div class="gauge">
-                            <canvas id="gauge-tendencia" width="200" height="200"></canvas>
+                        <div class="modern-gauge">
+                            <canvas id="gauge-tendencia" width="240" height="140"></canvas>
                             <div class="gauge-center">
                                 <div class="gauge-score" id="score-tendencia">100</div>
+                                <div class="gauge-classification" id="class-tendencia">BULL</div>
                             </div>
-                            <!-- LABELS BEAR/BULL -->
                             <div class="gauge-labels">
-                                <span class="gauge-label-left">Bear</span>
-                                <span class="gauge-label-right">Bull</span>
+                                <span>Bear</span>
+                                <span>Bull</span>
                             </div>
                         </div>
+                        <div class="gauge-update">Última atualização: <span id="update-tendencia">--:--</span></div>
                     </div>
                     
                     <div class="bloco-indicadores">
-                        <!-- TÍTULO DAS EMAs -->
                         <div class="classification-header">
                             <div class="classification-text">EMAs - Semanal</div>
                         </div>
 
                         <div class="ema-distances-grid">
-
                             <div class="ema-distance-item current-price">
                                 <div class="ema-name">Preço Atual</div>
                                 <div class="ema-price" id="btc-price-valor">$0</div>
@@ -357,37 +349,36 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
                                 <div class="ema-price" id="ema-200-valor">$0</div>
                                 <div class="ema-distance positive" id="ema-200-distance">+0%</div>
                             </div>
-                        
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bloco Ciclo - CLASSIFICAÇÃO CENTRALIZADA -->
+            <!-- Bloco Ciclo -->
             <div class="bloco-card">
                 <div class="panel-title"><i class="bi bi-coin"></i> Score Price</div>
                 <div class="bloco-content">
                     <div class="gauge-container">
-                        <div class="gauge">
-                            <canvas id="gauge-ciclo" width="200" height="200"></canvas>
+                        <div class="modern-gauge">
+                            <canvas id="gauge-ciclo" width="240" height="140"></canvas>
                             <div class="gauge-center">
                                 <div class="gauge-score" id="score-ciclo">0</div>
+                                <div class="gauge-classification" id="class-ciclo">NEUTRO</div>
                             </div>
-                            <!-- LABELS CARO/BARATO -->
                             <div class="gauge-labels">
-                                <span class="gauge-label-left">Caro</span>
-                                <span class="gauge-label-right">Barato</span>
+                                <span>Caro</span>
+                                <span>Barato</span>
                             </div>
                         </div>
+                        <div class="gauge-update">Última atualização: <span id="update-ciclo">--:--</span></div>
                     </div>
                     
                     <div class="bloco-indicadores">
-                        <!-- CLASSIFICAÇÃO CENTRALIZADA - NOVO POSICIONAMENTO -->
                         <div class="classification-header">
-                            <div class="classification-text" id="class-ciclo">Carregando...</div>
+                            <div class="classification-text">Indicadores On-Chain</div>
                         </div>
 
-                         <div class="indicador-item">
+                        <div class="indicador-item">
                             <div class="indicador-header">
                                 <span class="indicador-nome">MVRV Ratio</span>
                                 <span class="indicador-valor" id="mvrv-valor">0</span>
@@ -431,6 +422,287 @@ Dashboard Detalhado - Análise Estratégica - LABELS CORRIGIDAS
             </div>
         </div>
     </div>
+
+    <script type="module">
+        // Função para desenhar gauge moderno semicircular
+        function drawModernGauge(canvasId, score, classification) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = 120;
+            const centerY = 110;
+            const radius = 90;
+            const lineWidth = 20;
+            
+            // Limpar canvas
+            ctx.clearRect(0, 0, 240, 140);
+            
+            // Criar gradiente para o arco COMPLETO
+            const gradient = ctx.createLinearGradient(centerX - radius, centerY, centerX + radius, centerY);
+            gradient.addColorStop(0, '#ff4757');    // Vermelho (0)
+            gradient.addColorStop(0.25, '#ff6b35'); // Laranja
+            gradient.addColorStop(0.5, '#ffa726');  // Amarelo
+            gradient.addColorStop(0.75, '#8bc34a'); // Verde claro
+            gradient.addColorStop(1, '#4caf50');    // Verde forte (100)
+            
+            // Arco SEMPRE COMPLETO com gradiente
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = gradient;
+            ctx.stroke();
+            
+            // Indicador (ponto) na posição do score
+            const indicatorAngle = Math.PI + (score / 100) * Math.PI;
+            const indicatorX = centerX + Math.cos(indicatorAngle) * radius;
+            const indicatorY = centerY + Math.sin(indicatorAngle) * radius;
+            
+            // Círculo externo do indicador
+            ctx.beginPath();
+            ctx.arc(indicatorX, indicatorY, 12, 0, 2 * Math.PI);
+            ctx.fillStyle = '#1a1d29';
+            ctx.fill();
+            
+            // Círculo interno do indicador
+            ctx.beginPath();
+            ctx.arc(indicatorX, indicatorY, 8, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ff8c42';
+            ctx.fill();
+        }
+
+        // Classe moderna para Tendência
+        class TendenciaModerna {
+            constructor() {
+                this.elements = {
+                    score: document.getElementById('score-tendencia'),
+                    classification: document.getElementById('class-tendencia'),
+                    updateTime: document.getElementById('update-tendencia'),
+                    // EMAs elements...
+                    ema10Price: document.getElementById('ema-10-valor'),
+                    ema10Distance: document.getElementById('ema-10-distance'),
+                    ema20Price: document.getElementById('ema-20-valor'),
+                    ema20Distance: document.getElementById('ema-20-distance'),
+                    ema50Price: document.getElementById('ema-50-valor'),
+                    ema50Distance: document.getElementById('ema-50-distance'),
+                    ema100Price: document.getElementById('ema-100-valor'),
+                    ema100Distance: document.getElementById('ema-100-distance'),
+                    ema200Price: document.getElementById('ema-200-valor'),
+                    ema200Distance: document.getElementById('ema-200-distance'),
+                    btcPriceValor: document.getElementById('btc-price-valor')
+                };
+            }
+
+            render(data) {
+                if (!data) {
+                    this.showError();
+                    return;
+                }
+
+                console.log('📈 Renderizando Tendência Moderna:', data);
+
+                // Atualizar gauge moderno
+                drawModernGauge('gauge-tendencia', data.score, data.classification);
+                
+                // Atualizar textos
+                if (this.elements.score) {
+                    this.elements.score.textContent = data.score.toFixed(0);
+                }
+                
+                if (this.elements.classification) {
+                    this.elements.classification.textContent = data.classification.toUpperCase();
+                }
+
+                if (this.elements.updateTime) {
+                    const now = new Date();
+                    this.elements.updateTime.textContent = now.toLocaleTimeString('pt-PT', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                // Atualizar EMAs
+                this.updateEmaDistance('ema10', data.emas.ema10);
+                this.updateEmaDistance('ema20', data.emas.ema20);
+                this.updateEmaDistance('ema50', data.emas.ema50);
+                this.updateEmaDistance('ema100', data.emas.ema100);
+                this.updateEmaDistance('ema200', data.emas.ema200);
+                this.updateEmaDistance('btcPrice', data.emas.btcPrice);
+
+                this.clearLoading();
+            }
+
+            updateEmaDistance(name, emaData) {
+                if (name === 'btcPrice') {
+                    const priceElement = this.elements.btcPriceValor;
+                    if (priceElement) {
+                        priceElement.textContent = emaData.price;
+                    }
+                    return;
+                }
+                
+                const priceElement = this.elements[`${name}Price`];
+                const distanceElement = this.elements[`${name}Distance`];
+                
+                if (priceElement) {
+                    priceElement.textContent = emaData.price;
+                }
+                
+                if (distanceElement) {
+                    distanceElement.textContent = emaData.distanceText;
+                    distanceElement.classList.remove('positive', 'negative');
+                    if (emaData.distance >= 0) {
+                        distanceElement.classList.add('positive');
+                    } else {
+                        distanceElement.classList.add('negative');
+                    }
+                }
+            }
+
+            showError() {
+                if (this.elements.score) this.elements.score.textContent = '--';
+                if (this.elements.classification) this.elements.classification.textContent = 'ERRO';
+                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+            }
+
+            clearLoading() {
+                // Remove loading states
+                console.log('✅ Tendência moderna carregada');
+            }
+        }
+
+        // Classe moderna para Ciclo
+        class CicloModerno {
+            constructor() {
+                this.elements = {
+                    score: document.getElementById('score-ciclo'),
+                    classification: document.getElementById('class-ciclo'),
+                    updateTime: document.getElementById('update-ciclo'),
+                    nuplValor: document.getElementById('nupl-valor'),
+                    nuplBarra: document.getElementById('nupl-barra'),
+                    mvrvValor: document.getElementById('mvrv-valor'),
+                    mvrvBarra: document.getElementById('mvrv-barra'),
+                    reserveValor: document.getElementById('reserve-valor'),
+                    reserveBarra: document.getElementById('reserve-barra'),
+                    puellValor: document.getElementById('puell-valor'),
+                    puellBarra: document.getElementById('puell-barra')
+                };
+            }
+
+            render(data) {
+                if (!data) {
+                    this.showError();
+                    return;
+                }
+
+                console.log('🔄 Renderizando Ciclo Moderno:', data);
+
+                // Atualizar gauge moderno
+                drawModernGauge('gauge-ciclo', data.score, data.classification);
+                
+                // Atualizar textos
+                if (this.elements.score) {
+                    this.elements.score.textContent = data.score.toFixed(0);
+                }
+                
+                if (this.elements.classification) {
+                    this.elements.classification.textContent = data.classification.toUpperCase();
+                }
+
+                if (this.elements.updateTime) {
+                    const now = new Date();
+                    this.elements.updateTime.textContent = now.toLocaleTimeString('pt-PT', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                // Atualizar indicadores
+                this.updateIndicator('nupl', data.indicadores.nupl);
+                this.updateIndicator('mvrv', data.indicadores.mvrv);
+                this.updateIndicator('reserve', data.indicadores.reserve);
+                this.updateIndicator('puell', data.indicadores.puell);
+
+                this.clearLoading();
+            }
+
+            updateIndicator(name, indicadorData) {
+                const valorElement = this.elements[`${name}Valor`];
+                const barraElement = this.elements[`${name}Barra`];
+
+                if (valorElement) {
+                    valorElement.textContent = indicadorData.valor;
+                }
+
+                if (barraElement) {
+                    const percentage = indicadorData.score;
+                    barraElement.style.width = `${Math.min(percentage, 100)}%`;
+                    
+                    // Cores baseadas no score
+                    if (percentage >= 80) {
+                        barraElement.style.background = '#4caf50';
+                    } else if (percentage >= 60) {
+                        barraElement.style.background = '#8bc34a';
+                    } else if (percentage >= 40) {
+                        barraElement.style.background = '#ffc107';
+                    } else if (percentage >= 20) {
+                        barraElement.style.background = '#ff9800';
+                    } else {
+                        barraElement.style.background = '#f44336';
+                    }
+                }
+            }
+
+            showError() {
+                if (this.elements.score) this.elements.score.textContent = '--';
+                if (this.elements.classification) this.elements.classification.textContent = 'ERRO';
+                if (this.elements.updateTime) this.elements.updateTime.textContent = '--:--';
+            }
+
+            clearLoading() {
+                console.log('✅ Ciclo moderno carregado');
+            }
+        }
+
+        // Inicializar componentes modernos
+        const tendenciaModerna = new TendenciaModerna();
+        const cicloModerno = new CicloModerno();
+
+        // Dados de exemplo para teste
+        setTimeout(() => {
+            // Exemplo Tendência
+            tendenciaModerna.render({
+                score: 75,
+                classification: 'bull',
+                emas: {
+                    btcPrice: { price: '$102,450' },
+                    ema10: { price: '$101,200', distance: 1.2, distanceText: '+1.2%' },
+                    ema20: { price: '$98,835', distance: 3.7, distanceText: '+3.7%' },
+                    ema50: { price: '$87,438', distance: 17.2, distanceText: '+17.2%' },
+                    ema100: { price: '$75,320', distance: 36.0, distanceText: '+36.0%' },
+                    ema200: { price: '$65,890', distance: 55.5, distanceText: '+55.5%' }
+                }
+            });
+
+            // Exemplo Ciclo
+            cicloModerno.render({
+                score: 69,
+                classification: 'greed',
+                indicadores: {
+                    nupl: { score: 65, valor: '0.45' },
+                    mvrv: { score: 72, valor: '2.1' },
+                    reserve: { score: 68, valor: '0.003' },
+                    puell: { score: 70, valor: '1.8' }
+                }
+            });
+        }, 1000);
+
+        // Integrar com sistema existente se disponível
+        if (window.estrategiaDetalhes) {
+            window.estrategiaDetalhes.components.tendencia = tendenciaModerna;
+            window.estrategiaDetalhes.components.ciclo = cicloModerno;
+        }
+    </script>
 
     <script type="module" src="/src/pages/estrategia-detalhes/index.js"></script>
 </body>
