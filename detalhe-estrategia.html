@@ -364,7 +364,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                     
                     <div class="bloco-indicadores">
                         <div class="classification-header">
-                            <div class="classification-text"> On-Chain</div>
+                            <div class="classification-text">Indicadores On-Chain</div>
                         </div>
 
                         <div class="indicador-item">
@@ -442,21 +442,30 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
             ctx.strokeStyle = gradient;
             ctx.stroke();
             
+            // Função para obter cor baseada no score
+            function getIndicatorColor(percentage) {
+                if (percentage <= 20) return '#ff4757';      // Vermelho
+                if (percentage <= 40) return '#ff6b35';      // Laranja
+                if (percentage <= 60) return '#ffa726';      // Amarelo
+                if (percentage <= 80) return '#8bc34a';      // Verde claro
+                return '#4caf50';                            // Verde forte
+            }
+            
             // Indicador (ponto) na posição do score
             const indicatorAngle = Math.PI + (score / 100) * Math.PI;
             const indicatorX = centerX + Math.cos(indicatorAngle) * radius;
             const indicatorY = centerY + Math.sin(indicatorAngle) * radius;
             
-            // Círculo externo do indicador
+            // Círculo externo do indicador (anel escuro)
             ctx.beginPath();
             ctx.arc(indicatorX, indicatorY, 12, 0, 2 * Math.PI);
             ctx.fillStyle = '#1a1d29';
             ctx.fill();
             
-            // Círculo interno do indicador
+            // Círculo interno do indicador (cor dinâmica baseada no score)
             ctx.beginPath();
             ctx.arc(indicatorX, indicatorY, 8, 0, 2 * Math.PI);
-            ctx.fillStyle = '#ff8c42';
+            ctx.fillStyle = getIndicatorColor(score);
             ctx.fill();
         }
 
@@ -647,7 +656,7 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
 
         // Dados de exemplo para teste
         setTimeout(() => {
-            // Exemplo Tendência
+            // Exemplo Tendência (Score 75 = Verde claro)
             tendenciaModerna.render({
                 score: 75,
                 classification: 'bull',
@@ -661,15 +670,15 @@ Dashboard Detalhado - Análise Estratégica - GAUGES MODERNOS TIPO SEMICÍRCULO
                 }
             });
 
-            // Exemplo Ciclo
+            // Exemplo Ciclo (Score 35 = Laranja)
             cicloModerno.render({
-                score: 69,
-                classification: 'greed',
+                score: 35,
+                classification: 'expensive',
                 indicadores: {
-                    nupl: { score: 65, valor: '0.45' },
-                    mvrv: { score: 72, valor: '2.1' },
-                    reserve: { score: 68, valor: '0.003' },
-                    puell: { score: 70, valor: '1.8' }
+                    nupl: { score: 30, valor: '0.25' },
+                    mvrv: { score: 35, valor: '1.8' },
+                    reserve: { score: 40, valor: '0.008' },
+                    puell: { score: 35, valor: '1.4' }
                 }
             });
         }, 1000);
