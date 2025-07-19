@@ -13,7 +13,6 @@ export class Tendencia {
         
         this.elements = {
             score: document.getElementById('score-tendencia'),
-            classification: document.getElementById('class-tendencia'),
             updateTime: document.getElementById('update-tendencia'),
             ema10Price: document.getElementById('ema-10-valor'),
             ema10Distance: document.getElementById('ema-10-distance'),
@@ -42,7 +41,6 @@ export class Tendencia {
         
         // Atualizar textos
         this.updateElement('score', data.score.toFixed(0));
-        this.updateElement('classification', data.classification.toUpperCase());
         this.updateCurrentTime();
         
         // Atualizar indicadores EMAs com distâncias
@@ -82,21 +80,30 @@ export class Tendencia {
         this.ctx.strokeStyle = gradient;
         this.ctx.stroke();
         
+        // Função para obter cor baseada no score
+        const getIndicatorColor = (percentage) => {
+            if (percentage <= 20) return '#ff4757';      // Vermelho
+            if (percentage <= 40) return '#ff6b35';      // Laranja
+            if (percentage <= 60) return '#ffa726';      // Amarelo
+            if (percentage <= 80) return '#8bc34a';      // Verde claro
+            return '#4caf50';                            // Verde forte
+        };
+        
         // Indicador (ponto) na posição do score
         const indicatorAngle = Math.PI + (score / 100) * Math.PI;
         const indicatorX = centerX + Math.cos(indicatorAngle) * radius;
         const indicatorY = centerY + Math.sin(indicatorAngle) * radius;
         
-        // Círculo externo do indicador
+        // Círculo externo do indicador (anel escuro)
         this.ctx.beginPath();
         this.ctx.arc(indicatorX, indicatorY, 12, 0, 2 * Math.PI);
         this.ctx.fillStyle = '#1a1d29';
         this.ctx.fill();
         
-        // Círculo interno do indicador
+        // Círculo interno do indicador (cor dinâmica baseada no score)
         this.ctx.beginPath();
         this.ctx.arc(indicatorX, indicatorY, 8, 0, 2 * Math.PI);
-        this.ctx.fillStyle = '#ff8c42';
+        this.ctx.fillStyle = getIndicatorColor(score);
         this.ctx.fill();
     }
 

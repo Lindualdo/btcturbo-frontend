@@ -1,7 +1,7 @@
 /* 
 Arquivo: Ciclo.js
 Caminho: src/pages/estrategia-detalhes/components/ciclo/Ciclo.js
-Componente UI do Bloco Ciclo - GAUGE MODERNO SEMICÍRCULO
+Componente UI do Bloco Ciclo - GAUGE MODERNO COM COR DINÂMICA
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -13,7 +13,6 @@ export class Ciclo {
         
         this.elements = {
             score: document.getElementById('score-ciclo'),
-            classification: document.getElementById('class-ciclo'),
             updateTime: document.getElementById('update-ciclo'),
             nuplValor: document.getElementById('nupl-valor'),
             nuplBarra: document.getElementById('nupl-barra'),
@@ -32,14 +31,13 @@ export class Ciclo {
             return;
         }
 
-        console.log('🔄 Renderizando Ciclo Moderno:', data);
+        console.log('🔄 Renderizando Ciclo Moderno (COR DINÂMICA):', data);
 
         // Atualizar gauge moderno
         this.updateModernGauge(data.score, data.classification);
         
         // Atualizar textos
         this.updateElement('score', data.score.toFixed(0));
-        this.updateElement('classification', data.classification.toUpperCase());
         this.updateCurrentTime();
         
         // Atualizar indicadores de ciclo
@@ -77,21 +75,34 @@ export class Ciclo {
         this.ctx.strokeStyle = gradient;
         this.ctx.stroke();
         
+        // ✅ FUNÇÃO PARA OBTER COR DINÂMICA BASEADA NO SCORE
+        const getIndicatorColor = (percentage) => {
+            console.log(`🎨 Calculando cor para score: ${percentage}`);
+            if (percentage <= 20) return '#ff4757';      // Vermelho
+            if (percentage <= 40) return '#ff6b35';      // Laranja
+            if (percentage <= 60) return '#ffa726';      // Amarelo
+            if (percentage <= 80) return '#8bc34a';      // Verde claro
+            return '#4caf50';                            // Verde forte
+        };
+        
         // Indicador (ponto) na posição do score
         const indicatorAngle = Math.PI + (score / 100) * Math.PI;
         const indicatorX = centerX + Math.cos(indicatorAngle) * radius;
         const indicatorY = centerY + Math.sin(indicatorAngle) * radius;
         
-        // Círculo externo do indicador
+        // Círculo externo do indicador (anel escuro)
         this.ctx.beginPath();
         this.ctx.arc(indicatorX, indicatorY, 12, 0, 2 * Math.PI);
         this.ctx.fillStyle = '#1a1d29';
         this.ctx.fill();
         
-        // Círculo interno do indicador
+        // ✅ CÍRCULO INTERNO COM COR DINÂMICA
+        const dynamicColor = getIndicatorColor(score);
+        console.log(`🎨 Aplicando cor dinâmica: ${dynamicColor} para score ${score}`);
+        
         this.ctx.beginPath();
         this.ctx.arc(indicatorX, indicatorY, 8, 0, 2 * Math.PI);
-        this.ctx.fillStyle = '#ff8c42';
+        this.ctx.fillStyle = dynamicColor;
         this.ctx.fill();
     }
 
