@@ -1,7 +1,7 @@
 /* 
 Arquivo: Ciclo.js
 Caminho: src/pages/estrategia-detalhes/components/ciclo/Ciclo.js
-Componente UI do Bloco Ciclo
+Componente UI do Bloco Ciclo - GAUGE MODERNO SEMICÍRCULO
 */
 
 import formatters from '../../../../shared/formatters.js';
@@ -14,6 +14,7 @@ export class Ciclo {
         this.elements = {
             score: document.getElementById('score-ciclo'),
             classification: document.getElementById('class-ciclo'),
+            updateTime: document.getElementById('update-ciclo'),
             nuplValor: document.getElementById('nupl-valor'),
             nuplBarra: document.getElementById('nupl-barra'),
             mvrvValor: document.getElementById('mvrv-valor'),
@@ -31,10 +32,15 @@ export class Ciclo {
             return;
         }
 
-        console.log('🔄 Renderizando Ciclo:', data);
+        console.log('🔄 Renderizando Ciclo Moderno:', data);
 
-        // Atualizar gauge central
-        this.updateGauge(data.score, data.classification);
+        // Atualizar gauge moderno
+        this.updateModernGauge(data.score, data.classification);
+        
+        // Atualizar textos
+        this.updateElement('score', data.score.toFixed(0));
+        this.updateElement('classification', data.classification.toUpperCase());
+        this.updateCurrentTime();
         
         // Atualizar indicadores de ciclo
         this.updateIndicator('nupl', data.indicadores.nupl);
@@ -45,46 +51,66 @@ export class Ciclo {
         this.clearLoading();
     }
 
-    updateGauge(score, classification) {
+    updateModernGauge(score, classification) {
         if (!this.ctx) return;
 
+        const centerX = 120;
+        const centerY = 110;
+        const radius = 90;
+        const lineWidth = 20;
+        
         // Limpar canvas
-        this.ctx.clearRect(0, 0, 200, 200);
-
-        // Configurações do gauge
-        const centerX = 100;
-        const centerY = 100;
-        const radius = 80;
-        const startAngle = -Math.PI;
-        const endAngle = 0;
-
-        // Background do gauge
+        this.ctx.clearRect(0, 0, 240, 140);
+        
+        // Criar gradiente para o arco COMPLETO (invertido: Caro -> Barato)
+        const gradient = this.ctx.createLinearGradient(centerX - radius, centerY, centerX + radius, centerY);
+        gradient.addColorStop(0, '#ff4757');    // Vermelho (0) - Caro
+        gradient.addColorStop(0.25, '#ff6b35'); // Laranja
+        gradient.addColorStop(0.5, '#ffa726');  // Amarelo
+        gradient.addColorStop(0.75, '#8bc34a'); // Verde claro
+        gradient.addColorStop(1, '#4caf50');    // Verde forte (100) - Barato
+        
+        // Arco SEMPRE COMPLETO com gradiente
         this.ctx.beginPath();
-        this.ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-        this.ctx.lineWidth = 15;
-        this.ctx.strokeStyle = '#404552';
+        this.ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+        this.ctx.lineWidth = lineWidth;
+        this.ctx.strokeStyle = gradient;
         this.ctx.stroke();
-
-        // Preenchimento baseado no score (0-100)
-        const scoreAngle = startAngle + (score / 100) * Math.PI;
         
+        // Indicador (ponto) na posição do score
+        const indicatorAngle = Math.PI + (score / 100) * Math.PI;
+        const indicatorX = centerX + Math.cos(indicatorAngle) * radius;
+        const indicatorY = centerY + Math.sin(indicatorAngle) * radius;
+        
+        // Círculo externo do indicador
         this.ctx.beginPath();
-        this.ctx.arc(centerX, centerY, radius, startAngle, scoreAngle);
-        this.ctx.lineWidth = 15;
+        this.ctx.arc(indicatorX, indicatorY, 12, 0, 2 * Math.PI);
+        this.ctx.fillStyle = '#1a1d29';
+        this.ctx.fill();
         
-        // Usar sistema de cores 5 níveis
-        const colors = formatters.getScoreColor(score);
-        this.ctx.strokeStyle = colors.solid;
-        
-        this.ctx.stroke();
+        // Círculo interno do indicador
+        this.ctx.beginPath();
+        this.ctx.arc(indicatorX, indicatorY, 8, 0, 2 * Math.PI);
+        this.ctx.fillStyle = '#ff8c42';
+        this.ctx.fill();
+    }
 
-        // Atualizar textos
-        if (this.elements.score) {
-            this.elements.score.textContent = score.toFixed(1);
+    updateElement(key, value) {
+        const element = this.elements[key];
+        if (element) {
+            element.textContent = value;
+            element.classList.remove('loading');
         }
-        
-        if (this.elements.classification) {
-            this.elements.classification.textContent = classification;
+    }
+
+    updateCurrentTime() {
+        if (this.elements.updateTime) {
+            const now = new Date();
+            this.elements.updateTime.textContent = now.toLocaleTimeString('pt-PT', {
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'Europe/Lisbon'
+            });
         }
     }
 
@@ -100,15 +126,25 @@ export class Ciclo {
             const percentage = indicadorData.score;
             barraElement.style.width = `${Math.min(percentage, 100)}%`;
             
-            // Aplicar sistema de cores 5 níveis
-            formatters.applyScoreColor(barraElement, percentage);
+            // 🎨 Aplicar sistema de cores baseado no score
+            if (percentage >= 80) {
+                barraElement.style.background = '#4caf50'; // Verde forte
+            } else if (percentage >= 60) {
+                barraElement.style.background = '#8bc34a'; // Verde claro
+            } else if (percentage >= 40) {
+                barraElement.style.background = '#ffc107'; // Amarelo
+            } else if (percentage >= 20) {
+                barraElement.style.background = '#ff9800'; // Laranja
+            } else {
+                barraElement.style.background = '#f44336'; // Vermelho
+            }
         }
     }
 
     showLoading() {
         // Loading nos elementos de texto
         Object.entries(this.elements).forEach(([key, element]) => {
-            if (element && !key.includes('Barra')) {
+            if (element && !key.includes('Barra') && !key.includes('updateTime')) {
                 element.textContent = 'Carregando...';
                 element.classList.add('loading');
             }
@@ -123,7 +159,11 @@ export class Ciclo {
 
         // Limpar gauge
         if (this.ctx) {
-            this.ctx.clearRect(0, 0, 200, 200);
+            this.ctx.clearRect(0, 0, 240, 140);
+        }
+
+        if (this.elements.updateTime) {
+            this.elements.updateTime.textContent = '--:--';
         }
     }
 
@@ -143,6 +183,10 @@ export class Ciclo {
                 element.style.background = '#666';
             }
         });
+
+        if (this.elements.updateTime) {
+            this.elements.updateTime.textContent = '--:--';
+        }
     }
 
     clearLoading() {
