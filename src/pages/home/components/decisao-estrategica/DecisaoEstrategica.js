@@ -1,7 +1,7 @@
 /* 
 Arquivo: DecisaoEstrategica.js
 Caminho: src/pages/home/components/decisao-estrategica/DecisaoEstrategica.js
-Componente UI da Decisão Estratégica
+Componente UI da Decisão Estratégica - ARQUIVO COMPLETO COM INDICADORES MODERNOS
 */
 
 export class DecisaoEstrategica {
@@ -10,15 +10,26 @@ export class DecisaoEstrategica {
             faseOperacional: document.getElementById('fase-operacional'),
             acaoPrimaria: document.getElementById('acao-primaria'),
             tendenciaScore: document.getElementById('tendencia-score'),
-            tendenciaBar: document.getElementById('tendencia-bar'),
+            tendenciaIndicator: document.getElementById('tendencia-indicator'),
             cicloScore: document.getElementById('ciclo-score'),
-            cicloBar: document.getElementById('ciclo-bar'),
+            cicloIndicator: document.getElementById('ciclo-indicator'),
             alavancagemMax: document.getElementById('alavancagem-max'),
             satelitePercent: document.getElementById('satelite-percent')
         };
 
         // Setup da navegação
         this.setupNavigation();
+
+        console.log('🔍 Elementos DecisaoEstrategica encontrados:', {
+            faseOperacional: !!this.elements.faseOperacional,
+            acaoPrimaria: !!this.elements.acaoPrimaria,
+            tendenciaScore: !!this.elements.tendenciaScore,
+            tendenciaIndicator: !!this.elements.tendenciaIndicator,
+            cicloScore: !!this.elements.cicloScore,
+            cicloIndicator: !!this.elements.cicloIndicator,
+            alavancagemMax: !!this.elements.alavancagemMax,
+            satelitePercent: !!this.elements.satelitePercent
+        });
     }
 
     setupNavigation() {
@@ -45,7 +56,7 @@ export class DecisaoEstrategica {
             return;
         }
 
-        console.log('🎯 Renderizando decisão estratégica:', data);
+        console.log('🎯 Renderizando decisão estratégica com indicadores modernos:', data);
 
         this.updateElement('faseOperacional', data.faseOperacional);
         this.updateElement('acaoPrimaria', data.acaoPrimaria);
@@ -54,8 +65,10 @@ export class DecisaoEstrategica {
         this.updateElement('alavancagemMax', data.alavancagemMax);
         this.updateElement('satelitePercent', data.satelitePercent);
 
-        this.updateTendenciaBar(data.tendenciaScore);
-        this.updateCicloBar(data.cicloScore);
+        // Sistema de indicadores modernos
+        this.updateIndicator('tendencia', data.tendenciaScore);
+        this.updateIndicator('ciclo', data.cicloScore);
+        
         this.clearLoading();
     }
 
@@ -67,46 +80,82 @@ export class DecisaoEstrategica {
         }
     }
 
-    updateTendenciaBar(score) {
-        const barElement = this.elements.tendenciaBar;
-        if (barElement) {
-            barElement.classList.remove('loading');
-            barElement.style.width = `${score}%`;
-            
-            // Cores baseadas na tendência (0-100: Bear para Bull)
-            if (score >= 80) {
-                barElement.style.background = '#4caf50'; // Verde forte - BULL
-            } else if (score >= 60) {
-                barElement.style.background = '#8bc34a'; // Verde claro
-            } else if (score >= 40) {
-                barElement.style.background = '#ffc107'; // Amarelo - Neutro
-            } else if (score >= 20) {
-                barElement.style.background = '#ff9800'; // Laranja
-            } else {
-                barElement.style.background = '#f44336'; // Vermelho - BEAR
+    // Sistema de indicadores circulares modernos com posicionamento e cor exatos
+    updateIndicator(name, score) {
+        const indicatorElement = this.elements[`${name}Indicator`];
+        
+        if (!indicatorElement) {
+            console.warn(`❌ Indicador ${name} não encontrado no DOM`);
+            return;
+        }
+
+        // Garantir que o score está entre 0 e 100
+        const percentage = Math.min(Math.max(score || 0, 0), 100);
+        
+        // Posicionamento correto - indicador sempre dentro da barra
+        const isMobile = window.innerWidth <= 768;
+        const indicatorWidth = isMobile ? 14 : 16;
+        const barElement = indicatorElement.parentElement;
+        const barWidth = barElement ? barElement.offsetWidth : 300;
+        
+        // Calcular posição considerando largura do indicador
+        const availableWidth = barWidth - indicatorWidth;
+        const positionInPixels = (percentage / 100) * availableWidth + (indicatorWidth / 2);
+        const positionInPercentage = (positionInPixels / barWidth) * 100;
+        
+        indicatorElement.style.left = `${positionInPercentage}%`;
+        
+        // Cor exata do gradiente - interpolar cor baseada na posição
+        const exactColor = this.interpolateGradientColor(percentage);
+        indicatorElement.style.backgroundColor = exactColor;
+        
+        console.log(`✅ ${name}: score=${score}% → posição=${positionInPercentage.toFixed(1)}% → cor=${exactColor}`);
+    }
+
+    // Calcular cor exata do gradiente baseada na posição
+    interpolateGradientColor(percentage) {
+        // Cores do gradiente: 0% → 25% → 50% → 75% → 100%
+        const colors = [
+            { pos: 0,   color: { r: 255, g: 71,  b: 87  } }, // #ff4757 vermelho
+            { pos: 25,  color: { r: 255, g: 107, b: 53  } }, // #ff6b35 laranja
+            { pos: 50,  color: { r: 255, g: 167, b: 38  } }, // #ffa726 amarelo
+            { pos: 75,  color: { r: 139, g: 195, b: 74  } }, // #8bc34a verde claro
+            { pos: 100, color: { r: 76,  g: 175, b: 80  } }  // #4caf50 verde forte
+        ];
+        
+        // Encontrar as duas cores entre as quais interpolar
+        let lowerColor = colors[0];
+        let upperColor = colors[colors.length - 1];
+        
+        for (let i = 0; i < colors.length - 1; i++) {
+            if (percentage >= colors[i].pos && percentage <= colors[i + 1].pos) {
+                lowerColor = colors[i];
+                upperColor = colors[i + 1];
+                break;
             }
         }
+        
+        // Calcular fator de interpolação (0 a 1)
+        const range = upperColor.pos - lowerColor.pos;
+        const factor = range === 0 ? 0 : (percentage - lowerColor.pos) / range;
+        
+        // Interpolar RGB
+        const r = Math.round(lowerColor.color.r + (upperColor.color.r - lowerColor.color.r) * factor);
+        const g = Math.round(lowerColor.color.g + (upperColor.color.g - lowerColor.color.g) * factor);
+        const b = Math.round(lowerColor.color.b + (upperColor.color.b - lowerColor.color.b) * factor);
+        
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // Métodos antigos mantidos para compatibilidade (redirecionam para novo sistema)
+    updateTendenciaBar(score) {
+        console.log('⚠️ Método antigo updateTendenciaBar chamado, redirecionando para novo sistema');
+        this.updateIndicator('tendencia', score);
     }
 
     updateCicloBar(score) {
-        const barElement = this.elements.cicloBar;
-        if (barElement) {
-            barElement.classList.remove('loading');
-            barElement.style.width = `${score}%`;
-            
-            // Cores baseadas no ciclo (0-100: Bolha para Ext.Barato)
-            if (score >= 80) {
-                barElement.style.background = '#f44336'; // Vermelho - Bolha
-            } else if (score >= 60) {
-                barElement.style.background = '#ff9800'; // Laranja
-            } else if (score >= 40) {
-                barElement.style.background = '#ffc107'; // Amarelo - Neutro
-            } else if (score >= 20) {
-                barElement.style.background = '#8bc34a'; // Verde claro
-            } else {
-                barElement.style.background = '#4caf50'; // Verde forte - Ext.Barato
-            }
-        }
+        console.log('⚠️ Método antigo updateCicloBar chamado, redirecionando para novo sistema');
+        this.updateIndicator('ciclo', score);
     }
 
     showLoading() {
@@ -123,9 +172,8 @@ export class DecisaoEstrategica {
             }
         });
 
-        // Reset das barras
-        if (this.elements.tendenciaBar) this.elements.tendenciaBar.style.width = '0%';
-        if (this.elements.cicloBar) this.elements.cicloBar.style.width = '0%';
+        // Reset dos indicadores modernos
+        this.resetIndicators();
     }
 
     showError() {
@@ -143,9 +191,27 @@ export class DecisaoEstrategica {
             }
         });
 
-        // Reset das barras
-        if (this.elements.tendenciaBar) this.elements.tendenciaBar.style.width = '0%';
-        if (this.elements.cicloBar) this.elements.cicloBar.style.width = '0%';
+        // Reset dos indicadores modernos com cor de erro
+        this.resetIndicators(true);
+    }
+
+    // Reset dos indicadores modernos
+    resetIndicators(isError = false) {
+        ['tendencia', 'ciclo'].forEach(name => {
+            const indicatorElement = this.elements[`${name}Indicator`];
+            if (indicatorElement) {
+                // Reset para posição 0 (extrema esquerda, mas dentro da barra)
+                const isMobile = window.innerWidth <= 768;
+                const indicatorWidth = isMobile ? 14 : 16;
+                const barElement = indicatorElement.parentElement;
+                const barWidth = barElement ? barElement.offsetWidth : 300;
+                const positionInPixels = indicatorWidth / 2;
+                const positionInPercentage = (positionInPixels / barWidth) * 100;
+                
+                indicatorElement.style.left = `${positionInPercentage}%`;
+                indicatorElement.style.backgroundColor = '#ff4757'; // Vermelho (posição 0)
+            }
+        });
     }
 
     clearLoading() {

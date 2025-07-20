@@ -1,7 +1,7 @@
 /* 
 Arquivo: components.css
 Caminho: src/styles/components.css
-Estilos específicos dos componentes modulares - COM BARRAS MODERNAS ATUALIZADAS
+Estilos específicos dos componentes modulares - ARQUIVO COMPLETO COM BARRAS MODERNAS
 */
 
 /* =========================
@@ -181,7 +181,7 @@ Estilos específicos dos componentes modulares - COM BARRAS MODERNAS ATUALIZADAS
 }
 
 /* =========================
-   DECISÃO ESTRATÉGICA E TÁTICA - BARRAS MODERNAS
+   DECISÃO ESTRATÉGICA E TÁTICA - COM BARRAS MODERNAS
    ========================= */
 
 /* Decisão Estratégica */
@@ -217,6 +217,13 @@ Estilos específicos dos componentes modulares - COM BARRAS MODERNAS ATUALIZADAS
     gap: 4px;
 }
 
+.strategy-bar-label {
+    font-size: 0.8rem;
+    color: #8b9dc3;
+    text-align: left;
+    margin-bottom: 2px;
+}
+
 .strategy-bar-labels {
     display: flex;
     justify-content: space-between;
@@ -232,7 +239,7 @@ Estilos específicos dos componentes modulares - COM BARRAS MODERNAS ATUALIZADAS
     font-size: 0.85rem;
 }
 
-/* ✅ BARRAS MODERNAS - MESMO PADRÃO DA PÁGINA DETALHES */
+/* BARRAS MODERNAS - MESMO PADRÃO DA PÁGINA DETALHES */
 .strategy-bar-modern {
     position: relative;
     height: 12px;
@@ -245,18 +252,18 @@ Estilos específicos dos componentes modulares - COM BARRAS MODERNAS ATUALIZADAS
 .strategy-bar-indicator {
     position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
     width: 16px;
     height: 16px;
     border-radius: 50%;
     border: 2px solid #1a1d29;
-    transition: left 0.8s ease;
+    transition: all 0.8s ease;
     z-index: 10;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    background-color: #666; /* Cor padrão */
+    background-color: #ff4757;
 }
 
-/* ✅ BARRAS ANTIGAS PARA COMPATIBILIDADE (caso ainda sejam usadas) */
+/* BARRAS ANTIGAS (COMPATIBILIDADE) */
 .strategy-bar {
     background: #404552;
     height: 8px;
@@ -501,7 +508,7 @@ Estilos específicos dos componentes modulares - COM BARRAS MODERNAS ATUALIZADAS
         font-size: 0.8rem;
     }
 
-    /* ✅ BARRAS MODERNAS - MOBILE */
+    /* BARRAS MODERNAS - MOBILE */
     .strategy-bar-indicator {
         width: 14px;
         height: 14px;
