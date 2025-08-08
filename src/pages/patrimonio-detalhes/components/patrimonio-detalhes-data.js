@@ -1,6 +1,6 @@
 /* 
 Arquivo: src/pages/patrimonio-detalhes/components/patrimonio-detalhes-data.js
-Formatação de dados do Patrimônio Detalhes - INCLUI DISTRIBUIÇÃO USD
+Formatação de dados do Patrimônio Detalhes - USANDO BTC CORE HISTÓRICO
 */
 
 import formatters from '../../../shared/formatters.js';
@@ -16,33 +16,42 @@ export class PatrimonioDetalhesData {
         }
 
         const dados = response.dados;
-        const btcCore = response.saldo_btc_core || 0;
         
-        // USAR PREÇO BTC ATUALIZADO DA API (não dos dados históricos)
+        // USAR DADOS DO PRIMEIRO PONTO (mais recente)
+        const currentData = dados[0];
         const currentBtcPrice = response.btc_price;
-        const currentUsdSatelite = dados[0].valor;
+        const currentUsdSatelite = currentData.valor;
+        const currentBtcCore = currentData.saldo_btc_core; // USAR DO HISTÓRICO
         const currentBtcSatelite = currentUsdSatelite / currentBtcPrice;
         
-        // INCLUIR BTC CORE no patrimônio total
-        const currentBtcTotal = currentBtcSatelite + btcCore;
+        // CALCULAR TOTAIS ATUAIS
+        const currentBtcTotal = currentBtcSatelite + currentBtcCore;
         const currentUsdTotal = currentBtcTotal * currentBtcPrice;
-        const currentUsdCore = btcCore * currentBtcPrice;
+        const currentUsdCore = currentBtcCore * currentBtcPrice;
         
-        // Para variações, usar preço histórico
-        const previousUsdSatelite = dados[1]?.valor;
-        const previousBtcPrice = dados[1]?.btc_price;
-        const previousBtcSatelite = previousUsdSatelite ? previousUsdSatelite / previousBtcPrice : 0;
-        const previousBtcTotal = previousBtcSatelite + btcCore;
-        const previousUsdTotal = previousBtcTotal * previousBtcPrice;
+        // CALCULAR VARIAÇÕES usando dados históricos
+        let usdChange = 0;
+        let btcChange = 0;
+        let btcPriceChange = 0;
+        
+        if (dados.length > 1) {
+            const previousData = dados[1];
+            const previousUsdSatelite = previousData.valor;
+            const previousBtcPrice = previousData.btc_price;
+            const previousBtcCore = previousData.saldo_btc_core;
+            const previousBtcSatelite = previousUsdSatelite / previousBtcPrice;
+            const previousBtcTotal = previousBtcSatelite + previousBtcCore;
+            const previousUsdTotal = previousBtcTotal * previousBtcPrice;
 
-        const usdChange = previousUsdTotal ? ((currentUsdTotal - previousUsdTotal) / previousUsdTotal) * 100 : 0;
-        const btcChange = previousBtcTotal ? ((currentBtcTotal - previousBtcTotal) / previousBtcTotal) * 100 : 0;
-        const btcPriceChange = previousBtcPrice ? ((currentBtcPrice - previousBtcPrice) / previousBtcPrice) * 100 : 0;
+            usdChange = ((currentUsdTotal - previousUsdTotal) / previousUsdTotal) * 100;
+            btcChange = ((currentBtcTotal - previousBtcTotal) / previousBtcTotal) * 100;
+            btcPriceChange = ((currentBtcPrice - previousBtcPrice) / previousBtcPrice) * 100;
+        }
 
-        // Preparar dados para gráficos (usando totais com BTC Core)
-        const patrimonioUsdChart = this.prepareUsdChartData(dados, btcCore);
-        const patrimonioBtcChart = this.prepareBtcChartData(dados, btcCore);
-        const btcDistributionChart = this.prepareBtcDistributionData(btcCore, currentBtcSatelite);
+        // Preparar dados para gráficos
+        const patrimonioUsdChart = this.prepareUsdChartData(dados);
+        const patrimonioBtcChart = this.prepareBtcChartData(dados);
+        const btcDistributionChart = this.prepareBtcDistributionData(currentBtcCore, currentBtcSatelite);
         const usdDistributionChart = this.prepareUsdDistributionData(currentUsdCore, currentUsdSatelite);
         
         return {
@@ -68,13 +77,14 @@ export class PatrimonioDetalhesData {
         };
     }
 
-    prepareUsdChartData(dados, btcCore) {
+    prepareUsdChartData(dados) {
         // Ordenar por data (mais antiga primeiro)
         const sortedData = dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         
-        // Calcular valores USD totais (satélite + core)
+        // Calcular valores USD totais usando BTC Core histórico
         const values = sortedData.map(item => {
             const btcSatelite = item.valor / item.btc_price;
+            const btcCore = item.saldo_btc_core;
             const btcTotal = btcSatelite + btcCore;
             return btcTotal * item.btc_price;
         });
@@ -111,12 +121,13 @@ export class PatrimonioDetalhesData {
         };
     }
 
-    prepareBtcChartData(dados, btcCore) {
+    prepareBtcChartData(dados) {
         const sortedData = dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         
-        // Calcular valores BTC totais (satélite + core)
+        // Calcular valores BTC totais usando BTC Core histórico
         const btcValues = sortedData.map(item => {
             const btcSatelite = item.valor / item.btc_price;
+            const btcCore = item.saldo_btc_core;
             return btcSatelite + btcCore;
         });
         
