@@ -1,7 +1,3 @@
-<!-- 
-Arquivo: patrimonio-detalhes.html
-Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribuição USD
--->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -30,13 +26,13 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
         <div class="current-metrics">
             <div class="metric-card">
                 <div class="metric-value" id="current-patrimonio-usd">$0</div>
-                <div class="metric-label">Saldo USD</div>
+                <div class="metric-label">Saldo Total USD</div>
                 <div class="metric-change" id="usd-change">--</div>
             </div>
             
             <div class="metric-card">
                 <div class="metric-value" id="current-patrimonio-btc">0.0000 BTC</div>
-                <div class="metric-label">Saldo BTC</div>
+                <div class="metric-label">Saldo Total BTC</div>
                 <div class="metric-change" id="btc-change">--</div>
             </div>
             
@@ -52,13 +48,13 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             <div class="metrics-compact-grid">
                 <div class="metric-compact">
                     <div class="metric-compact-value" id="current-patrimonio-usd-mobile">$0</div>
-                    <div class="metric-compact-label">Saldo USD</div>
+                    <div class="metric-compact-label">Saldo Total USD</div>
                     <div class="metric-compact-change positive" id="usd-change-mobile">--</div>
                 </div>
                 
                 <div class="metric-compact">
                     <div class="metric-compact-value" id="current-patrimonio-btc-mobile">0.0000</div>
-                    <div class="metric-compact-label">Saldo BTC</div>
+                    <div class="metric-compact-label">Saldo Total BTC</div>
                     <div class="metric-compact-change positive" id="btc-change-mobile">--</div>
                 </div>
                 
@@ -97,47 +93,77 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
             </div>
         </div>
 
-        <!-- Gráfico Patrimônio USD -->
+        <!-- Gráfico Patrimônio TOTAL USD -->
         <div class="chart-container">
             <div class="chart-header">
                 <span class="chart-title">
-                    <i class="bi bi-currency-dollar"></i> Evolução Patrimônio (USD)
+                    <i class="bi bi-currency-dollar"></i> Evolução Patrimônio TOTAL (USD)
                 </span>
                 <div class="period-filters">
                     <button class="period-btn active" onclick="loadPatrimonioUsdPeriod('30d')">30d</button>
                     <button class="period-btn" onclick="loadPatrimonioUsdPeriod('3m')">3 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioUsdPeriod('6m')">6 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioUsdPeriod('1y')">1 Ano</button>
-                    <!--<button class="period-btn" onclick="loadPatrimonioUsdPeriod('all')">All</button>-->
                 </div>
             </div>
             <canvas id="chart-patrimonio-usd" class="chart-canvas"></canvas>
         </div>
 
-        <!-- Gráfico Patrimônio BTC -->
+        <!-- Gráfico Patrimônio TOTAL BTC -->
         <div class="chart-container">
             <div class="chart-header">
                 <span class="chart-title">
-                    <i class="bi bi-currency-bitcoin"></i> Evolução Patrimônio (BTC)
+                    <i class="bi bi-currency-bitcoin"></i> Evolução Patrimônio TOTAL (BTC)
                 </span>
                 <div class="period-filters">
                     <button class="period-btn active" onclick="loadPatrimonioBtcPeriod('30d')">30d</button>
                     <button class="period-btn" onclick="loadPatrimonioBtcPeriod('3m')">3 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioBtcPeriod('6m')">6 Meses</button>
                     <button class="period-btn" onclick="loadPatrimonioBtcPeriod('1y')">1 Ano</button>
-                    <!--<button class="period-btn" onclick="loadPatrimonioBtcPeriod('all')">All</button>-->
                 </div>
             </div>
             <canvas id="chart-patrimonio-btc" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- Gráfico Patrimônio SATÉLITE USD -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <span class="chart-title">
+                    <i class="bi bi-currency-dollar"></i> Evolução Patrimônio SATÉLITE (USD)
+                </span>
+                <div class="period-filters">
+                    <button class="period-btn active" onclick="loadPatrimonioUsdSatelitePeriod('30d')">30d</button>
+                    <button class="period-btn" onclick="loadPatrimonioUsdSatelitePeriod('3m')">3 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioUsdSatelitePeriod('6m')">6 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioUsdSatelitePeriod('1y')">1 Ano</button>
+                </div>
+            </div>
+            <canvas id="chart-patrimonio-usd-satelite" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- Gráfico Patrimônio SATÉLITE BTC -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <span class="chart-title">
+                    <i class="bi bi-currency-bitcoin"></i> Evolução Patrimônio SATÉLITE (BTC)
+                </span>
+                <div class="period-filters">
+                    <button class="period-btn active" onclick="loadPatrimonioBtcSatelitePeriod('30d')">30d</button>
+                    <button class="period-btn" onclick="loadPatrimonioBtcSatelitePeriod('3m')">3 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioBtcSatelitePeriod('6m')">6 Meses</button>
+                    <button class="period-btn" onclick="loadPatrimonioBtcSatelitePeriod('1y')">1 Ano</button>
+                </div>
+            </div>
+            <canvas id="chart-patrimonio-btc-satelite" class="chart-canvas"></canvas>
         </div>
     </div>
 
     <script type="module" src="/src/pages/patrimonio-detalhes/index.js"></script>
     
     <script>
-        // Funções globais para filtros de período
+        // Funções globais para filtros de período - TOTAIS
         function loadPatrimonioUsdPeriod(period) {
-            updatePeriodButtons('patrimonio-usd', period);
+            updatePeriodButtons('chart-patrimonio-usd', period);
             if (window.patrimonioDetalhes) {
                 window.patrimonioDetalhes.components.patrimonioUsdChart.updatePeriod(period);
                 loadDataForPeriod(period, 'patrimonio-usd');
@@ -145,15 +171,31 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
         }
         
         function loadPatrimonioBtcPeriod(period) {
-            updatePeriodButtons('patrimonio-btc', period);
+            updatePeriodButtons('chart-patrimonio-btc', period);
             if (window.patrimonioDetalhes) {
                 window.patrimonioDetalhes.components.patrimonioBtcChart.updatePeriod(period);
                 loadDataForPeriod(period, 'patrimonio-btc');
             }
         }
+
+        // Funções globais para filtros de período - SATÉLITE
+        function loadPatrimonioUsdSatelitePeriod(period) {
+            updatePeriodButtons('chart-patrimonio-usd-satelite', period);
+            if (window.patrimonioDetalhes) {
+                window.patrimonioDetalhes.components.patrimonioUsdSateliteChart.updatePeriod(period);
+                loadDataForPeriod(period, 'patrimonio-usd-satelite');
+            }
+        }
         
-        function updatePeriodButtons(chartType, activePeriod) {
-            const chartId = chartType === 'patrimonio-usd' ? 'chart-patrimonio-usd' : 'chart-patrimonio-btc';
+        function loadPatrimonioBtcSatelitePeriod(period) {
+            updatePeriodButtons('chart-patrimonio-btc-satelite', period);
+            if (window.patrimonioDetalhes) {
+                window.patrimonioDetalhes.components.patrimonioBtcSateliteChart.updatePeriod(period);
+                loadDataForPeriod(period, 'patrimonio-btc-satelite');
+            }
+        }
+        
+        function updatePeriodButtons(chartId, activePeriod) {
             const chart = document.getElementById(chartId);
             const container = chart?.closest('.chart-container');
             const buttons = container?.querySelectorAll('.period-btn');
@@ -176,10 +218,19 @@ Dashboard Detalhado - Evolução Patrimônio TOTAL (inclui BTC Core) + Distribui
                     if (data.status === 'success') {
                         const formattedData = window.patrimonioDetalhes.dataHandler?.formatPatrimonioDetalhesData(data);
                         if (formattedData) {
-                            if (chartType === 'patrimonio-usd') {
-                                window.patrimonioDetalhes.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
-                            } else {
-                                window.patrimonioDetalhes.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
+                            switch(chartType) {
+                                case 'patrimonio-usd':
+                                    window.patrimonioDetalhes.components.patrimonioUsdChart.render(formattedData.patrimonioUsd);
+                                    break;
+                                case 'patrimonio-btc':
+                                    window.patrimonioDetalhes.components.patrimonioBtcChart.render(formattedData.patrimonioBtc);
+                                    break;
+                                case 'patrimonio-usd-satelite':
+                                    window.patrimonioDetalhes.components.patrimonioUsdSateliteChart.render(formattedData.patrimonioUsdSatelite);
+                                    break;
+                                case 'patrimonio-btc-satelite':
+                                    window.patrimonioDetalhes.components.patrimonioBtcSateliteChart.render(formattedData.patrimonioBtcSatelite);
+                                    break;
                             }
                         }
                     }

@@ -33,6 +33,8 @@ export class PatrimonioDetalhesData {
         let usdChange = 0;
         let btcChange = 0;
         let btcPriceChange = 0;
+        let usdSateliteChange = 0;
+        let btcSateliteChange = 0;
         
         if (dados.length > 1) {
             const previousData = dados[1];
@@ -43,14 +45,21 @@ export class PatrimonioDetalhesData {
             const previousBtcTotal = previousBtcSatelite + previousBtcCore;
             const previousUsdTotal = previousBtcTotal * previousBtcPrice;
 
+            // Variações TOTAIS
             usdChange = ((currentUsdTotal - previousUsdTotal) / previousUsdTotal) * 100;
             btcChange = ((currentBtcTotal - previousBtcTotal) / previousBtcTotal) * 100;
             btcPriceChange = ((currentBtcPrice - previousBtcPrice) / previousBtcPrice) * 100;
+            
+            // Variações SATÉLITE
+            usdSateliteChange = ((currentUsdSatelite - previousUsdSatelite) / previousUsdSatelite) * 100;
+            btcSateliteChange = ((currentBtcSatelite - previousBtcSatelite) / previousBtcSatelite) * 100;
         }
 
         // Preparar dados para gráficos
         const patrimonioUsdChart = this.prepareUsdChartData(dados);
         const patrimonioBtcChart = this.prepareBtcChartData(dados);
+        const patrimonioUsdSateliteChart = this.prepareUsdSateliteChartData(dados);
+        const patrimonioBtcSateliteChart = this.prepareBtcSateliteChartData(dados);
         const btcDistributionChart = this.prepareBtcDistributionData(currentBtcCore, currentBtcSatelite);
         const usdDistributionChart = this.prepareUsdDistributionData(currentUsdCore, currentUsdSatelite);
         
@@ -65,8 +74,18 @@ export class PatrimonioDetalhesData {
                     btcPrice: btcPriceChange
                 }
             },
+            satelite: {
+                patrimonioUsd: formatters.currency(currentUsdSatelite),
+                patrimonioBtc: formatters.btc(currentBtcSatelite),
+                changes: {
+                    usd: usdSateliteChange,
+                    btc: btcSateliteChange
+                }
+            },
             patrimonioUsd: patrimonioUsdChart,
             patrimonioBtc: patrimonioBtcChart,
+            patrimonioUsdSatelite: patrimonioUsdSateliteChart,
+            patrimonioBtcSatelite: patrimonioBtcSateliteChart,
             btcDistribution: btcDistributionChart,
             usdDistribution: usdDistributionChart,
             metadata: {
@@ -199,12 +218,81 @@ export class PatrimonioDetalhesData {
         };
     }
 
-    formatChartDate(timestamp) {
-        const date = new Date(timestamp);
-        return date.toLocaleDateString('pt-PT', {
-            day: '2-digit',
-            month: '2-digit'
-        });
+    prepareUsdSateliteChartData(dados) {
+        // Ordenar por data (mais antiga primeiro)
+        const sortedData = dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        
+        // Calcular valores USD apenas do satélite (ignorar BTC Core)
+        const values = sortedData.map(item => item.valor);
+        
+        const average = values.reduce((a, b) => a + b, 0) / values.length;
+        
+        return {
+            labels: sortedData.map(item => this.formatChartDate(item.timestamp)),
+            datasets: [
+                {
+                    label: 'Patrimônio Satélite (USD)',
+                    data: values,
+                    borderColor: '#4caf50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#4caf50',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4
+                },
+                {
+                    label: `Média (${formatters.currency(average)})`,
+                    data: new Array(values.length).fill(average),
+                    borderColor: '#8b9dc3',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: false
+                }
+            ]
+        };
+    }
+
+    prepareBtcSateliteChartData(dados) {
+        const sortedData = dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        
+        // Calcular valores BTC apenas do satélite (ignorar BTC Core)
+        const btcValues = sortedData.map(item => item.valor / item.btc_price);
+        
+        const average = btcValues.reduce((a, b) => a + b, 0) / btcValues.length;
+        
+        return {
+            labels: sortedData.map(item => this.formatChartDate(item.timestamp)),
+            datasets: [
+                {
+                    label: 'Patrimônio Satélite (BTC)',
+                    data: btcValues,
+                    borderColor: '#ff8c42',
+                    backgroundColor: 'rgba(255, 140, 66, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#ff8c42',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4
+                },
+                {
+                    label: `Média (${formatters.btc(average)})`,
+                    data: new Array(btcValues.length).fill(average),
+                    borderColor: '#8b9dc3',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: false
+                }
+            ]
+        };
     }
 }
 
